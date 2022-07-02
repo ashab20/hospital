@@ -1,0 +1,84 @@
+categories 
+    >Department
+    >Designation 
+    >
+
+Exeption 
+    >
+
+
+
+
+Allergists/Immunologists
+
+Anesthesiologists
+
+Cardiologists
+
+Colon and Rectal Surgeons
+
+Critical Care Medicine Specialists
+
+
+
+Endocrinologists
+
+Emergency Medicine Specialists
+
+Family Physicians
+
+Gastroenterologists
+
+Geriatric Medicine Specialists
+
+Hematologists
+
+Hospice and Palliative Medicine Specialists
+
+Infectious Disease Specialists
+
+Internists
+
+Medical Geneticists
+
+Nephrologists
+
+Neurologists
+
+Obstetricians and Gynecologists
+
+Oncologists
+
+Ophthalmologists
+
+Osteopaths
+
+Otolaryngologists
+
+Pathologists
+
+Pediatricians
+
+Physiatrists
+
+Plastic Surgeons
+
+Podiatrists
+
+Preventive Medicine Specialists
+
+Psychiatrists
+
+Pulmonologists
+
+Radiologists
+
+Rheumatologists
+
+Sleep Medicine Specialists
+
+Sports Medicine Specialists
+
+General Surgeons
+
+Urologists
