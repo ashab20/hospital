@@ -56,6 +56,9 @@ require_once('../include/header.php');
                                     </fieldset>
                                     <fieldset>
                                         <h2>Welcome To GFG Step 2</h2>
+                                      <!-- Test -->
+
+
                                         <input type="button" name="next-step"
                                             class="next-step" value="Next Step" />
                                         <input type="button" name="previous-step"

@@ -163,8 +163,8 @@ if($patientSingleData['numrows']== 0){
                           <div class="col-md-4">
                             <div class="card">
                             
-                                <button class=" btn btn-sm btn-outline-dark font-weight-normal mb-3" id="testBtn"><i class=" mdi mdi-amplifier  float-right"></i> Test 
-                                </button>
+                                <a href="<?=$baseurl?>/pages/invoice.php" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3 text-decoration-none" ><i class=" mdi mdi-amplifier  float-right"></i> Test 
+                                </a>
                             
                             </div>
                           </div>

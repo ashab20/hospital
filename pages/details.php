@@ -147,4 +147,7 @@ if($data['error']){
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
           <?php require_once('../include/footer.php') ?>
+
+          <!-- Main content -->
+  
  
