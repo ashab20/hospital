@@ -30,9 +30,9 @@ require_once('../config.php');
     <!-- inject:css -->
     <!-- endinject -->
     <!-- Layout styles -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css" type="text/css">
     <!-- own css -->
-    <link rel="stylesheet" href="../assets/css/app.css">
+    <link rel="stylesheet" href="../assets/css/app.css" type="text/css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../assets/images/favicon.ico" />
 

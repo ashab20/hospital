@@ -15,17 +15,6 @@ require_once('../include/header.php');
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-          <ul id="progressbar" class="process-bar">
-                        <li class="active" id="step1">
-                            <strong>Step 1</strong>
-                        </li>
-                        <li id="step2"><strong>Step 2</strong></li>
-                        <li id="step3"><strong>Step 3</strong></li>
-                        <li id="step4"><strong>Step 4</strong></li>
-                    </ul>
-                    <div class="progress">
-                        <div class="progress-bar"></div>
-                    </div> <br>
 <!-- ***************************************************************** -->
             <!-- page header start -->
             <div class="page-header">
@@ -44,13 +33,9 @@ require_once('../include/header.php');
               </nav>
               
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <!-- Step start -->
-                
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-11 col-sm-9 col-md-7
-                            col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                        <div class="col-md-9 text-center p-0 mt-3 mb-2">
                             <div class="px-0 pt-4 pb-0 mt-3 mb-3">
                                 <form id="form">
                                     <ul id="progressbar">
@@ -98,8 +83,6 @@ require_once('../include/header.php');
                                 </form>
                             </div>
                         </div>
-                    </div>
-                </div>
 
             </div>
             </div>

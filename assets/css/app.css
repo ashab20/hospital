@@ -14,14 +14,14 @@ font-size: 18px;
 
 
 /* css for step bar */
-.process-bar{
+/* .process-bar{
 	list-style: none;
 display: flex;
 justify-content: space-around;
 margin-top: -0.5rem;
 position: absolute;
 width: 100%;
-}
+} */
 #progressbar{
 	list-style: none;
 display: flex;
@@ -31,9 +31,9 @@ position: absolute;
 width: 100%;
 }
 
-h2{
+/* h2{
 	color: #2F8D46;
-}
+} */
 #form {
 	text-align: center;
 	position: relative;
@@ -89,10 +89,10 @@ h2{
 	background-color: #2F8D46
 }
 
-.text {
+/* .text {
 	color: #2F8D46;
 	font-weight: normal
-}
+} */
 
 #progressbar {
 	margin-bottom: 30px;
@@ -160,7 +160,7 @@ h2{
 }
 
 .progress {
-	height: 20px
+	height: 10px
 }
 
 .progress-bar {
