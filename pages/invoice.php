@@ -79,7 +79,7 @@ $result = $mysqli->selector("test")['selectdata'];
                             </div>
                         </ul>                      
                     </div>  
-                <form action="" method="post">
+                <form action="" method="post" class="mx-5">
                    <div class="card-body">
                   <div class="form-group">
                     <!-- <div class="row">
@@ -99,7 +99,7 @@ $result = $mysqli->selector("test")['selectdata'];
                   </div>
 
                   <div class="form-group">
-                    <div class="row">
+                    <div class="row bg-light p-2 rounded-top">
                       <div class="col-3">
                         <label for="">Test</label>
                       </div>
@@ -108,49 +108,50 @@ $result = $mysqli->selector("test")['selectdata'];
                       <div class="col-3"><label for="">Total</label></div>
                       <div class="col-2"></div>
                     </div>
+                    <!-- outer repeater -->
                     <div class="repeater">
-                      <div data-repeater-list="items">
-                        <div class="row" data-repeater-item >
-                          <div class="col-3 p-0">
-                          <div class="p-0">
-                            <select name="" class="form-select" onchange="product_add(this)">
-                              <option value="">Select Item</option>
-                              <?php
-                                
-                                foreach($result as $data){
-                              ?>
-                                <option data-price="<?= $data['rate'] ?>" value="<?= $data['id'] ?>">
-                                <?= $data['test_name'] ?>
-                              </option>
-                              <?php }
-                               ?>
-                            </select>
-                          </div>
-                          </div>
-                          <div class="col-2 p-0">
-                            <input type="text" onkeyup="get_pricecount(this)" class="form-control price" name="price">
-                          </div>
-                          <!-- <div class="col-2 p-0">
-                            <input type="text" class="form-control qty" name="qty" onkeyup="get_count(this)">
-                          </div> -->
-                          <div class="col-2 p-0">
-                            <input readonly type="text" class="form-control sub" name="sub">
-                          </div>
-                          <div class="col-1 d-flex">
-                            <button class="btn btn-danger btn-sm mx-1" data-repeater-delete type="button"><i class="mdi mdi-minus"></i></button>
-                            <!-- <button class="btn btn-info btn-sm" data-repeater-create type="button"><i class="mdi mdi-plus"></i></button> -->
-                          </div>
-                                                  
+                        <div data-repeater-list="outer-list">
+                            <div  data-repeater-item class="row ">
+                                <div class="col-3 p-0">
+                                    <!-- <div class="p-0"> -->
+                                        <select name="" class="form-select" onchange="product_add(this)">
+                                            <option value="">Select Item</option>
+                                            <?php
+
+                                                    foreach($result as $data){
+                                                ?>
+                                            <option data-price="<?= $data['rate'] ?>" value="<?= $data['id'] ?>">
+                                                <?= $data['test_name'] ?>
+                                            </option>
+                                            <?php }
+                                                ?>
+                                        </select>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="col-2 p-0 mx-1">
+                                    <input type="text" onkeyup="get_pricecount(this)" class="form-control price" name="price">
+                                </div>
+                                <!-- <div class="col-2 p-0">
+                                <input type="text" class="form-control qty" name="qty" onkeyup="get_count(this)">
+                                </div> -->
+                                <div class="col-2 p-0">
+                                    <input readonly type="text" class="form-control sub bg-white" name="sub">
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn text-danger btn-sm" data-repeater-delete type="button">
+                                        <i class="mdi mdi-minus-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-1">
-                        <div class="col-1 offset-11">
-                          <button class="btn btn-info btn-sm" data-repeater-create type="button"><i class="mdi mdi-plus"></i></button>
+                        <div class="col-1 offset-7" style="padding-left: 2rem;margin-top:-1.5rem;">
+                          <button class="btn text-info btn-sm" data-repeater-create type="button">
+                            <i class="mdi mdi-plus-circle"></i>
+                          </button>
                         </div>
-                      </div>
+                        
                     </div>
-                  </div>
+                    </div>
                   <div class="form-group">
                       <div class="row">
                         <div class="col-6">
@@ -192,7 +193,25 @@ $result = $mysqli->selector("test")['selectdata'];
                 </div>
                 <!-- /.card-body -->
               </form>
-              <?php
+              
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!--/.col (left) -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+           
+        </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:include/footer.php -->
+          <?php require_once('../include/footer.php') ?>
+
+
+<!-- php -->
+<?php
                 if($_POST['make_payment']){
                   $pur['patient_id']=$patientId; // from line 57
                   $pur['purchese_date']=$_POST['payment_date'];
@@ -243,11 +262,9 @@ $result = $mysqli->selector("test")['selectdata'];
                   }
                 }
               ?>
-              
-<!-- jquery repater files -->
+
 <script src="../assets/js/jquery.repeater.min.js"></script>
-<!-- <script src="../assets/js/repeater.js"></script> -->
- <script>
+<script>
   function total_amount_calc(){
     var sub_amount=parseFloat($('#sub_amount').val());
     var discount=parseFloat($('#discount').val());
@@ -309,24 +326,19 @@ var price=parseFloat($(e).closest('.row').find('.price').val());
   }
   }
 </script>
-
 <script>
-  $(document).ready(function () {
-    $('.repeater').repeater()
-  });
+    $(document).ready(function () {
+        $('.repeater').repeater({
+            // (Required if there is a nested repeater)
+            // Specify the configuration of the nested repeaters.
+            // Nested configuration follows the same format as the base configuration,
+            // supporting options "defaultValues", "show", "hide", etc.
+            // Nested repeaters additionally require a "selector" field.
+            repeaters: [{
+                // (Required)
+                // Specify the jQuery selector for this nested repeater
+                selector: '.inner-repeater'
+            }]
+        });
+    });
 </script>
-
-            </div>
-            <!-- /.card -->
-
-          </div>
-          <!--/.col (left) -->
-        </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-           
-        </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:include/footer.php -->
-          <?php require_once('../include/footer.php') ?>
