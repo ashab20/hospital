@@ -312,9 +312,8 @@ if(isset($_POST['update_doctor'])){
       $_POST['modified_by'] = $user['id'];
       $_POST['modified_at'] = date('Y-m-d H:i:s');
 
-    print_r($_POST);
 
-    $data = $mysqli->updator('doctor',$_POST,$id);
+    $data = $mysqli->updator('doctor',$_POST,"id=$id");
     if($data['error']){
       $_SESSION['dct']=$data['msg'];
       echo "<script> location.replace('adddoctor.php?doctorid=$id')</script>";

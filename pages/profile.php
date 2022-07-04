@@ -198,9 +198,72 @@ if(isset($_GET['id']) && strlen($_GET['id']) > 0){
         <div class="col-md-6 pt-md-0 pt-3 d-flex justify-content-end">
                 <a class="btn btn-gradient-primar"  
                 href="<?= $baseurl ?>/form/updatedoctor.php?doctorid=<?=$user_Id?>">Edit Profile</a>
-            </div>
-      </div>
+        </div>
+        </div>
+
+      <?php
+        // print_r($selectdoctor['singledata']);
+        $doctor = $selectdoctor['singledata'];
+      ?>
     </div><hr class="mx-5">
+    <!-- doctors table -->
+    <div class="row">
+        <div class="pt-3 justify-content-center items-center">
+      <div class="form-row ">
+        
+      
+      <div class="row d-flex input-group py-2 justify-content-center">
+        <div class=" col-md-4 d-flex">
+        <span class="input-group-text">Father name:</span>
+            <input type="text" readonly value="<?=$doctor['father_name']?>" class="form-control form-control bg-white" id="phone" >
+          </div>
+        <div class="col-md-4 d-flex">
+        <span class="input-group-text">Mother name:</span>
+          <input type="text" readonly value="<?=$doctor['mother_name']?>" class="form-control bg-white form-control" id="phone">
+        </div>
+      </div>
+     
+        <div class="row d-flex input-group py-2 justify-content-center">
+          <div class=" col-md-4 d-flex">
+            <span class="input-group-text">Gratuated from</span>
+            <input type="text" value="<?=$doctor['gratuated_from']?>" readonly class="form-control bg-white">
+          </div>
+          <div class=" col-md-4 d-flex">
+            <span class="input-group-text">Qualification:</span>
+            <input type="text" readonly value="<?=$doctor['qualification']?>" class="form-control bg-white">
+          </div>
+        </div>  
+          
+        <div class="row d-flex input-group py-2 justify-content-center">
+          <div class=" col-md-4 d-flex">
+            <span class="input-group-text">Shift:</span>
+            <input type="text" value="<?=$doctor['shift']?>" readonly class="form-control bg-white">
+          </div>
+          <div class=" col-md-4 d-flex">
+            <span class="input-group-text">Consulant Fees:</span>
+            <input type="text" readonly class="form-control form-control bg-white" value="<?= $doctor['visit_fee']?>tk">
+          </div>
+        </div> 
+        <div class="row d-flex input-group py-2 justify-content-center">
+          <div class=" col-md-4 d-flex">
+            <?php 
+            $id = $doctor['department_id'];
+            $department =  $mysqli->select_single("SELECT name FROM department Where id=$id")['singledata'];
+            ?>
+            <span class="input-group-text">Department:</span>
+            <input type="text" value="<?=$department['name']?>" readonly class="form-control bg-white">
+            
+          </div>
+          <div class=" col-md-4 d-flex">
+            <span class="input-group-text">Date Of Birth:</span>
+            <input type="text" value="<?=$doctor['date_of_birth']?>" readonly class="form-control bg-white">
+          </div>
+        </div> 
+      
+      </div>
+        </div>
+      </div>
+       
   </div>
   </div>
   

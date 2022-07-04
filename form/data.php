@@ -40,7 +40,7 @@ if(isset($_GET['time'])){
   
     $data = $mysqli->custome_query("select doctor.shift, user.id from doctor join user on user.id=doctor.user_id where doctor.user_id=$timeid");
     if($data['numrows'] > 0){
-      $value="<option value=''>Select Time</option>";
+      $value="";
 	  foreach($data['selectdata'] as $data){
         switch ($data['shift']) {
             case 'MORNING':
@@ -59,13 +59,13 @@ if(isset($_GET['time'])){
             $time = '3:00AM-11:00PM';
                 break;
         }
-		  $value.="<option value='".$time."'>".$time."</option>";
+		  $value = $time;
 	  }
     }else{
-      $value="<option value=''>No time Found</option>";
+      $value="";
     }
 	
-	echo json_encode(array('msg'=>$value));
+	echo json_encode($value);
     
 }
 

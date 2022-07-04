@@ -163,7 +163,7 @@ if($patientSingleData['numrows']== 0){
                           <div class="col-md-4">
                             <div class="card">
                             
-                                <a href="<?=$baseurl?>/pages/invoice.php" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3 text-decoration-none" ><i class=" mdi mdi-amplifier  float-right"></i> Test 
+                                <a href="<?=$baseurl?>/pages/invoice.php?id=<?= $patientSingleData['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3 text-decoration-none" ><i class=" mdi mdi-amplifier  float-right"></i> Test 
                                 </a>
                             
                             </div>
@@ -306,15 +306,19 @@ if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data 
                 <label for="date">Date:</label>
                 <input type="date"  name="date" min="<?=date('Y-m-d') ?>" required class="form-select p-1">
               </div>
-              <div class="form-group col-md-2 mx-2">
-              <label for="time">Time:</label>
-              <select name="time" id="time" class="form-select">
-                <option value="">Time..</option>
-              </select>
-              </div>
+             
 
             </div>
             <div class="form-row d-flex justify-content-center">
+            <div class="form-group col-md-2 mx-2">
+              <label for="time">Time:</label>
+              <input type="time" name='time' class="form-control">
+              <small>  <p id='time'></p></small>
+              </div>
+              <div class="form-group col-md-2 mx-2">
+              <label for="time">Consultancy Fees:</label>
+              <input class="form-control m-1" type="number" name='visite_fess' id='fees'>
+              </div>
             </div>
             <div class="form-row d-flex justify-content-center">
             <div class="form-group col-md-9 mx-2">
@@ -519,7 +523,7 @@ if(isset($patientSingleData['singledata'])){ ?>
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            success: function (data) {
+            success: function (data) {           
                 $('#time').html(JSON.stringify(data));
             },error: function(xhr, status, errorMessage) {
 			}
@@ -532,7 +536,7 @@ if(isset($patientSingleData['singledata'])){ ?>
             dataType: 'json',
             contentType: 'application/json',
             success: function (data) {
-                $('#time').html(JSON.stringify(data));
+                $('#rate').html(JSON.stringify(data));
             },error: function(xhr, status, errorMessage) {
 			}
         });

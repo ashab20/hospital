@@ -60,7 +60,9 @@ create table `admit` (id int auto_increment primary key, room_id int , duration 
 
 
 -- payment schama
-create table `payment`(id int auto_increment primary key, patient_id int ,  tax int, discount int, total int, net int, advance int, due int, remark enum('DUE','RECIVED','PRCESSCING'), created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table `invoice_payment`(id int auto_increment primary key, patient_id int , payment_date timestamp NOT NULL,subtotal int(11) DEFAULT NULL, tax int, discount int, total int, payment int, remark varchar(255), created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+
+
 
 
 
