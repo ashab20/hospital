@@ -29,7 +29,7 @@ if($usr['roles'] !== 'SUPERADMIN' && $usr['roles'] !== 'ADMIN'){
 <?php
 $mysqli = new Crud();
 
-$result = $mysqli->selector("test")['selectdata'];
+$testData = $mysqli->selector("test")['selectdata'];
 
 ?>
 
@@ -43,8 +43,8 @@ $result = $mysqli->selector("test")['selectdata'];
           <div class="col-12">
             <!-- general form elements -->
             <div class="card card-success">
-              <div class="card-header">
-                <h3 class="card-title">Purchase Information Add</h3>
+              <div class="">
+                <h3 class="card-title test-success h3 p-2 bg-light text-bold">Payment Invoice</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -79,23 +79,23 @@ $result = $mysqli->selector("test")['selectdata'];
                             </div>
                         </ul>                      
                     </div>  
-                <form action="" method="post" class="mx-5">
+                <form action="<?= $baseurl?>/form/action.php" method="POST" class="mx-5" >
                    <div class="card-body">
                   <div class="form-group">
-                    <!-- <div class="row">
+                    <div class="row">
                       <div class="col-md-6">
                         <label for="supplier_id" class="form-label text-success">Supplier ID:</label>
-                        <select class="form-select" id="supplier_id" name="supplier_id">
+                        <!-- <select class="form-select" id="supplier_id" name="supplier_id">
                           <option value="">Select Supplier</option>
                           <option value=""</option>
                           
-                        </select>
+                        </select> -->
                       </div>
                       <div class="col-md-6">
                         <label for="purchese_date" class="form-label text-success">Purchase Date:</label>
-                        <input type="date" class="form-control text-secondary" id="purchese_date" placeholder="Enter Purchase Date" name="purchese_date">
+                        <input type="date" class="form-control text-secondary" id="purchese_date" placeholder="Enter Purchase Date" name="payment_date">
                       </div>
-                    </div> -->
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -103,8 +103,8 @@ $result = $mysqli->selector("test")['selectdata'];
                       <div class="col-3">
                         <label for="">Test</label>
                       </div>
+                      <div class="col-2"><label for="">Description</label></div>
                       <div class="col-2"><label for="">Price</label></div>
-                      <!-- <div class="col-2"><label for="">Qty</label></div> -->
                       <div class="col-3"><label for="">Total</label></div>
                       <div class="col-2"></div>
                     </div>
@@ -114,26 +114,27 @@ $result = $mysqli->selector("test")['selectdata'];
                             <div  data-repeater-item class="row ">
                                 <div class="col-3 p-0">
                                     <!-- <div class="p-0"> -->
-                                        <select name="" class="form-select" onchange="product_add(this)">
+                                        <select class="form-select" onchange="product_add(this)">
                                             <option value="">Select Item</option>
                                             <?php
 
-                                                    foreach($result as $data){
+                                            foreach($testData as $test){
                                                 ?>
-                                            <option data-price="<?= $data['rate'] ?>" value="<?= $data['id'] ?>">
-                                                <?= $data['test_name'] ?>
+                                            <option data-testid="<?= $test['id']?>" data-price="<?= $test['rate'] ?>" value="<?= $test['id'] ?>" data-description="<?= $test['description'] ?>">
+                                                <?= $test['test_name'] ?>
                                             </option>
                                             <?php }
                                                 ?>
                                         </select>
                                     <!-- </div> -->
+                                </div>                               
+                                <div class="col-2 p-0">
+                                <input type="text" class="form-control descirbe" name="describtion" onkeyup="get_count(this)">
                                 </div>
                                 <div class="col-2 p-0 mx-1">
                                     <input type="text" onkeyup="get_pricecount(this)" class="form-control price" name="price">
                                 </div>
-                                <!-- <div class="col-2 p-0">
-                                <input type="text" class="form-control qty" name="qty" onkeyup="get_count(this)">
-                                </div> -->
+                               
                                 <div class="col-2 p-0">
                                     <input readonly type="text" class="form-control sub bg-white" name="sub">
                                 </div>
@@ -144,7 +145,7 @@ $result = $mysqli->selector("test")['selectdata'];
                                 </div>
                             </div>
                         </div>
-                        <div class="col-1 offset-7" style="padding-left: 2rem;margin-top:-1.5rem;">
+                        <div class="col-1 offset-9" style="padding-left: 2.4rem;margin-top:-1.5rem;">
                           <button class="btn text-info btn-sm" data-repeater-create type="button">
                             <i class="mdi mdi-plus-circle"></i>
                           </button>
@@ -153,6 +154,8 @@ $result = $mysqli->selector("test")['selectdata'];
                     </div>
                     </div>
                   <div class="form-group">
+                  <input type="text" class="test_id" name="test_id" hidden>
+                  <input type="text" name="patient_id" value="<?=$patientId?>" hidden>
                       <div class="row">
                         <div class="col-6">
                           <label for="note" class="form-label text-success">Note:</label>
@@ -186,7 +189,7 @@ $result = $mysqli->selector("test")['selectdata'];
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-2 offset-2 text-center mt-4">
-                        <button type="submit" class="btn btn-success" name="make_payment">Submit</button>
+                        <input type="submit" class="btn btn-success" value="Submit" name="invoice_payment">
                       </div>
                     </div>
                   </div>
@@ -210,59 +213,6 @@ $result = $mysqli->selector("test")['selectdata'];
           <?php require_once('../include/footer.php') ?>
 
 
-<!-- php -->
-<?php
-                if($_POST['make_payment']){
-                  $pur['patient_id']=$patientId; // from line 57
-                  $pur['purchese_date']=$_POST['payment_date'];
-                  $pur['sub_amount']=$_POST['subtotal'];
-                  $pur['discount']=$_POST['discount'];
-                  $pur['tax']=$_POST['tax'];
-                  $pur['total_amount']=$_POST['total'];
-                  $pur['payment']=$_POST['payment'];
-                  $pur['remark']=$_POST['remark'];
-                 
-                  $result=$mysqli->creator('invoice_payment',$pur);
-                  if($result['error']){
-                    $_SESSION['class']="danger";
-                    $_SESSION['msg']=$result['msg'];
-                    echo "<script> location.replace('$baseurl/pages/invoice.php')</script>";
-                  }else{
-                    $purchase_id=$result['insert_id'];
-
-                    /* add data to supplier payment */
-                    if($_POST['payment']){
-                      $pay['purchase_id']=$purchase_id;
-                      $pay['supplier_id']=$_POST['supplier_id'];
-                      $pay['pay_amount']=$_POST['payment'];
-                      $pay['pay_date']=$_POST['purchese_date'];
-                      $paym=$mysqli->creator('supplier_payment',$pay);
-                    }
-                    
-                    $pur_det=array();
-                    $stock_det=array();
-                    foreach($_POST['items'] as $item){
-                      /* save data to purchase details */
-                      $pur_det['purchase_id']=$purchase_id;
-                      $pur_det['product_id']=$item['product_id'];
-                      $pur_det['price']=$item['price'];
-                      $pur_det['qty']=$item['qty'];
-
-                      $purdcreate=$mysqli->creator('purchese_details',$pur_det);
-                      /* save data to stock */
-                      $stock_det['purchase_id']=$purchase_id;
-                      $stock_det['product_id']=$item['product_id'];
-                      $stock_det['pin']=$item['qty'];
-                      $stock_det['price']=$item['price'];
-                      $stock=$mysqli->creator('stock',$stock_det);
-                    }
-                    $_SESSION['class']="success";
-                    $_SESSION['msg']=$result['msg'];
-                    echo "<script> location.replace('$base_url/purchase_list.php')</script>";
-                  }
-                }
-              ?>
-
 <script src="../assets/js/jquery.repeater.min.js"></script>
 <script>
   function total_amount_calc(){
@@ -285,7 +235,12 @@ $result = $mysqli->selector("test")['selectdata'];
   function product_add(e){
     var price=$(e).children('option:selected').data('price');
     // var discount=$(e).children('option:selected').data('discount');
+    var description=$(e).children('option:selected').data('description');
+    var testId=$(e).children('option:selected').data('testid');
     $(e).closest('.row').find('.price').val(price);
+    $(e).closest('.row').find('.descirbe').val(description);
+    $('.test_id').val(testId);
+    
   
   // function get_count(e){
   //   // var qty=parseFloat($(e).val());
@@ -324,6 +279,7 @@ var price=parseFloat($(e).closest('.row').find('.price').val());
     $('#total_amount').val(sub_amount);
     total_amount_calc();
   }
+  // alert(testId);
   }
 </script>
 <script>

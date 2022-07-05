@@ -461,3 +461,37 @@ if(isset($_POST['add_service_rate'])){
       }
     }
 }
+
+
+// invoice Payment
+if(isset($_POST['invoice_payment'])){
+  unset($_POST['invoice_payment']);
+  unset($_POST['outer-list']);
+  if(isset($_POST['test_id'])){
+  $pay['test_id']=$_POST['test_id'];
+  }
+  if(isset($_POST['appointment_id'])){
+  $pay['appointment_id']=$_POST['appointment_id'];
+  }
+  
+  $pay['patient_id']=$_POST['patient_id'];
+  $pay['payment_date']=$_POST['payment_date'];
+  $pay['subtotal']=$_POST['subtotal'];
+  $pay['discount']=$_POST['discount'];
+  $pay['tax']=$_POST['tax'];
+  $pay['total']=$_POST['total'];
+  $pay['payment']=$_POST['payment'];
+  $pay['remark']=$_POST['remark'];
+  $create=$mysqli->creator('invoice_payment',$_POST);
+  if($create['error']){
+    $_SESSION['rate']=$create['msg'];
+    echo "<script> location.replace('$baseurl/pages/invoice.php?id=".$pay['patient_id']."')</script>";
+    
+  }else{
+    if($create['msg']=='saved'){
+        echo "<script> location.replace('$baseurl/pages/patient.php')</script>";      
+      $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>rate Added Successfully</p>";
+      // echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
+    }
+  }
+}
