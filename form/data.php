@@ -20,8 +20,8 @@ if(isset($_GET['department'])){
     $data = $mysqli->custome_query("select doctor.id, user.name from doctor join user on user.id=doctor.user_id where doctor.department_id=$department_id");
     if($data['numrows'] > 0){
       $value="<option value=''>Select Doctor</option>";
-	  foreach($data['selectdata'] as $data){
-		  $value.="<option value='".$data['id']."'>".$data['name']."</option>";
+	  foreach($data['selectdata'] as $d){
+		  $value.="<option value='".$d['id']."'>".$d['name']."</option>";
 	  }
     }else{
       $value="<option value=''>No Doctor Found</option>";
@@ -38,17 +38,18 @@ if(isset($_GET['department'])){
 if(isset($_GET['time'])){
     $timeid= $_GET['time'];
   
-    $data = $mysqli->custome_query("select doctor.shift, user.id from doctor join user on user.id=doctor.user_id where doctor.user_id=$timeid");
+    $data = $mysqli->custome_query("select doctor.shift,doctor.visit_fee, user.id from doctor join user on user.id=doctor.user_id where doctor.user_id=$timeid");
     if($data['numrows'] > 0){
-      $value="";
+    $value=$data['selectdata'];
 	  foreach($data['selectdata'] as $data){
+      $fees = $data["visit_fee"];
         switch ($data['shift']) {
             case 'MORNING':
                 $time = '7:00AM-3:00PM';
                 break;
             
             case 'EVENING':
-                $time = '3:00AM-11:00PM';
+                $time = "3:00AM-11:00PM";
                 break;
             
             case 'NIGHT':
@@ -59,10 +60,11 @@ if(isset($_GET['time'])){
             $time = '3:00AM-11:00PM';
                 break;
         }
-		  $value = $time;
-	  }
+        
+      }
+      $value = ["fees"=>floatval($fees),"time"=>trim($time,"'") ];
     }else{
-      $value="";
+      $value ="";
     }
 	
 	echo json_encode($value);

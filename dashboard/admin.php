@@ -8,20 +8,6 @@ if($usr['roles'] !== 'SUPERADMIN' ){
 
 ?>
 
-    <div class="container-scroller">
-    
-      <!-- partial:./navbar.php -->
-      <?php
-        require_once('../include/navbar.php');
-      ?>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:include/sidebar.php -->
-        <?php require_once('../include/sidebar.php') ?>
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-
 
 <?php
 $mysqli = new Crud();
@@ -37,12 +23,19 @@ if($data['error']){
   $_SESSION['msg']=$data['msg'];
   echo "error";
 }
-
-
-
 ?>
-
-
+    <div class="container-scroller">    
+      <!-- partial:./navbar.php -->
+      <?php
+        require_once('../include/navbar.php');
+      ?>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:include/sidebar.php -->
+        <?php require_once('../include/sidebar.php') ?>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
             <!-- page header start -->
             <div class="page-header">
               <h3 class="page-title">
@@ -62,72 +55,176 @@ if($data['error']){
             <div class="row">
               <div class="col-md-4 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Total User <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                  <a href="<?=$baseurl ?>/dashboard/user.php"  class="card-body text-white text-decoration-none">
+                    <img src="../assets/images/svg/all.svg" class="card-img-absolute" alt="circle-image"/>
+                    <h4 class="font-weight-normal mb-3">All User <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5"><?= $data['numrows'] ?></h2>
-                    <h6 class="card-text">Increased by 60%</h6>
-                  </div>
+                    <!-- <h6 class="card-text">Increased by 60%</h6> -->
+                  </a>
                 </div>
               </div>
               <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-info card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Total Patient <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                <div class="card bg-gradient-info card-img-holder ">
+                  <a href="<?= $baseurl?>/dashboard/patient.php" class="card-body text-white text-decoration-none">
+                    <img src="../assets/images/doctors/patient.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Patient <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5"><?= $patientData['numrows'];?></h2>
-                    <h6 class="card-text">Decreased by 10%</h6>
-                  </div>
+                    <!-- <h6 class="card-text">Decreased by 10%</h6> -->
+                  </a>
                 </div>
               </div>
               <div class="col-md-4 stretch-card grid-margin">
                 <div class="card bg-gradient-success card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Total Doctor <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                  <a href="<?= $baseurl?>/dashboard/doctor.php"  class="card-body  text-white text-decoration-none">
+                    <img src="../assets/images/doctors/doctor.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Doctors <i class="mdi mdi-diamond mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5"><?= $doctor['count'][0]?></h2>
                     <h6 class="card-text">Increased by 5%</h6>
-                  </div>
+                  </a>
                 </div>
               </div>
               <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-danger card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">EMPLOYEE <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                <div class="card bg-gradient-dark card-img-holder text-white">
+                  <a href="#" class="card-body text-white text-decoration-none">
+                    <img src="../assets/images/doctors/nurse.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Nurse <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5"><?= $employee['count'][0] ?></h2>
-                    <h6 class="card-text">Increased by 60%</h6>
-                  </div>
+                    <!-- <h6 class="card-text">Increased by 60%</h6> -->
+                  </a>
                 </div>
               </div>
-              <div class="col-md-4 stretch-card grid-margin">
+             <div class="col-md-4 stretch-card grid-margin">
                 <div class="card bg-gradient-info card-img-holder text-white">
-                  <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Total  <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                  <a href="#" class="card-body text-white text-decoration-none">
+                    <img src="../assets/images/doctors/lab.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Labretariest<i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5">45,6334</h2>
                     <h6 class="card-text">Decreased by 10%</h6>
-                  </div>
+                  </a>
                 </div>
               </div>
-              <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
+            
+            </div>
+ <!-- header contant -->
+
+<!-- Hospital Managment -->
+
+<div class="row">
+              <div class="col-12">
+                <div class="card">
                   <div class="card-body">
-                    <img src="../assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-normal mb-3">Total Doctor <i class="mdi mdi-diamond mdi-24px float-right"></i>
-                    </h4>
-                    <h2 class="mb-5">95,5741</h2>
-                    <h6 class="card-text">Increased by 5%</h6>
+                    <div class="d-flex justify-content-between">
+                      <h4>Hospitalize</h4>
+                      <span 
+                      style="background-color: aliceblue;border-radius: 100%;text-align: center;justify-content: center;align-items: center;display: flex;width: 1.5rem;height: 1.5rem;cursor:pointer;">
+                        <i class="mdi mdi-chevron-down" onclick="$('#patientctl').toggleClass('d-none')"></i></span>
+                    </div>
+                    <hr/>
+                    <div class="row offset-2" id="patientctl">
+                      <div class="col-2" class="d-flex justify-content-center">
+                        <a href="<?=$baseurl?>/pages/patient.php" 
+                        class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
+                          <img src="../assets/images/icons/patient.png" height="80px" width="100%" alt="">
+                          <h5 class="py-4">Add Patient</h5>
+                        </a>
+                      </div>
+                      <div class="col-2" class="d-flex justify-content-center">
+                        <a href="" 
+                        class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
+                          <img src="../assets/images/icons/deadline.png" height="80px" width="100%" alt="">
+                          <h5 class="py-4">Make Appointment</h5>
+                        </a>
+                      </div>
+                      <div class="col-2" class="d-flex justify-content-center">
+                        <a href="<?= $baseurl?>/pages/invoice.php" 
+                        class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
+                          <img src="../assets/images/icons/medicaltest.png" height="80px" width="100%" alt="">
+                          <h5 class="py-4">Apply Test</h5>
+                        </a>
+                      </div>
+                      <div class="col-2" class="d-flex justify-content-center">
+                        <a href="" 
+                        class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
+                          <img src="../assets/images/icons/bed.png" height="80px" width="100%" alt="">
+                          <h5 class="py-4">Admit Patient</h5>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
- <!-- header contant -->
+
+<!-- **** -->
+
+        <!-- <div class="row my-5">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <h4>Hospitalize</h4>
+                      <span 
+                      style="background-color: aliceblue;border-radius: 100%;text-align: center;justify-content: center;align-items: center;display: flex;width: 1.5rem;height: 1.5rem;cursor:pointer;">
+                        <i class="mdi mdi-chevron-down" onclick="$('#patientctl').toggleClass('d-none')"></i></span>
+                    </div>
+                    <hr/>
+                    <div class="row offset-1" id="patientctl">
+                    <div class="col-md-5 stretch-card grid-margin">
+                      <div class="card bg-gradient-dark card-img-holder text-white">
+                        <a href="#" class="card-body text-white text-decoration-none">
+                          <img src="../assets/images/doctors/nurse.svg" class="card-img-absolute" alt="circle-image" />
+                          <h1 class="font-weight-normal mb-3">Make <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                          </h1>
+                          <h2 class="">Appointment</h2>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-md-5 stretch-card grid-margin">
+                      <div class="card bg-gradient-dark card-img-holder text-white">
+                        <a href="#" class="card-body text-white text-decoration-none">
+                          <img src="../assets/images/doctors/nurse.svg" class="card-img-absolute" alt="circle-image" />
+                          <h4 class="font-weight-normal mb-3">Apply <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                          </h4>
+                          <h2 class="mb-5">For Test</h2>
+                         
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-md-5 stretch-card grid-margin">
+                      <div class="card bg-gradient-dark card-img-holder text-white">
+                        <a href="#" class="card-body text-white text-decoration-none">
+                          <img src="../assets/images/doctors/nurse.svg" class="card-img-absolute" alt="circle-image" />
+                          <h1 class="font-weight-normal mb-3">Admit <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                          </h1>
+                          <h2 class="mb-5">Patient</h2>
+                         
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-md-5 stretch-card grid-margin">
+                      <div class="card bg-gradient-dark card-img-holder text-white">
+                        <a href="#" class="card-body text-white text-decoration-none">
+                          <img src="../assets/images/doctors/nurse.svg" class="card-img-absolute" alt="circle-image" />
+                          <h1 class="font-weight-normal mb-3">Add <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                          </h1>
+                          <h2 class="mb-5">Patient</h2>
+                         
+                        </a>
+                      </div>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+<!-- *** -->
+
 
             <div class="row">
               <div class="col-12 grid-margin">

@@ -163,7 +163,7 @@ if($patientSingleData['numrows']== 0){
                           <div class="col-md-4">
                             <div class="card">
                             
-                                <a href="<?=$baseurl?>/pages/invoice.php?id=<?= $patientSingleData['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3 text-decoration-none" ><i class=" mdi mdi-amplifier  float-right"></i> Test 
+                                <a href="<?=$baseurl?>/pages/invoice.php?patientid=<?= $patientSingleData['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3 text-decoration-none" ><i class=" mdi mdi-amplifier  float-right"></i> Test 
                                 </a>
                             
                             </div>
@@ -194,55 +194,7 @@ if($patientSingleData['numrows']== 0){
             ADD PATIENT 
     *********************************-->
 
-<div class="row mt-5 d-none" id="addPatientForm">
-    <div class="col-12 ">
-        <div class="card w-100 mx-auto">
-                    <p class="cursor-pointer  closebtn" id="closebtn"> <i class="mdi mdi-close-circle-outline text-danger "> </i></p>
-                    <div class="row justify-content-center  d-flex mx-auto">
-                        <h2 class="text-bold text-muted mt-2">Add Patient</h2>
-                          </div>
-                          <div class="row card-body justify-content-center">
-      <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
-        <div class="form-row d-flex">
-          <div class="form-group col-md-6 mx-2">
-            <label for="name">Name:</label>
-            <input type="text" name="name" required class="form-control" id="name" placeholder="Name">
-          </div>
-          <div class="form-group col-md-6 mx-2">
-            <label for="phone">Phone:</label>
-            <input type="text" minlength="11" maxlength="11" name="phone" required class="form-control" id="phone" placeholder="phone">
-          </div>
-        </div>
-
-        <div class="form-row d-flex">
-        <div class="form-group col-md-4 mx-2">
-            <label for="gender">Gender:</label>
-            <select id="gender"  name="gender" class="form-control">
-              <option selected>Gender...</option>
-              <option value="male">Male</option>
-              <option value="female">female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="form-group col-md-3 mx-2">
-            <label for="age">Age:</label>
-            <input type="text" name="age"  class="form-control" id="age" placeholder="eg 35">
-          </div>
-          <div class="form-group col-md-4 mx-2">
-            <label for="address">Address:</label>
-            <input type="text" name="address" class="form-control" id="address" placeholder="address">
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-center">
-          <button type="submit" class="btn btn-primary"  name="addPatient">Add Patient</button>
-        </div>
-      </form>
-      </div>
-      </div>
-  </div>
-</div>
-
+<?php require_once('../components/patient/addpatient.php'); ?>
 <!-- ADD PATIENT END -->
 
 
@@ -253,151 +205,13 @@ if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data 
   
   
 <!-- *** APPOINTMENT start -->
-<div class="row mt-1 d-none" id="appointment">
-    <div class="col-12 ">
-        <div class="card w-100 mx-auto">
-          <p class="closebtn" id="closebtn"> 
-            <i 
-            class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
-            onclick="$('#appointment').toggleClass('d-none');appointmentBtn.toggleClass('btn-dark');">
-           </i>
-          </p>
-  
-  <div class="row card-body justify-content-center">
-
-      <!-- ***** -->
-      <?php
-          $departmentData =$mysqli->selector('department','*');
-          $department = $departmentData['selectdata'];
-          if($departmentData['error']){
-            $_SESSION['msg']=$departmentData['msg'];
-            echo "error";
-          }
-          $doctorData =$mysqli->find("SELECT name,id FROM user WHERE roles='DOCTOR'");
-          $doctors = $doctorData['singledata'];
-
-          
-      ?>
-
-      <!-- **** -->
-
-          <form class=" justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
-          <input type="text" hidden name="patient_id" value="<?= $patientSingleData['singledata']['id'] ?>">
-          <input type="text" hidden name="name" value="<?= $patientSingleData['singledata']['name'] ?>">
-          <input type="text" hidden name="phone" value="<?= $patientSingleData['singledata']['phone'] ?>">
-          <input type="text" hidden name="created_by" value="<?= $usr['id'] ?>">
-            <div class="form-row d-flex justify-content-center">
-              <div class="form-group col-md-2 mx-2">
-              <label for="gender">Department:</label>
-                <select id="department"  name="department_id" class="form-select" onchange="get_doctor(this.value)">
-                  <option value="">Department...</option>
-              <?php foreach ($department as $dept){?>
-                  <option value="<?=$dept['id'] ?>"><?= $dept['name']?></option>
-                  <?php } ?>
-                </select>
-              </div>
-              <div class="form-group col-md-2 mx-2">
-              <label for="depdoctor">Doctor:</label>
-                <select id="depdoctor" onchange="get_time(this.value)" name="doctor_id" class="form-select">
-                  <option value="">Doctor...</option>
-                </select>
-              </div>
-              <div class="form-group col-md-2 mx-2">
-                <label for="date">Date:</label>
-                <input type="date"  name="date" min="<?=date('Y-m-d') ?>" required class="form-select p-1">
-              </div>
-             
-
-            </div>
-            <div class="form-row d-flex justify-content-center">
-            <div class="form-group col-md-2 mx-2">
-              <label for="time">Time:</label>
-              <input type="time" name='time' class="form-control">
-              <small>  <p id='time'></p></small>
-              </div>
-              <div class="form-group col-md-2 mx-2">
-              <label for="time">Consultancy Fees:</label>
-              <input class="form-control m-1" type="number" name='visite_fess' id='fees'>
-              </div>
-            </div>
-            <div class="form-row d-flex justify-content-center">
-            <div class="form-group col-md-9 mx-2">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
-                          </div>
-            </div>
-
-            <div class="d-flex justify-content-center">
-              <button type="submit" class="btn btn-primary"  name="appt">Make Appointment</button>
-            </div>
-          </form>
-
-          </div>
-        </div>
-    </div>
-</div>
+<?php require_once('../components/patient/addappointment.php'); ?>
 <!-- APPOINTMENT END -->
 
 <!-- ********************************
             @:TEST 
 *********************************-->
-
-<div class="row mt-1 d-none" id="test">
-    <div class="col-12 ">
-        <div class="card w-100 mx-auto">
-          <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
-                    onclick="$('#test').toggleClass('d-none');$testBtn.toggleClass('btn-dark');"> </i></p>
-           <div class="row card-body justify-content-center">
-              <!-- ***** -->
-      <?php
-          $rateData =$mysqli->selector('rate','*');
-          $rate = $rateData['selectdata'];
-          if($rateData['error']){
-            $_SESSION['msg']=$rate['msg'];
-          }
-          
-      ?>
-
-      <!-- **** -->
-           
-           <form class=" justify-content-center items-center text-center" method="POST" action="<?=$baseurl?>/form/action.php">
-            <input type="number" name="patient_id" value="<?= $patientSingleData['singledata']['id'] ?>" hidden>
-                <div class="form-row d-flex justify-content-center">
-                  <div class="form-group col-md-2 mx-2">
-                    <label for="name">Test Name:</label>
-                    <select id="test_name" onchange="get_rate(this.value);" name="test_name" class="form-select">
-                      <option selected>Select test...</option>
-                      <?php
-                      foreach($rate as $r){ ?>
-                      <option value="<?=$r['id'] ?>"><?=$r['service_name']?> : <?=$r['rate']?>tk</option>
-                      <?php } ?>
-                </select>
-              </div>
-            
-            <!-- by admin and lebretary -->
-                <div class="form-group col-md-2 mx-2">
-                  <label for="gender">Price:</label>
-                  <input type="text" class="form-control" name="delivary"/>
-                </div>            
-                <div class="form-group col-md-2 mx-2">
-                  <label for="address">Reference_By:</label>
-                  <input type="text" name="reference_by" class="form-control" id="address" placeholder="name...">
-                </div>
-                <div class="form-group col-md-2 mx-2">
-                  <button class="btn form-control  mt-4" type="button">
-                  <i class="mdi mdi-delete"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary"  name="addTest">Add Test</button>
-              </div>
-            </form>
-            </div>
-            <!-- action="<?=$baseurl?>/form/action.php" -->
-
-        </div>
-    </div>
-</div>
+<?php require_once("../components/patient/addtest.php"); ?>
 
 <!-- *** TEST END*** -->
 
@@ -504,43 +318,6 @@ if(isset($patientSingleData['singledata'])){ ?>
 	  $admitBtn.toggleClass('btn-dark');
 	})
 	
-	function get_doctor(dep){
-		$.ajax({
-            url: '../form/data.php?department='+dep,
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                $('#depdoctor').html(JSON.stringify(data));
-            },error: function(xhr, status, errorMessage) {
-			}
-        });
-	}
-
-	function get_time(shift){
-		$.ajax({
-            url: '../form/data.php?time='+shift,
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {           
-                $('#time').html(JSON.stringify(data));
-            },error: function(xhr, status, errorMessage) {
-			}
-        });
-	}
-	function get_rate(rate){
-		$.ajax({
-            url: '../form/data.php?time='+rate,
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                $('#rate').html(JSON.stringify(data));
-            },error: function(xhr, status, errorMessage) {
-			}
-        });
-	}
 
 </script>
 

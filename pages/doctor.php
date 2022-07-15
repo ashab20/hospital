@@ -94,6 +94,9 @@ if($data['error']){
                         </thead>
                         <tbody>
                 <?php 
+                if($data['numrows'] > 0){
+
+                
                 foreach ($user as $u){?>
                           <tr>
                             <td><?= $u['id']?></td>
@@ -156,7 +159,7 @@ if($data['error']){
                               </a>
                             </td>
                           </tr>
-                          <?php } ?>
+                          <?php } } ?>
                         </tbody>
                       </table>
                     </div>

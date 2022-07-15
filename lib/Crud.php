@@ -23,6 +23,7 @@ class Crud {
             $save = $this->connect->query($insert);
             if($save){
                 $msg='saved';
+                $insert_id= $this->connect->insert_id;
             }else{
                 $msg = 'cannot saved';
                 $error = $this->connect->error;
@@ -60,15 +61,15 @@ class Crud {
             if($getdata){            
             if($getdata->num_rows > 0){
                 
-                if($getdata->num_rows == 1){
-                    while($singleData = $getdata->fetch_assoc()){
-                        $data = $singleData;
-                    }
-                }else{
+                // if($getdata->num_rows == 1){
+                //     while($singleData = $getdata->fetch_assoc()){
+                //         $data = $singleData;
+                //     }
+                // }else{
                     $data = array();
                     while($singleData = $getdata->fetch_assoc()){
                         $data[] = $singleData;
-                    }
+                    // }
                 }
                 $selectdata=$data;
                 $numrows=$getdata->num_rows;

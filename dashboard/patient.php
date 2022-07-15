@@ -132,7 +132,7 @@ if($patientData['error']){
                           <tr>
                             <td><?= $p['id']?></td>
                             <td>
-                                <img src="../assets/images/faces/face3.jpg" class="me-2" alt="image">
+                                <!-- <img src="../assets/images/faces/face3.jpg" class="me-2" alt="image"> -->
                                 <a class="btn" href="<?=$baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>">
                                   <?= $p['name']?>
                                 </a> 

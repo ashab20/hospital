@@ -100,12 +100,14 @@
                     </button>
                 </div>
               </div>
-              <!-- <div class="col-md-4">
+              <div class="col-md-4">
                 <div class="card">
-                    <button class=" btn btn-outline-dark font-weight-normal" id="admitBtn"><i class="mdi mdi-ambulance  float-right"></i> Rooms 
+                    <button class=" btn btn-outline-dark font-weight-normal" id="rateBtn"
+                    onclick="$('#test_form').toggleClass('d-none')" type="button">
+                      <i class=" mdi mdi-amplifier  float-right"></i> Test 
                     </button>
                 </div>
-              </div> -->
+              </div>
             </div>
               <!-- NEXT SECTION END -->
           </div>
@@ -113,33 +115,9 @@
         <div class="row justify-content-center">
           <!-- Session Department -->
           <?php 
-            if(isset($_SESSION['dept'])){
-              echo  $_SESSION['dept'];
-              unset ($_SESSION['dept']);
-            }
-          ?>
-          <?php 
-            if(isset($_SESSION['degi'])){
-              echo  $_SESSION['degi'];
-              unset ($_SESSION['degi']);
-            }
-          ?>
-          <?php 
-            if(isset($_SESSION['room'])){
-              echo  $_SESSION['room'];
-              unset ($_SESSION['room']);
-            }
-          ?>
-          <?php 
-            if(isset($_SESSION['service'])){
-              echo  $_SESSION['service'];
-              unset ($_SESSION['service']);
-            }
-          ?>
-          <?php 
-            if(isset($_SESSION['rate'])){
-              echo  $_SESSION['rate'];
-              unset ($_SESSION['rate']);
+            if(isset($_SESSION['msg'])){
+              echo  $_SESSION['msg'];
+              unset ($_SESSION['msg']);
             }
           ?>
 
@@ -163,9 +141,6 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title text-muted">Add Department</h4>
-          
-        
-           
                       <form class="justify-content-center items-center" id="addDeptform" method="POST" action="<?= $baseurl ?>/form/action.php" >
                         <div class="form-row col-md-12 d-flex">  
                                         
@@ -179,22 +154,23 @@
                       </form>     
 
 
-                    <div class="list-wrapper">
+                    <div class="list-wrapper mt-4">
                       <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
                         <?php
                           $class_name=false;
+                          if($dept_data['numrows'] > 0){
                           foreach($deptartment as $dpt){
-                            if($dpt['status']==0){
-                             $class_name ='completed';
+                            if($dpt['status'] == 0){
+                            $class_name ='completed';
                             }else{
                               $class_name= "";
                             }
 
                             ?>
                             
-                       
+                      
                             <li class="<?= $class_name ?>">
-                        <a href="<?= $baseurl ?>/form/editcategories.php?dprtId=<?= $dpt['id'] ?>"> 
+                        <a href="<?= $baseurl ?>/form/editcategories.php?deptId=<?= $dpt['id'] ?>"> 
                         <button class=" outline-none border-none btn-primary text-decoration-none m-1">
                               <i class="mdi mdi-border-color" ></i> </a>
                             </button>
@@ -203,7 +179,7 @@
                           </label>
                           <i class="remove mdi mdi-close-circle-outline"></i>
                         </li>
-                         <?php  }
+                        <?php  }}
                         ?>
                       </ul>
                       <script>
@@ -227,7 +203,7 @@
 
           <!-- Designation form -->
 
-          <div class="col-md-7 grid-margin stretch-card d-none" id="designationform">
+          <div class="px-2 grid-margin stretch-card d-none" id="designationform">
 
 
             <div class="card">
@@ -257,7 +233,7 @@
                     </div>
                   </div>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary"  name="add_degi">Add Patient</button>
+                    <button type="submit" class="btn btn-primary"  name="add_degi">Add Designation</button>
                   </div>
                 </form>
               </div>
@@ -282,8 +258,9 @@
                       
                       $degi_data=$mysqli->selector('designation');
                       $designation=$degi_data['selectdata'];
-
+                      if($degi_data['numrows']){
                       foreach ($designation as $degi){
+                        if($degi['status'] ==1){
                     ?>
                     <tr>
                       <td><?= $degi['id'] ?></td>
@@ -301,7 +278,7 @@
                         </a>
                       </td>
                     </tr>
-                    <?php } ?>
+                    <?php }}} ?>
                   </tbody>
                 </table>
               </div>
@@ -312,11 +289,11 @@
 
           <!-- Room form -->
 
-          <div class="col-md-7 grid-margin stretch-card d-none" id="roomform">
+          <div class="col-md-11 grid-margin stretch-card d-none" id="roomform">
             <div class="card">
             <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
                 onclick="$('#roomform').toggleClass('d-none')"> </i></p>
-             
+            
               <div class="card-body">
                 <h4 class="card-title">Add Room</h4>
                 <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
@@ -351,7 +328,7 @@
                   </div>
                 </form>
               </div>
-              <table class="table table-hover table-bordered table-striped">
+              <table class="mt-4 table table-hover table-bordered table-striped">
                   <thead>
                     <tr>
                       <th> ID </th>
@@ -368,8 +345,11 @@
                       
                       $room_data=$mysqli->selector('room');
                       $rm=$room_data['selectdata'];
-
+                        if($room_data['numrows'] > 0){
                       foreach ($rm as $room){
+                        if($room['status']== 1){
+
+                        
                     ?>
                     <tr>
                       <td><?= $room['id'] ?></td>
@@ -387,85 +367,20 @@
                         </a>
                       </td>
                     </tr>
-                    <?php } ?>
+                    <?php }}} ?>
                   </tbody>
                 </table>
             </div>
           </div>
           <!-- room end -->
 
-          <!-- Rate Form -->
-
-          <div class="col-md-7 grid-margin stretch-card d-none" id="rate_form">
-            <div class="card">
-            <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
-                onclick="$('#rate_form').toggleClass('d-none')"> </i></p>
-             
-              <div class="card-body">
-                <h4 class="card-title">Rate Status</h4>
-                <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
-                  <div class="form-row d-flex">
-                    <div class="form-group col-md-6 mx-2">
-                      <label for="name">Service Name:</label>
-                      <input type="text" name="service_name" required class="form-control" id="name" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-6 mx-2">
-                      <label for="phone">Rate: </label>
-                      <input type="number" name="rate" required class="form-control" id="phone" placeholder="phone">
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary"  name="add_service_rate">Add Service Rate</button>
-                  </div>
-                  <table class="table table-hover table-bordered table-striped">
-                  <thead>
-                    <tr>
-                      <th> ID </th>
-                      <th> Service Name: </th>
-                      <th> Rate </th>
-                      <th> Created At </th>
-                      <th colspan="2"> Action </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php 
-                      
-                      $rate_data=$mysqli->selector('rate');
-                      $rate=$rate_data['selectdata'];
-
-                      foreach ($rate as $rat){
-                    ?>
-                    <tr>
-                      <td><?= $rat['id'] ?></td>
-                      <td><?= $rat['service_name']?></td>
-                      <td><?= $rat['rate']?></td>
-                      <td><?= $rat['created_at']?></td>
-                      <td>
-                        <a href="<?= $baseurl ?>/form/form/editpatient.php?id=<?= $rat['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
-                          <i class="mdi mdi-border-color"></i>
-                        </a>
-                        <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $rat['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
-                          <i class="mdi mdi-delete"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <?php } ?>
-                  </tbody>
-                </table>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <!-- Rate end -->
-
           <!-- service form -->
 
-          <div class="col-md-7 grid-margin stretch-card d-none" id="service_form">
+          <div class="col-md-10 grid-margin stretch-card d-none" id="service_form">
             <div class="card">
             <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
                 onclick="$('#service_form').toggleClass('d-none')"> </i></p>
-             
+            
               <div class="card-body">
                 <h4 class="card-title">Service Status</h4>
                 <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
@@ -495,9 +410,9 @@
                   </div>
 
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary"  name="add_service">Add Patient</button>
+                    <button type="submit" class="btn btn-primary"  name="add_service">Add Service</button>
                   </div>
-                  <table class="table table-hover table-bordered table-striped">
+                  <table class="mt-4 table table-hover table-bordered table-striped">
                   <thead>
                     <tr>
                       <th> ID </th>
@@ -514,8 +429,9 @@
                       
                       $service_data=$mysqli->selector('service');
                       $service=$service_data['selectdata'];
-
+                        if($service_data['numrows'] > 0){                        
                       foreach ($service as $serv){
+                        if($serv['status'] == 1){
                     ?>
                     <tr>
                       <td><?= $serv['id'] ?></td>
@@ -525,7 +441,7 @@
                       <td><?= $serv['description']?></td>
                       <td><?= $serv['created_at']?></td>
                       <td>
-                        <a href="<?= $baseurl ?>/form/form/editpatient.php?id=<?= $serv['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
+                        <a href="<?= $baseurl ?>/form/editcategories.php?serviceId=<?= $serv['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
                           <i class="mdi mdi-border-color"></i>
                         </a>
                         <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $serv['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
@@ -533,7 +449,7 @@
                         </a>
                       </td>
                     </tr>
-                    <?php } ?>
+                    <?php }}} ?>
                   </tbody>
                 </table>
                 </form>
@@ -543,6 +459,142 @@
 
           <!-- service end -->
 
+          <!-- Rate Form -->
+
+          <div class="col-md-10 grid-margin stretch-card d-none" id="rate_form">
+            <div class="card">
+            <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
+                onclick="$('#rate_form').toggleClass('d-none')"> </i></p>
+              <div class="card-body">
+                <h4 class="card-title">Rate Status</h4>
+                <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
+                  <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-2">
+                      <label for="service_name">Service Name:</label>
+                      <input type="text" name="service_name" required class="form-control" id="service_name" placeholder="service_name">
+                    </div>
+                    <div class="form-group col-md-6 mx-2">
+                      <label for="rate">Rate: </label>
+                      <input type="number" name="rate" required class="form-control" id="rate" placeholder="Rate">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary"  name="add_service_rate">Add Service Rate</button>
+                  </div>
+                  <table class="mt-4 table table-hover table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th> ID </th>
+                      <th> Service Name: </th>
+                      <th> Rate </th>
+                      <th> Created At </th>
+                      <th colspan="2"> Action </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php 
+                      
+                      $rate_data=$mysqli->selector('rate');
+                      $rate=$rate_data['selectdata'];
+                      if($rate_data['numrows'] > 0){
+                      foreach ($rate as $rat){
+                        if($rat['status'] == 1){
+                    ?>
+                    <tr>
+                      <td><?= $rat['id'] ?></td>
+                      <td><?= $rat['service_name']?></td>
+                      <td><?= $rat['rate']?></td>
+                      <td><?= $rat['created_at']?></td>
+                      <td>
+                        <a href="<?= $baseurl ?>/form/editcategories.php?rateId=<?= $rat['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
+                          <i class="mdi mdi-border-color"></i>
+                        </a>
+                        <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $rat['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
+                          <i class="mdi mdi-delete"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <?php }}} ?>
+                  </tbody>
+                </table>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rate end -->
+
+          <!-- Test start -->
+          <div class="col-md-10 grid-margin stretch-card d-none" id="test_form">
+            <div class="card">
+            <p class="closebtn"> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
+                onclick="$('#test_form').toggleClass('d-none')"> </i></p>
+            
+              <div class="card-body">
+                <h4 class="card-title">Test Status</h4>
+                <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
+                  <div class="form-row d-flex">
+                    <div class="form-group col-md-4 mx-2">
+                      <label for="test_name">Test Name:</label>
+                      <input type="text" name="test_name" required class="form-control" id="test_name" placeholder="Test Name">
+                    </div>
+                    <div class="form-group col-md-4 mx-2">
+                      <label for="rate">Rate: </label>
+                      <input type="number" name="rate" required class="form-control" id="rate" placeholder="rate">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="description">Description: </label>
+                      <input type="text" name="description" class="form-control" id="description" placeholder="details">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center mb-2">
+                    <button type="submit" class="btn btn-primary"  name="add_test_rate">Add Test</button>
+                  </div>
+                  <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th> ID </th>
+                        <th> Test Name: </th>
+                        <th> Rate </th>
+                        <th> Details </th>
+                        <th> Created At </th>
+                        <th colspan="2"> Action </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php 
+                        
+                        $test_data=$mysqli->selector('test');
+                        $test=$test_data['selectdata'];
+                        if($test_data['numrows'] > 1){
+                        foreach ($test as $ts){
+                          if($ts['status'] == 1){
+                      ?>
+                      <tr>
+                        <td><?= $ts['id'] ?></td>
+                        <td><?= $ts['test_name'] ?></td>
+                        <td><?= $ts['rate'] ?>BDT</td>
+                        <td><?= $ts['description'] ?></td>
+                        <td><?= $ts['created_at'] ?></td>
+                        <td>
+                          <a href="<?= $baseurl ?>/form/editcategories.php?testId=<?= $ts['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
+                            <i class="mdi mdi-border-color"></i>
+                          </a>
+                          <a href="<?= $baseurl ?>/form/deleteuser.php?testId=<?= $ts['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
+                            <i class="mdi mdi-delete"></i>
+                          </a>
+                        </td>
+                      </tr>
+                      <?php } } } ?>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Test end -->
+
         </div>
       </div>
     </div>
@@ -550,12 +602,10 @@
 </div>
           
 <script>
-    $(document).ready(function () {
-    
+    $(document).ready(function () {    
 
 });
 </script>
 <!-- content-wrapper ends -->
 <!-- partial:include/footer.php -->
 <?php require_once('../include/footer.php'); ?>
- 

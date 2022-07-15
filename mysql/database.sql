@@ -4,14 +4,14 @@ create table `user`(id int auto_increment primary key,avatar varchar(255), name 
 
 
 -- tested
-create table `designation` (id int auto_increment primary key, designation_name varchar(255) not null, base_salary decimal(10,2) not null, bounus_by_percent decimal(5), total_bounus int ,created_at  timestamp default now(), created_by int , modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `designation` (id int auto_increment primary key, designation_name varchar(255) not null, base_salary decimal(10,2) not null, bounus_by_percent decimal(5,2), total_bounus int ,created_at  timestamp default now(), created_by int , modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- tested
 create table `department` (id int auto_increment primary key,name varchar(255) not null unique, created_by int,created_at  timestamp not null, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 --  room_no='A5' ,details='ac' , floor='2nd' , created_by=3;
-create table `room` (id int auto_increment primary key, room_type ENUM('GENERAL-CABIN','VIP-CABIN','CHAMBER','OT','GUEST-ROOM') default 'GENERAL-CABIN', room_no varchar(30) , details varchar(255) , floor varchar(20),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `room` (id int auto_increment primary key, room_type ENUM('GENERAL-CABIN','VIP-CABIN','CHAMBER','OT','GUEST-ROOM') default 'GENERAL-CABIN', room_no varchar(30) unique, details varchar(255) , floor varchar(20),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 
@@ -30,7 +30,7 @@ create table `appointment` (id int auto_increment primary key,name varchar(40) n
 -- patient schema
 
 
-create table test (id int auto_increment primary key, test_name varchar(20) unique not null, rate decimal(10,2), delivary date not null , patient_id int,time varchar(10) default '7:00PM',reference_by varchar(255),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table test (id int auto_increment primary key, test_name varchar(20) unique not null,description mediumtext,  rate decimal(10,2), created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- !does not work on windows
 -- delivary date not null default date_add(now(),interval 1 day)
@@ -47,7 +47,7 @@ create table `employeehistory` (id int auto_increment primary key, emplopyee_id 
 create table `salary` (id int auto_increment primary key, _id varchar(20) unique not null, created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- rate
-create table `rate` (id int auto_increment primary key, service_name varchar(255), rate int not null , created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `rate` (id int auto_increment primary key, service_name varchar(255), rate decimal(10,2) not null , created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 create table `service` (id int auto_increment primary key, service_name varchar(20), rate int not null , condition_on varchar(100), description varchar (255), duration varchar(20),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
@@ -60,7 +60,7 @@ create table `admit` (id int auto_increment primary key, room_id int , duration 
 
 
 -- payment schama
-create table `invoice_payment`(id int auto_increment primary key, patient_id int , payment_date timestamp NOT NULL,subtotal int(11) DEFAULT NULL, tax int, discount int, total int, payment int, remark varchar(255), created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table `invoice_payment`(id int auto_increment primary key,ipid varchar(20) not null unique auto_increment, patient_id int ,test_id JSON,appointment_id JSON, payment_date timestamp NOT NULL,subtotal decimal(10,2) UNSIGNED DEFAULT NULL, tax decimal(10), discount decimal(10,2), total decimal(10,2), payment decimal(10,2), note varchar(255), remark ENUM('DUE','PAID'),created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
 
 
 
