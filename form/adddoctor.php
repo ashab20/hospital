@@ -94,16 +94,16 @@ require_once('../include/header.php');
     </div>
     <div class="form-group col-md-2 mx-2">
       <label for="inputAddress">Chamber</label>
-      <select name="shift" id="" class="form-control">
+      <select name="chamber_id" id="" class="form-control">
         <option value="">Chamber....</option>
         <?php foreach($rooms as $room){ ?>
-          <option value="<?= $room['id']?>"><?= $room['room_type']?>-<?= $room['room_no']?></option>
+          <option value="<?=$room['id']?>"><?= $room['room_type']?>-<?= $room['room_no']?></option>
          <?php  }     ?>
       </select>
     </div>
     <div class="form-group col-md-2 mx-2">
       <label for="inputAddress">Designation</label>
-      <select name="shift" id="" class="form-control">
+      <select name="designation_id" id="" class="form-control">
         <option value="">Designation....</option>
         <?php foreach($designations as $designation){ ?>
           <option value="<?= $designation['id']?>"><?= $designation['designation_name']?></option>

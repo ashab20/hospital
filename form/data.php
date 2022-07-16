@@ -37,19 +37,25 @@ if(isset($_GET['department'])){
 // user shift data
 if(isset($_GET['time'])){
     $timeid= $_GET['time'];
+    $patientid= $_GET['patientId'];
   
-    $data = $mysqli->custome_query("select doctor.shift,doctor.visit_fee, user.id from doctor join user on user.id=doctor.user_id where doctor.user_id=$timeid");
-    if($data['numrows'] > 0){
-    $value=$data['selectdata'];
-	  foreach($data['selectdata'] as $data){
-      $fees = $data["visit_fee"];
-        switch ($data['shift']) {
+    $Doctordata = $mysqli->custome_query("select doctor.shift,doctor.visit_fee,doctor.id as doctor_id, user.id from doctor join user on user.id=doctor.user_id where doctor.id=$timeid");
+
+   
+
+
+    if($Doctordata['numrows'] > 0){
+    $value=$Doctordata['selectdata'];
+	  foreach($Doctordata['selectdata'] as $d){
+      $fees = $d["visit_fee"];
+      $doctorId = $d["doctor_id"];
+        switch ($d['shift']) {
             case 'MORNING':
                 $time = '7:00AM-3:00PM';
                 break;
             
             case 'EVENING':
-                $time = "3:00AM-11:00PM";
+                $time = "3:00PM-11:00PM";
                 break;
             
             case 'NIGHT':
@@ -57,14 +63,33 @@ if(isset($_GET['time'])){
                 break;
             
             default:
-            $time = '3:00AM-11:00PM';
+            $time = '3:00PM-11:00PM';
                 break;
         }
         
       }
-      $value = ["fees"=>floatval($fees),"time"=>trim($time,"'") ];
+
+      $chachApp = $mysqli->find("SELECT ip.payment_date,ip.appointment_id,d.id as doctor_id,d.visit_fee
+      from invoice_payment ip 
+        JOIN appointment a
+          on a.id=ip.appointment_id
+          JOIN doctor d 	 
+        on a.doctor_id=d.id
+      where ip.patient_id=$patientid AND doctor_id=$doctorId
+      ORDER BY ip.payment_date DESC");
+      $discount = "No discount";
+      $total = $fees;
+      
+      if($chachApp["numrows"] > 0){
+        if(date("y-m-d H:i:s",strtotime("-2 months")) > $chachApp["singledata"][0]["payment_date"] && $chachApp["singledata"][0]['appointment_id'] != null ){
+          $discount = 20;
+          $total = $fees - $fees * $discount / 100;
+        }
+      }
+
+      $value = ["fees"=>floatval($fees),"time"=> (string) $time,"discount" => floatval($discount),"total"=>floatval($total) ];
     }else{
-      $value ="";
+      $value ="error";
     }
 	
 	echo json_encode($value);

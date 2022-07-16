@@ -21,18 +21,18 @@
           $doctorData =$mysqli->find("SELECT name,id FROM user WHERE roles='DOCTOR'");
           $doctors = $doctorData['singledata'];
 
-          
+          $patient_id = $patientSingleData['singledata']['id'];
       ?>
 
       <!-- **** -->
 
           <form class=" justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
-          <input type="text" hidden name="patient_id" value="<?= $patientSingleData['singledata']['id'] ?>">
+          <input type="text" hidden name="patient_id" value="<?= $patient_id ?>" id="patient_id">
           <input type="text" hidden name="name" value="<?= $patientSingleData['singledata']['name'] ?>">
           <input type="text" hidden name="phone" value="<?= $patientSingleData['singledata']['phone'] ?>">
           <input type="text" hidden name="created_by" value="<?= $usr['id'] ?>">
             <div class="form-row d-flex justify-content-center">
-              <div class="form-group col-md-2 mx-2">
+              <div class="form-group col-md-3 mx-2">
               <label for="gender">Department:</label>
                 <select id="department"  name="department_id" class="form-select" onchange="get_doctor(this.value)">
                   <option value="">Department...</option>
@@ -41,34 +41,43 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="form-group col-md-2 mx-2">
+              <div class="form-group col-md-3 mx-2">
               <label for="depdoctor">Doctor:</label>
-                <select id="depdoctor" onchange="get_time(this.value)" name="doctor_id" class="form-select">
+                <select id="depdoctor" onchange="get_time(this.value)" name="doctor_id" class="form-select" required>
                   <option value="">Doctor...</option>
                 </select>
               </div>
-              <div class="form-group col-md-2 mx-2">
+              <div class="form-group col-md-3 mx-2">
                 <label for="date">Date:</label>
-                <input type="date"  name="date" min="<?=date('Y-m-d') ?>" required class="form-select p-1">
+                <input type="date"  name="date" min="<?=date('Y-m-d') ?>" required class="form-select p-1" required>
               </div>
              
 
             </div>
             <div class="form-row d-flex justify-content-center">
-            <div class="form-group col-md-2 mx-2">
+            <div class="form-group col-md-3 mx-2">
               <label for="time">Time:</label>
-              <input type="time" name='time' class="form-control">
+              <input type="time" name='time' class="form-control time" required placeholder="eg: 07:00 PM">
               <small>  <p id='time'></p></small>
-              </div>
-              <div class="form-group col-md-2 mx-2">
+            </div>
+            <div class="form-group col-md-3 mx-2">
               <label for="fees">Consultancy Fees:</label>
               <input class="form-control m-1" type="text" name="visit_fees" readonly id='fees'>
+            </div>
+            <div class="form-group col-md-3 mx-2">
+              <label for="fees">Discount(%):</label>
+              <input class="form-control m-1" type="text" name="discount" id='discount' onchange="getDiscount(this.value)">
+              <!-- <input  type="number" hidden id='wdiscount'> -->
               </div>
             </div>
             <div class="form-row d-flex justify-content-center">
-            <div class="form-group col-md-9 mx-2">
+            <div class="form-group col-md-3 mx-2">
+              <label for="fees">Total:</label>
+              <input class="form-control m-1" type="text" name="total" id='total'>
+              </div>
+            <div class="form-group col-md-5 ">
             <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
-                          </div>
+            </div>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -84,6 +93,7 @@
 <script>
 
 	function get_doctor(dep){
+    
 		$.ajax({
             url: '../form/data.php?department='+dep,
             type: 'post',
@@ -96,20 +106,31 @@
         });
 	}
 
-  alert(get_time(shift))
+
 	function get_time(shift){
+    let patientId = $("#patient_id").val();
 		$.ajax({
-            url: '../form/data.php?time='+shift,
+            url: '../form/data.php?time='+shift+'&patientId='+patientId,
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            success: function (data) {  
-                $('#time').html(JSON.stringify(data["time"]));
-                $('#fees').val(JSON.stringify(data['fees']));
+            success: function (data) { 
+                $('#time').text(JSON.stringify(data["time"]).trim('"'));
+                $('#fees').val(JSON.stringify(data['fees']).trim('"')+"tk");
+                $('#discount').val(JSON.stringify(data['discount']).trim('"'));
+                $('#total').val(JSON.stringify(data['total']).trim('"'));
             },error: function(xhr, status, errorMessage) {
 			}
         });
 	}
+
+  function getDiscount(discount){
+    let getTotal = $('#total').val()
+    if(discount !== 0){
+      let totalpay = getTotal - getTotal * discount / 100;
+      $("#total").val(totalpay);
+    }
+  }
 	function get_rate(rate){
 		$.ajax({
             url: '../form/data.php?time='+rate,

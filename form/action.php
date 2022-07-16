@@ -142,16 +142,46 @@ if(isset($_POST["appt"])){
   $_POST["phone"] = htmlentities($_POST["phone"]);
   $phone = $_POST["phone"];
   
+  $ip["patient_id"]=$_POST["patient_id"];
+  
+    $ip["discount"] = (int) $_POST["visit_fees"] - $_POST["total"];
+
+  $ip["subtotal"]=(int) $_POST["visit_fees"];
+  $ip["total"]= (int) $_POST["total"];
+  $ip["payment"] = $ip["total"];
+  $ip["remark"]="PAID";  
+  
+
+  unset($_POST["remark"]);
+  unset($_POST["payment"]);
+  unset($_POST["visit_fees"]);
+  unset($_POST["discount"]);
+  unset($_POST["total"]);
+
+  $ip['ipid'] = uniqid('IP'.date('Ymdhis'));
+  
   $appt = $mysqli->creator("appointment",$_POST);
   if($appt["error"]){
-    $_SESSION["appt"]=$appt["error"];
+    $_SESSION["msg"]=$appt["error"];
     echo $appt["error"];
     // echo "<script> location.replace('$baseurl/')</script>";
-  }else{
+  }else{ 
+    $ip["appointment_id"]=$appt["insert_id"];
+   
+    if(isset($_POST["discount"])){
+      $ip["discount"]=$_POST["discount"];
+    }
+    $invoice = $mysqli->creator("invoice_payment",$ip);
+    $invoieInsert_id = $invoice["insert_id"];
+
+    if($invoice["error"]){
+      $_SESSION["msg"]=$appt["error"];
+      echo $invoice["error"];
+    }
     if($appt['msg']='saved'){
       // if($user['roles']=='SUPERAMDMIN' or $user['roles']=='AMDMIN'){
          $_SESSION['appt']="<p style='color:green'>Appointment Submited </p>";
-      echo "<script> location.replace('$baseurl/pages/patient.php')</script>";
+      echo "<script> location.replace('$baseurl/pages/payinfo.php?invoice=$invoieInsert_id')</script>";
       // }else{
       //   $_SESSION['appt']="<p style='color:green'>Appointment Submited </p>";
       // echo "<script> location.replace('$baseurl/pages/success.php?phn=$phone')</script>";
@@ -318,7 +348,7 @@ if(isset($_POST["update_doctor"])){
 
     $data = $mysqli->updator("doctor",$_POST,"id=$id");
     if($data['error']){
-      $_SESSION['dct']=$data['msg'];
+      $_SESSION['msg']=$data['error'];
       echo "<script> location.replace('adddoctor.php?doctorid=$id')</script>";
       
     }else{
@@ -331,6 +361,7 @@ if(isset($_POST["update_doctor"])){
         $_SESSION['dct']="<p class='h3 text-success text-center justify-content-center mx-auto'>Updated Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/profile.php?doctorid=$id')</script>";
       }
+      echo "<script> location.replace('$baseurl/pages/profile.php?doctorid=$id')</script>";
     }
 }
 
@@ -682,18 +713,17 @@ if(isset($_POST["invoice_payment"])){
     $_POST['created_by'] = $user['id'];
   }
   
-  $pay['ipid'] = uniqid('IP'.date('Ymdhis'));
+  $pay['ipid'] = uniqid('IP'.date('ymdhis'));
   $pay["patient_id"]=$_POST["patient_id"];
-  $pay["payment_date"]=$_POST["payment_date"]== "" ? date('Y-m-d H:i:s') : $_POST["payment_date"]=$_POST["payment_date"].date("h:i:sA");
+  $pay["payment_date"]=$_POST["payment_date"]." ".date('H:i:s');
   $pay["subtotal"]= (int) $_POST["subtotal"];
   $pay["discount"]= (int) $_POST["discount"] == "" ? 0 : $_POST["discount"];
   $pay["tax"]= (int) $_POST["tax"];
   $pay["total"]= (int) $_POST["total"];
   $pay["payment"]= (int) $_POST["payment"];
   $pay["remark"]=ucwords($_POST["remark"]);
-  print_r($pay);
   $create=$mysqli->creator("invoice_payment",$pay);
-  print_r($create['insert_id']);
+
   if($create["error"]){
     $_SESSION["rate"]=$create["msg"];
     echo "<script> location.replace('$baseurl/pages/invoice.php?id=".$pay['patient_id']."')</script>";

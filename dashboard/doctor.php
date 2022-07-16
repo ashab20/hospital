@@ -135,6 +135,8 @@ if($data['error']){
                         </thead>
                         <tbody>
                 <?php 
+                if($data['numrows'] > 0){
+                  $doctors =$data['selectdata'];
                 foreach ($doctors as $d){?>
                           <tr>
                             <td><?= $d['id']?></td>
@@ -183,7 +185,11 @@ if($data['error']){
                               </a>
                             </td>
                           </tr>
-                          <?php } ?>
+                          <?php }}else{ ?>
+                           <tr>
+                            <td colspan="10" class="text-center">No Data Found</td>
+                           </tr>
+                           <?php }?>
                         </tbody>
                       </table>
                     </div>

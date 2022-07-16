@@ -1,5 +1,11 @@
 
-create table `user`(id int auto_increment primary key,avatar varchar(255), name varchar(255)not null,email varchar(40)  unique, password char(40) not null, phone varchar(13) unique not null  , roles ENUM('SUPERADMIN','ADMIN','DOCTOR','EMPLOYEE') default 'EMPLOYEE',address text , created_at timestamp  , created_by int, modified_at datetime , modified_by int, status int not null default 1 ,foreign key (created_by) references user(id), foreign key (modified_by) references user(id));
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+
+create table `user`(id int auto_increment primary key,avatar varchar(255), name varchar(255)not null,email varchar(40)  unique, password char(40) not null, phone varchar(13) unique not null  , roles ENUM('SUPERADMIN','ADMIN','DOCTOR','NURSE','RECIPTIONIST') default 'RECIPTIONIST',address text , created_at timestamp  , created_by int, modified_at datetime , modified_by int, status int not null default 1 ,foreign key (created_by) references user(id), foreign key (modified_by) references user(id));
 
 
 
@@ -60,7 +66,25 @@ create table `admit` (id int auto_increment primary key, room_id int , duration 
 
 
 -- payment schama
-create table `invoice_payment`(id int auto_increment primary key,ipid varchar(20) not null unique auto_increment, patient_id int ,test_id JSON,appointment_id JSON, payment_date timestamp NOT NULL,subtotal decimal(10,2) UNSIGNED DEFAULT NULL, tax decimal(10), discount decimal(10,2), total decimal(10,2), payment decimal(10,2), note varchar(255), remark ENUM('DUE','PAID'),created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table `invoice_payment`(
+    `id` int(11) auto_increment primary key,
+  `ipid` varchar(100) NOT NULL,
+  `patient_id` int(11) DEFAULT NULL,
+  `test_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`test_id`)),
+  `appointment_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`appointment_id`)),
+  `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `subtotal` decimal(10,2) UNSIGNED DEFAULT NULL,
+  `tax` decimal(10,0) DEFAULT NULL,
+  `discount` decimal(10,2) DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `payment` decimal(10,2) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `remark` enum('DUE','PAID') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
 
 
 

@@ -11,125 +11,7 @@ if($usr['roles'] !== 'SUPERADMIN' && $usr['roles'] !== 'ADMIN'){
   header("location:$baseurl/pages/login.php");
 }
 ?>
-<style>
-    body{
-    margin-top:20px;
-    color: #484b51;
-}
-.text-secondary-d1 {
-    color: #728299!important;
-}
-.page-header {
-    margin: 0 0 1rem;
-    padding-bottom: 1rem;
-    padding-top: .5rem;
-    border-bottom: 1px dotted #e2e2e2;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    align-items: center;
-}
-.page-title {
-    padding: 0;
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 300;
-}
-.brc-default-l1 {
-    border-color: #dce9f0!important;
-}
 
-.ml-n1, .mx-n1 {
-    margin-left: -.25rem!important;
-}
-.mr-n1, .mx-n1 {
-    margin-right: -.25rem!important;
-}
-.mb-4, .my-4 {
-    margin-bottom: 1.5rem!important;
-}
-
-hr {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border: 0;
-    border-top: 1px solid rgba(0,0,0,.1);
-}
-
-.text-grey-m2 {
-    color: #888a8d!important;
-}
-
-.text-success-m2 {
-    color: #86bd68!important;
-}
-
-.font-bolder, .text-600 {
-    font-weight: 600!important;
-}
-
-.text-110 {
-    font-size: 110%!important;
-}
-.text-blue {
-    color: #478fcc!important;
-}
-.pb-25, .py-25 {
-    padding-bottom: .75rem!important;
-}
-
-.pt-25, .py-25 {
-    padding-top: .75rem!important;
-}
-.bgc-default-tp1 {
-    background-color: rgba(121,169,197,.92)!important;
-}
-.bgc-default-l4, .bgc-h-default-l4:hover {
-    background-color: #f3f8fa!important;
-}
-.page-header .page-tools {
-    -ms-flex-item-align: end;
-    align-self: flex-end;
-}
-
-.btn-light {
-    color: #757984;
-    background-color: #f5f6f9;
-    border-color: #dddfe4;
-}
-.w-2 {
-    width: 1rem;
-}
-
-.text-120 {
-    font-size: 120%!important;
-}
-.text-primary-m1 {
-    color: #4087d4!important;
-}
-
-.text-danger-m1 {
-    color: #dd4949!important;
-}
-.text-blue-m2 {
-    color: #68a3d5!important;
-}
-.text-150 {
-    font-size: 150%!important;
-}
-.text-60 {
-    font-size: 60%!important;
-}
-.text-grey-m1 {
-    color: #7b7d81!important;
-}
-.align-bottom {
-    vertical-align: bottom!important;
-}
-
-</style>
     <div class="container-scroller">
     
       <!-- partial:./navbar.php -->
@@ -145,6 +27,7 @@ hr {
           <div class="content-wrapper ">
 
 
+
 <?php
 $mysqli = new Crud();
 
@@ -154,7 +37,6 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     // $invoice = array_merge($invoice_data['singledata']);
     $invoice = $invoice_data['singledata'];
 
-
     if($invoice_data['numrows'] > 0){
 ?>
 
@@ -162,7 +44,10 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     <!-- Invoice Page -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-<div class="page-content container bg-white p-5">
+<div class="page-content container bg-white p-5" >
+        <!-- Appointment card -->
+        
+
     <div class="page-header text-blue-d2">
         <h1 class="page-title text-secondary-d1">
             Invoice
@@ -202,17 +87,19 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                 <div style="display: grid;grid-template-columns: repeat(auto-fit,minmax(40%,1fr));margin-top:.5rem">
                     <div style="padding:.5rem;">
                         <div>
-                            <span style="color:#615f5f;font-size:1.3rem;">Patient: </span>
-                            <span style="color:#478fcc;font-wight:500;font-size:1.3rem;"><?= $invoice['name']?></span>
+                            <span style="color:#615f5f;font-size:1.2rem;">Patient: </span>
+                            <span style="color:#478fcc;font-wight:500;font-size:1.2rem;"><?= $invoice['name']?></span>
                         </div>
                         <div style="color:gray">
                             <div style="margin-top: .2rem;">
-                                Id: <?= $invoice['id']?>
+                                ipid: <?= $invoice['ipid']?>
                             </div>
-                            <div >
+                            <div ><label for="">Address:</label>
                             <?= $invoice['address']?>
                             </div>
-                            <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600"><?= $invoice['phone']?></b></div>
+                            <div class="my-1">
+                                <label for="">Phone:</label>
+                                <b class="text-600"><?= $invoice['phone']?></b></div>
                         </div>
                     </div>
                     <!-- /.col -->
@@ -240,11 +127,11 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                     <div class="row border-b-2 brc-default-l2"></div>
 
                     <!-- or use a table instead -->
-                    
+        <?php if($invoice['test_id'] != null){   ?>
             <div class="table-responsive">
                 <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
                     <thead class="bg-none bgc-default-tp1">
-                        <tr class="text-white">
+                        <tr style="border-bottom: 1px solid #ddd;">
                             <th class="opacity-2">SL</th>
                             <th>Items</th>
                             <th>Description</th>
@@ -255,7 +142,9 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                         
                     <tbody class="text-95 text-secondary-d3">
                         <tr></tr>
-                        <?php $test_info = json_decode( $invoice['test_id']); $sl=1;
+                        <?php 
+                        
+                        $test_info = json_decode( $invoice['test_id']); $sl=1;
                     $color = false;
                     foreach($test_info as $testID){
                         if($sl%2==0) $color = 'bgc-default-l4';
@@ -264,15 +153,47 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                             <td><?= $sl++ ?></td>
                             <td><?= $test['test_name']?></td>
                             <td><?= $test['description']?></td>
-                            <td class="text-95"><?= $test['rate']?><b style="font-size:1.8rem;">৳</b></td>
+                            <td class="text-95"><?= $test['rate']?><b style="font-size:1rem;">৳</b></td>
                             <!-- <td class="text-secondary-d2">$20</td> -->
                         </tr> 
                         <?php  } ?>
                     </tbody>
                 </table>
             </div>
-           
+            <?php } ?>   
+            
+            <!-- *** APPOINTMENT *** -->
+            <?php if($invoice['appointment_id'] != null){ 
+                $appointmentId = $invoice['appointment_id'];
+                
+                $data = $mysqli->find("SELECT u.name ,a.id,d.qualification,u.phone,a.date,a.time FROM user u JOIN doctor d on u.id=d.user_id JOIN appointment a on a.doctor_id=d.id WHERE a.id=$appointmentId");
+                if($data["numrows"] > 0){
+                ?>
+                        <div class="row">
+                        <div class="table-responsive col-md-9">
+                            <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                                <thead class="bg-none bgc-default-tp1">
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <th>Doctor's Name</th>
+                                        <th>Appointmetn id</th>
+                                        <th>Consulant Fee</th>
+                                        <th width="140">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><?=$data["singledata"][0]["name"] ?></td>
+                                        <td><?= $appointmentId ?></td>
+                                        <td><?= $invoice['subtotal'] ?></td>
+                                        <td><?= $invoice['total'] ?></td>
+                                    </tr>
 
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <?php }  } ?>
+            <!-- **************** -->
                     <div class="row mt-3">
                         <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
                             <?= $invoice['note']?>
@@ -285,7 +206,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                 </div>
                                 <div class="col-5">
                                     <span class="text-120 text-secondary-d1">
-                                        <?= $invoice['subtotal']?><b style="font-size:1.8rem;">৳</b>
+                                        <?= $invoice['subtotal']?><b style="font-size:1rem;">৳</b>
                                     </span>
                                 </div>
                             </div>
@@ -294,7 +215,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Discount
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-120 text-secondary-d1"><?= $invoice['discount']?><b style="font-size:1.8rem;">৳</b></span>
+                                    <span class="text-120 text-secondary-d1"><?= $invoice['discount']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
 
@@ -311,7 +232,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Total
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2"><?= $invoice['total']?><b style="font-size:1.8rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2"><?= $invoice['total']?><b style="font-size:1rem;">৳</b></span>
                                 </div> 
                             </div>
                             <?php
@@ -322,7 +243,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Return
                                 </div>                                
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2"><?= $invoice['return']?><b style="font-size:1.8rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2"><?= $invoice['return']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
                             <?php } ?>
@@ -332,7 +253,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Paid:
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2" style="background-color: #615f5f;color:#fff;padding:.3rem"><?= $invoice['payment']?><b style="font-size:1.8rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2" style="background-color: #615f5f;color:#fff;padding:.3rem"><?= $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
                             <?php
@@ -343,7 +264,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Due
                                 </div>                                
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2" ><?= $invoice['total'] - $invoice['payment']?><b style="font-size:1.8rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2" ><?= $invoice['total'] - $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
                             <?php } ?>
@@ -352,20 +273,78 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
 
                     <hr />
 
-                    <div>
+                    <div style="justify-content: space-between;display: flex;">
+                        <span class="text-secondary-d1 text-105">Thank you for choicing this hospital</span>
                         <?php
                             if(isset($invoice['remark']) && $invoice['remark'] == 'DUE'){
                         ?>
-                        <span class="text-secondary-d1 text-105">Thank you for your business</span>
                         <a href="#" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0">Pay Now</a>
-                        <?php
-                            }
-                        ?>
+                        <?php } ?>
+                        <?php 
+                        if($invoice['appointment_id'] != null && $invoice['remark'] == 'PAID'){
+                            ?>
+                            <button type="button" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" id="card">Get Appointment Card</button>
+
+                        <?php  } ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- *** APPOINTMENT CARD ***-->
+    <div id="card-content" 
+            style="width: 100%;
+            height: 25rem;
+            display: none;
+            transform: translatey(50%);
+            position: absolute;
+            padding: 1rem;
+            z-index: 1000;
+            top: 0;
+            margin-top: 6rem;
+            justify-content: center;
+            justify-items: center;
+            margin: 0px auto;">
+            <div id="appointmentCard" style="width: 30rem; height:100%;box-shadow: 1px 0px 10px 5px whitesmoke;border-radius:.2rem;">
+                <div style="background:coral;border-radius:.2rem;text-align:center;">
+                    <h3 style="color:whitesmoke;font-size:1.5rem;font-weight:600; padding:1rem;">APPOINTMENT CARD</h3>
+                </div>
+                <div style="text-align:center;">
+                    <h5 style="color:#111"><?=$data["singledata"][0]["name"] ?> (<?=$data["singledata"][0]["qualification"] ?>)</h5>
+                    <p>
+                    <?=$data["singledata"][0]["phone"] ?>
+                    </p>
+                    <hr style="background-color: #ddd;">
+                </div>
+                <div style="justify-content:space-around;margin:1rem;border:1px dashed #ddd;padding:1rem; ">
+                <span>
+                    <label for="">Name:</label>
+                    <input 
+                    style="border:none;background:#ddd;padding:.4rem;border-radius:.2rem;" 
+                    type="text" readonly value="<?= $invoice['name']?>">
+                    <label for="">Appointment Id:</label>
+                    <input style="width: 20%;border:none;background:#ddd;padding:.4rem;margin-top:.5rem;border-radius:.2rem;" type="text" readonly value="<?= $invoice['appointment_id']?>">
+                </span>
+                <br>
+                <span >    
+                    <label for="">Date:</label>
+                    <input 
+                    style="width: 45%;border:none;background:#ddd;padding:.4rem;margin-top:.3rem;border-radius:.2rem;" 
+                    type="text" readonly value="<?= $data["singledata"][0]['date']?>">   
+                    <label for="">Time:</label>
+                    <input style="width: 30%;border:none;background:#ddd;padding:.4rem;margin-top:.5rem;margin-right:.5rem;border-radius:.2rem;" type="text" readonly value="<?= $data["singledata"][0]['time']?>">
+                </span>
+                <span style="display: flex;justify-content:space-around;margin-top:5rem;">
+                    <label for="" style="border-top: 1px dashed;">Attentance</label>
+                    <label for=""></label>
+                    <label for="" style="border-top: 1px dashed;">Doctor's Approval</label>
+                </span>
+                </div>
+
+                </div>           
+
+        </div>
 </div>
 
 <?php  }else{
@@ -377,45 +356,45 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
 }
 ?>
 
-<script>
+        
+        
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:include/footer.php -->
+    <?php require_once('../include/footer.php') ?>
+
+
+
+    <script>
     $(document).ready( () => {
-        $('#printer').click(() => {
+        $("#card").click(() => {
+            $("#card-content").css({"display":"block"})
+                    let printContents = $("#appointmentCard").html();
+            let originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+            $("#card-content").css({"display":"none"})    
+    });
+
             
-  let divToPrint=document.getElementById('printPage');
+$('#printer').click(() => {
+            $("#card").css({"display":"none"});
+            let printContent = $("#printPage").html();
+            let payBill = document.body.innerHTML;
 
-let newWin=window.open('','Print-Window');
+            document.body.innerHTML = printContent;
 
-newWin.document.open();
+            window.print();
 
-newWin.document.write('<html><body onload="window.print()">'+printPage.innerHTML+'</body></html>');
+            document.body.innerHTML = payBill;
+            
+            $("#card").css({"display":"block"});
 
-newWin.document.close();
-
-setTimeout(function(){newWin.close();},10);
         })
     })
-//     function printDiv() 
-// {
 
-//   let divToPrint=document.getElementById('printPage');
-
-//   let newWin=window.open('','Print-Window');
-
-//   newWin.document.open();
-
-//   newWin.document.write('<html><body onload="window.print()">'+printPage.innerHTML+'</body></html>');
-
-//   newWin.document.close();
-
-//   setTimeout(function(){newWin.close();},10);
-
-// }
-</script>
-           
-    </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:include/footer.php -->
-          <?php require_once('../include/footer.php') ?>
-
-
-        
+</script>      

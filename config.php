@@ -11,7 +11,7 @@ define('USER','root');
 define('PASS','');
 
 // database name
-define('DB_NAME','hospital_test');
+define('DB_NAME','hospital');
 
 
 

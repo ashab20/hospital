@@ -123,7 +123,10 @@ if($patientSingleData['numrows']== 0){
                     });
                   </script>
                 </div>
-                    <div class="col-8 offset-2 my-4">
+
+                    <div class="col-8 offset-2 my-2">
+                      
+
                                 <?php
                                 if(isset($patientSingleData['singledata']) && $patientSingleData['msg'] === 'No data found'){ ?>
                                   <p class="mt-5 text-center h2 text-danger justify-content-center mx-auto">Data not found</p>
@@ -131,6 +134,9 @@ if($patientSingleData['numrows']== 0){
                           
                                 <?php
                               if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data found'){ ?>
+                              <div class="p-2 my-2 text-center justitfy-content-center justify-item-center">
+                        <img src="../assets/images/icons/patient.png" width="200px" alt="">
+                      </div>
                                 <table class="table table-bordered">
                                   <thead>
                                     <th><label for="">Name</label></th>
@@ -369,7 +375,6 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
                           <tr>
                             <td><?= $admin['id'] ?></td>
                             <td>
-                                <img src="../assets/images/faces/face3.jpg" class="me-2" alt="image">
                                 <a class="btn" href="<?=$baseurl ?>/pages/profile.php?patientid=<?= $admin['id'] ?>">
                                   <?= $admin['name']?>
                                 </a> 

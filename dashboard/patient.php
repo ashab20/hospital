@@ -66,10 +66,7 @@ $mysqli = new Crud();
 
 $patientSingleData = $mysqli->select_single("SELECT id,name,phone,age,gender from patient");
 
-if($patientSingleData['numrows']== 0){
- $msg="<p style='color:red'>NO Patient registered with this phone number.</p>";
- // echo "<script> location.replace('$baseurl/pages/login.php')</script>";
-}
+
 
 
 ?>
@@ -128,6 +125,7 @@ if($patientData['error']){
                         </thead>
                         <tbody>
                         <?php 
+                        if($patientSingleData['numrows'] > 0){
                           foreach ($patient as $p){?>
                           <tr>
                             <td><?= $p['id']?></td>
@@ -188,6 +186,10 @@ if($patientData['error']){
                               <i class="mdi mdi-delete"></i>
                               </a>
                             </td>
+                          </tr>
+                          <?php }}else{ ?>
+                          <tr>
+                            <td colspan="8" class="text-center">No Patient Found</td>
                           </tr>
                           <?php } ?>
                         </tbody>
