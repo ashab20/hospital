@@ -329,6 +329,12 @@
                         <input type="number" name="capacity" class="form-control" id="capacity" placeholder="capacity">
                       </div>
                     </div>
+                    <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-2">
+                      <label for="floor">Rate: </label>
+                      <input type="number" name="rate" required class="form-control" id="rate" placeholder="Rate Per day">
+                    </div>
+                  </div>
                   </div>
                   <div class="col-3 form-group offset-1">
                       <label for="details">Facilities: </label>
@@ -383,6 +389,7 @@
                       <th> ID </th>
                       <th> Floor Name: </th>
                       <th> Room Number</th>
+                      <th> Rate (day)</th>
                       <th> Details </th>
                       <th> Room Type </th>
                       <th> Capacity </th>
@@ -405,7 +412,15 @@
                       <td><?= $room['id'] ?></td>
                       <td><?= $room['floor']?></td>
                       <td><?= $room['room_no']?></td>
-                      <td><?= $room['details']?></td>
+                      <td><?= $room['rate']?>tk</td>
+                      <td><?php
+                          $details = json_decode($room['details']); $fc=false;
+                          if($details){ foreach($details as $d){
+                            $fc .=  "$d + ";
+                          }
+                            echo rtrim($fc,"+ ");
+                          }
+                      ?></td>
                       <td><?= $room['room_type']?></td>
                       <td><?= $room['capacity']?></td>
                       <td><?= $room['created_at']?></td>

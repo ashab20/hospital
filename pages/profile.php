@@ -229,34 +229,59 @@ if(isset($_SESSION['msg'])){
       <!-- *** *** -->
       <?php
         // $mdhistory = $mysqli->selector("appointment", "*", "patient_id=$patient_Id")["selectdata"];
-        $dctappointmentHistory = $mysqli->custome_query("SELECT * FROM appointment WHERE appointment.doctor_id=$doctorid ORDER BY date DESC");
+        $dctappointmentHistory = $mysqli->custome_query("SELECT a.*,p.id as patient_id,p.name,p.gender,p.age FROM appointment a JOIN doctor d ON a.doctor_id=d.id JOIN patient p ON a.patient_id=p.id  WHERE doctor_id=$doctorid ORDER BY a.date DESC
+        ");
           $dctappointment = $dctappointmentHistory["selectdata"];
-          // print_r($dctappointment);
       ?>
       <!--? ****** -->
-          <div class="row">
+          <div class="row mx-1">
           <table class="table">
             <thead>
               <th>Patient</th>
-              <!-- <th>Department</th> -->
+              <th>Phone</th>
+              <th>Gender</th>
               <th>Issues</th>
               <th>Date and Time</th>
-              <th>View</th>
+              <th colspan="2">Action</th>
             </thead>
             <?php
             if($dctappointmentHistory["numrows"] > 0){
               foreach($dctappointment as $app){?>
-            <tr>
+            <tbody>            <tr>
               <td><?= $app["name"]?></td>
-              <!-- <td><?= $app["department_name"]?></td> -->
+              <td><?= $app["phone"]?></td>
+              <td><?= $app["gender"]?></td>
               <td><?= $app["message"]?></td>
               <td>
                 <?= $app["time"]?><br>
                 <?= $app["date"]?>
               </td>
-              <td></td>
+              <td>
+              <span class="d-flex justify-content-center">                                
+                              <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $app['patient_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class=" mdi mdi-eye"></i>
+                            </a>
+                            <!-- check appointment in prescription -->
+                            <?php 
+                              $checkApp = $mysqli->select_single("SELECT * from prescription WHERE appointment_id=".$app["id"]);
+                              if($checkApp["numrows"] > 0){ ?>
+                              <a title="View Prescriotion" href="<?= $baseurl ?>/view/viewprescriotion.php?presid=<?=$checkApp["singledata"]["id"]?>" class="btn-sm bg-warning text-decoration-none text-white m-1">
+                              <i class="mdi mdi-file-document-box"></i>
+                              </a>
+                            <?php }else{ ?>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?appointmentid=<?= $app['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-note-plus"></i>
+                              </a>
+                           <?php }  ?>
+                           <!-- <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $app['id'] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
+                              <i class=" mdi mdi-export"></i>
+                              </a> -->
+                            </span>
+              </td>
             </tr>
             <?php  }} ?>
+            </tbody>
+
             </table>
           </div>
       
@@ -268,7 +293,7 @@ if(isset($_SESSION['msg'])){
   </div>
   </div>
   
-
+  
 
   <?php }}?>
 
@@ -345,7 +370,7 @@ if(isset($_SESSION['msg'])){
       <!-- *** *** -->
       <?php
         // $mdhistory = $mysqli->selector("appointment", "*", "patient_id=$patient_Id")["selectdata"];
-        $appointmentHistory = $mysqli->custome_query("SELECT a.*,d.id,d.department_id,d.visit_fee,d.user_id,dep.id,dep.name as department_name, u.id,u.name 
+        $appointmentHistory = $mysqli->custome_query("SELECT a.*,a.id as appointment_id ,d.id,d.department_id,d.visit_fee,d.user_id,dep.id,dep.name as department_name, u.id,u.name 
         FROM appointment a 
           JOIN doctor d
             on a.doctor_id=d.id
@@ -355,6 +380,8 @@ if(isset($_SESSION['msg'])){
             on dep.id=a.department_id 
           WHERE a.patient_id=$patient_Id ORDER BY a.date DESC");
           $appointment = $appointmentHistory["selectdata"];
+
+          
       ?>
       <!--? ****** -->
 
@@ -364,10 +391,10 @@ if(isset($_SESSION['msg'])){
           <th>Department</th>
           <th>Issues</th>
           <th>Date and Time</th>
-          <th>View</th>
+          <th colspan="2">Action</th>
         </thead>
         <?php
-        if($appointmentHistory["numrows"] > 0){
+        if($appointmentHistory["numrows"] > 0){;
           foreach($appointment as $app){?>
         <tr>
           <td><?= $app["name"]?></td>
@@ -376,6 +403,29 @@ if(isset($_SESSION['msg'])){
           <td>
             <?= $app["time"]?><br>
             <?= $app["date"]?>
+          </td>
+          <td>
+          <span class="d-flex justify-content-center">                                
+                              <a title="Appointment Card" target="_blank" href="<?= $baseurl ?>/view/appointmentcard.php?aid=<?= $app['appointment_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class=" mdi mdi-eye"></i>
+                            </a>
+                             <!-- check appointment in prescription -->
+                             <?php 
+                              $checkApp = $mysqli->select_single("SELECT * from prescription WHERE appointment_id=".$app["appointment_id"]);
+                              if($checkApp["numrows"] > 0){
+                                 ?>
+                              <a title="View Prescriotion" href="<?= $baseurl ?>/view/viewprescriotion.php?presid=<?=$checkApp["singledata"]["id"]?>" class="btn-sm bg-success text-decoration-none text-white m-1">
+                              <i class="mdi mdi-file-document-box"></i>
+                              </a>
+                            <?php }else{ ?>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?appointmentid=<?= $app['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-note-plus"></i>
+                              </a>
+                           <?php }  ?>
+                              <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $app["appointment_id"] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
+                              <i class=" mdi mdi-export"></i>
+                              </a>
+                            </span>
           </td>
         </tr>
         <?php  }} ?>

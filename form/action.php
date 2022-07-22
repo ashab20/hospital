@@ -243,6 +243,14 @@ $_POST["roles"] = 'ADMITTED';
 if($user){
     $_POST["created_by"] = $user["id"];
   }
+  $checkData = $mysqli->select_single("SELECT a.*,r.room_no FROM admit a join room r on a.room_id=r.id WHERE patient_id=".$_POST["patient_id"]);
+  if($checkData["numrows"] > 0 && $checkData["singledata"]["roles"]=='ADMITTED'){
+    $_SESSION["msg"] = "Patient Already Admited in ban no ".$checkData["singledata"]["room_no"];
+    echo "<script> location.replace('$baseurl/pages/admitedpatient.php')</script>";
+  }else{
+
+  
+
   $admitPatient =  $mysqli->creator("admit",$_POST);
   
   if($admitPatient["error"]){
@@ -262,6 +270,7 @@ if($user){
     
     echo "<script> location.replace('$baseurl/pages/details.php?pid=$id')</script>";
   }
+}
 
 }
 // capacity
@@ -319,8 +328,6 @@ if(isset($_POST["addPatient"])){
       $_POST["created_by"] = $user["id"];
     }
     $phone = $_POST["phone"];
-
-print_r($_POST);
     $data = $mysqli->creator("patient",$_POST);
     if($data["error"]){
       $_SESSION['msg']=$data['msg'];
@@ -749,6 +756,14 @@ if(isset($_POST["update_test"])){
 
 if(isset($_POST["prescription"])){
 unset($_POST["prescription"]);
+
+if($_POST["appointment_id"]){
+  $_POST["appointment_id"] = ( int) $_POST["appointment_id"];
+  
+}elseif($_POST["admit_id"]){
+  $_POST["admit_id"] = ( int) $_POST["admit_id"];
+
+}
 $insert_id = false;
 foreach($_POST["outer-list"] as $medicine){
   $medicine["patient_id"] = $_POST["patient_id"];
@@ -781,8 +796,9 @@ if($prescription["error"]){
   $_SESSION["msg"] = $prescription["error"];
   echo "<script> location.replace('$baseurl/pages/prescription.php?id=".$_post['patient_id']."')</script>";
 }else{
+  $inserted_id = $prescription["insert_id"];
   $_SESSION["msg"] = "Prescription added to".$prescription["insert_id"];
-  echo "<script> location.replace('$baseurl/pages/viewprescriotion.php.php?presid='".$prescription["insert_id"].")</script>";
+  echo "<script> location.replace('$baseurl/view/viewprescriotion.php?presid=$inserted_id')</script>";
 
 }
 

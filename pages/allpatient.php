@@ -20,13 +20,9 @@ switch ($usr['roles']) {
 }else{
   header("location:$baseurl/pages/login.php");
 }
-
-
-
-
 $mysqli = new Crud();
-
 ?>
+
     <div class="container-scroller">
     
       <!-- partial:./navbar.php -->
@@ -68,7 +64,6 @@ $mysqli = new Crud();
 
 $allPatient = $mysqli->find("SELECT * FROM patient order by created_at DESC");
 $patient = $allPatient["singledata"];
-print_r($allPatient);
 ?>
 
 
@@ -125,12 +120,20 @@ print_r($allPatient);
                               <?= $p['blood_group']?>
                             </td>
                             <td>
-                              <a href="<?= $baseurl ?>/form/form/editpatient.php?id=<?= $p['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
-                              <i class="mdi mdi-border-color"></i>
+                            <span class="d-flex justify-content-center">                                
+                              <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class=" mdi mdi-eye"></i>
                             </a>
-                              <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $p['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
-                              <i class="mdi mdi-delete"></i>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?presid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class=" mdi mdi-file-document-box "></i>
                               </a>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-plus-circle-multiple-outline"></i>
+                              </a>
+                              <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $p['id'] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
+                              <i class=" mdi mdi-export"></i>
+                              </a>
+                            </span>
                             </td>
                           </tr>
                           <?php }}else{?>

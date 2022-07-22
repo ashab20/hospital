@@ -127,13 +127,16 @@ if(isset($_GET["roomType"])){
     if($room['availability'] == 'NO'){
       $disabled = 'disabled';
     }
-    $value.="<option value='".$room['id']."' $disabled>".$room['room_no']."</option>";
-    
+    $rate = $room['rate'];
+    $value .="<option value='".$room['id']."'$disabled data-rate=$rate>".$room['room_no']."</option>";
   }
+
 
   }else{
     $value="<option value=''>No Data Found</option>";
   }
+
+
   echo json_encode(array($value));
 }
 

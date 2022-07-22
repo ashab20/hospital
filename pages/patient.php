@@ -55,7 +55,7 @@ $mysqli = new Crud();
               <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item active" aria-current="page">
-                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                    <span></span> <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                   </li>
                 </ul>
               </nav>
@@ -76,6 +76,14 @@ if($patientSingleData['numrows']== 0){
 
 }
 ?>
+   <?php  if(isset($_SESSION["msg"])){?>
+                <div class="bg-light p-4">
+                  <h4 class="text-info text-center">
+                      <?= $_SESSION["msg"]; ?>
+                    </h4>
+                  </div>
+    <?php unset($_SESSION["msg"]); } ?>
+
 
 <?php if((isset($_GET['ptn'] ) && strlen($_GET['ptn'])) < 1){ ?>
          <!-- ********************************
@@ -86,16 +94,7 @@ if($patientSingleData['numrows']== 0){
                 <div class="card w-100 mx-auto">
                 
                     <div class="row card-body justify-content-center" id="addBtn">
-                      <h1>
-                        <?php
-                        
-                          if(isset($_SESSION['msg'])){
-                            echo $_SESSION['msg'];
-                            unset($_SESSION['msg']);
-                          }
-                        
-                      ?>
-                      </h1>
+                      
                       
                         <div class="card bg-gradient-primary" style="width: 15rem;">
                             <button class=" btn btn-sm font-weight-normal text-white" id="addPatientBtn" ><i class="mdi mdi-alarm-plus   float-right"></i> Add New Patient 
@@ -351,12 +350,11 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
                               <?= $admin['created_at']?>
                             </td>
                             <td>
-                              <a href="<?= $baseurl ?>/form/form/editpatient.php?id=<?= $admin['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
-                              <i class="mdi mdi-border-color"></i>
+                            <span class="d-flex justify-content-center">                                
+                              <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $admin['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class=" mdi mdi-eye"></i>
                             </a>
-                              <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $admin['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
-                              <i class="mdi mdi-delete"></i>
-                              </a>
+                            </span>
                             </td>
                           </tr>
                           <?php } ?>

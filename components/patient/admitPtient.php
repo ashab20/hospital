@@ -46,10 +46,12 @@
                 </select>
               </div>
               <div class="form-group col-md-3 mx-2">
-              <div ><label for="cavin_no">Cabin No:</label><span class="float-end text-danger">*</span></div>
+              <div >
+                <label for="cavin_no">Cabin No:</label><span class="float-end text-danger">*</span></div>
                 <select name="room_id" id="cavin_no" class="form-select">
                   <option value=""> cabin no</option>
                 </select>
+                <small class="text-muted pt-2" id="rate"></small>
               </div>
               
             </div>
@@ -93,5 +95,11 @@
       }
 
     });
+
+    $('#cavin_no').change(() =>{
+      let d = $('#cavin_no').children('option:selected').data('rate');
+      let rate = $('#rate').text(d+"tk Per Day");
+
+    })
   }
 </script>

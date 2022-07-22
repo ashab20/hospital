@@ -28,11 +28,20 @@ if($usr['roles'] !== 'SUPERADMIN' && $usr['roles'] !== 'DOCTOR'){
 
 <?php
 $mysqli = new Crud();
+$appointmentid = $addmittedid = 0;
+if(isset($_GET["appointmentid"])){
+    $appointmentid = $_GET["appointmentid"];
+    $appointment = $mysqli->select_single("SELECT patient_id from appointment where id=$appointmentid")["singledata"];
+    $pid = $appointment["patient_id"];
+    
+}elseif(isset($_GET["admitted_id"])){
+    $addmittedid = $_GET["admitted_id"];
+    $admit = $mysqli->select_single("SELECT patient_id from admit where id=$addmittedid")["singledata"];
+    $pid = $admit["patient_id"];
 
-if(isset($_GET["patientid"])){
-    $pid = $_GET["patientid"];
 }else{
     echo "<script>location.replace('$baseurl/pages/patient.php')</script>";
+
 }
 ?>
 
@@ -52,7 +61,12 @@ if(isset($_GET["patientid"])){
             </div>
             
             <form  action="<?= $baseurl?>/form/action.php"method="POST" >
-                <input type="text" hidden name="patient_id" value="<?= $pid ?>">
+                <input type="number" hidden name="patient_id" value="<?= $pid ?>">
+                <?php if(isset($_GET["admitted_id"])){?> 
+                    <input type="number" hidden name="admit_id" value="<?= $addmittedid ?>">
+                <?php }elseif(isset($_GET["appointmentid"])){ ?> 
+                    <input type="number" hidden name="appointment_id" value="<?= $appointmentid ?>">
+                    <?php } ?>
                 <?php  
                 if(isset($usr["roles"]["DOCTOR"])){
                     $doctor = $mysqli-> select_single("SELECT u.id, d.id as doctopr_id FROM user u JOIN doctor d ON u.id=d.user_id WHERE u.id=".$usr["id"])["singledata"]; ?>

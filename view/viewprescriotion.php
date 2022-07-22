@@ -1,6 +1,6 @@
 <?php
-if(isset($_GET['pid']) && strlen($_GET['pid']) > 0){
-  $patientId =$_GET['pid'];
+if(isset($_GET['presid']) && strlen($_GET['presid']) > 0){
+  $presidId =$_GET['presid'];
 }
 
 
@@ -47,9 +47,9 @@ if($data['error']){
   echo "error";
 }
 
-$admitedData = $mysqli->select_single("SELECT p.*, a.* , a.id as admitid, d.*, u.name as doctor_name, u.phone as doctor_phone,dep.name as dep_name, r.room_no, r.floor FROM patient p JOIN admit a on p.id=a.patient_id JOIN doctor d on d.id=a.patient_of JOIN user u on d.user_id=u.id JOIN room r on r.id=a.room_id JOIN department dep ON d.department_id=dep.id WHERE p.id=$patientId");
+$prescriptionData = $mysqli->select_single("SELECT p.*, a.* , d.*,pres.*, u.name as doctor_name, u.phone as doctor_phone,dep.name as dep_name FROM prescription pres JOIN  appointment a ON pres.appointment_id=a.id JOIN patient p on p.id=pres.patient_id JOIN doctor d on d.id=a.doctor_id JOIN user u on d.user_id=u.id JOIN department dep ON d.department_id=dep.id WHERE pres.id=$presidId");
 
-$patientInfo = $admitedData["singledata"];
+$patientInfo = $prescriptionData["singledata"];
 ?>
 
 
@@ -69,7 +69,7 @@ $patientInfo = $admitedData["singledata"];
               </nav>
             </div>
             <?php 
-            if($admitedData["numrows"] > 0){ ?>
+            if($prescriptionData["numrows"] > 0){ ?>
             <div style="padding: 1rem;justify-content:center;background-color:#fff;" id="printContent">
             <style>
               .itemList{
@@ -124,20 +124,6 @@ $patientInfo = $admitedData["singledata"];
                             <h5 style="color:#b1b2a9;padding-left:1rem;">Patient Informations</h5>
                         </span>
                         <div>
-                          <!-- <div style="display: flex; justify-content:space-between;margin-top:1rem;margin-bottom:1rem;">
-                          <li style="list-style-type:none;margin-left:1rem;">
-                                    <label for="">Registration id:</label>
-                                    &nbsp;  <strong><?= $patientInfo["admitid"] ?></strong>
-                                </li>
-                                <li  style="list-style-type:none">
-                                    <label for="">Date:</label>
-                                    &nbsp; <strong>
-                                      <span style="background-color: #fff;padding: .3rem;">11</span>
-                                      <span style="background-color: #fff;padding: .3rem;">12</span>
-                                      <span style="background-color: #fff;padding: .3rem;">2013</span>
-                                    </strong>
-                                </li>
-                          </div> -->
                         <ul style="border-top-left-radius: inherit;border-top-right-radius: inherit;">
                             <div style="display: grid;grid-template-columns:repeat(auto-fit,minmax(40%,1fr));justify-content:space-evenly">
                                 <li class="itemList name">
@@ -157,7 +143,7 @@ $patientInfo = $admitedData["singledata"];
                                 </li>
                                 
                                 <li  class="itemList">
-                                    <label for="">Nationality:</label>
+                                    <label for="">Address:</label>
                                     &nbsp; <strong><?= $patientInfo["present_address"] ?></strong>
                                 </li>
 
@@ -166,6 +152,55 @@ $patientInfo = $admitedData["singledata"];
                         </ul>  
                         </div>
                         <hr>
+                        <div style="display: grid;grid-template-columns:30% 70%;margin:0 .5rem;min-height:400px;">
+                          <div style="padding:.5rem;">
+                          <h4 style="margin-top:1rem ;">Test :</h4>
+                            <ul style="padding: 0 2rem;">
+                              <?php $test = json_decode($patientInfo["test"]); ?>
+                              
+                              <?php if($test[0]!='' ){foreach($test as $t){ ?>
+                                  <li style="list-style-type:decimal;"><?=$t?></li>
+                             <?php  }} ?>
+                            </ul>
+                          </div>
+                          <div style="border-left:1px solid;padding:.5rem;">
+                            <h1>R<span style="font-size: 1rem;">X.</span></h1>
+                            <table class="table">
+                              <thead>
+                                <th>Type</th>
+                                <th>Medicine</th>
+                                <th>MG/MI</th>
+                                <th>Dose</th>
+                                <th>Day</th>
+                                <th>Comment</th>
+                              </thead>
+                              <tbody>
+                              <?php 
+                              // print_r($patientInfo["medicine_id"]);
+                              $medicine = json_decode($patientInfo["medicine_id"]);
+                              if($medicine)
+                              foreach($medicine as $m){
+                                $medicate= $mysqli->select_single("SELECT * FROM medicine WHERE id=$m")["singledata"];
+                                ?>                           
+                                <tr>
+                                  <td><?=$medicate["type"] ?></td>
+                                  <td><?=$medicate["medicine_name"] ?></td>
+                                  <td><?=$medicate["mg"] ?></td>
+                                  <td><?=$medicate["dose"] ?></td>
+                                  <td><?=$medicate["day"] ?></td>
+                                  <td><?=$medicate["comment"] ?></td>
+                                </tr>
+                             <?php } ?>
+                                <tr>
+                                  <td colspan="7" style="text-align: center;"><?= $patientInfo["overal_comment"]?></td>
+                                </tr>
+                                
+                              </tbody>
+
+                            </table>
+                          </div>
+                          
+                        </div>
                     </div>
                     
                     <div style="margin:1rem 5% 1rem 5%;">
@@ -178,9 +213,9 @@ $patientInfo = $admitedData["singledata"];
                           <div>
                             <span><h6 style="border-top: 1px solid;">Doctor's Signiture</h6></span>
                           </div>
-                          <div>
+                          <!-- <div>
                             <span><h6 style="border-top: 1px solid;">Manager's Signiture</h6></span>
-                          </div> 
+                          </div>  -->
                         </div>
                         </div>
                     </div>

@@ -66,12 +66,17 @@ $mysqli = new Crud();
 
 
 
-$allPatient = $mysqli->find("SELECT p.*,a.*  FROM  patient p JOIN admit a on p.id=a.patient_id WHERE a.roles ='ADMITTED' ORDER by a.created_at DESC");
+$allPatient = $mysqli->find("SELECT p.*,a.*,r.room_no,r.rate,r.floor  FROM  patient p JOIN admit a on p.id=a.patient_id join room r ON r.id=a.room_id WHERE a.roles ='ADMITTED' ORDER by a.created_at DESC");
 
 $patient = $allPatient["singledata"];
 ?>
-
-
+                  <?php  if(isset($_SESSION["msg"])){?>
+                <div class="bg-light p-4">
+                  <h4 class="text-info text-center">
+                      <?= $_SESSION["msg"]; ?>
+                    </h4>
+                  </div>
+                  <?php unset($_SESSION["msg"]); } ?>
 <?php
 // ! CONDITION END @:ADD PATIENT
 
@@ -86,6 +91,7 @@ $patient = $allPatient["singledata"];
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
+                    
                     <div class="d-flex justify-content-between">
                       <h4 class="card-title">Admitted Patient List</h4>
                       <div class="search d-flex">
@@ -105,7 +111,7 @@ $patient = $allPatient["singledata"];
                             <th> Name</th>
                             <th> Phone </th>
                             <th> Gender </th>
-                            <th> Created At </th>
+                            <th> Cavin No </th>
                             <th colspan="2"> Action </th>
                           </tr>
                         </thead>
@@ -114,7 +120,9 @@ $patient = $allPatient["singledata"];
                           if($allPatient['numrows'] > 0){
                           foreach ($patient as $p){?>
                           <tr>
-                            <td><?= $p['id'] ?></td>
+                            <td><?= $p['id'] ?>
+                            <input type="text" hidden value="<?= $p['id'] ?>" id="pid">
+                          </td>
                             <td>
                                 <a class="btn" title="View Profile" href="<?=$baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>">
                                   <?= $p['name']?>
@@ -123,19 +131,22 @@ $patient = $allPatient["singledata"];
                             <td><?= $p['phone']?></td>
                             <td><?= $p['gender']?></td>
                             <td>
-                              <?= $p['created_at']?>
+                              <?= $p["floor"]." - ".$p['room_no'] ?>
                             </td>
                             <td >
-                                <span class="d-flex justify-content--around">                                
+                                <span class="d-flex justify-content-center">                                
                               <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
                               <i class=" mdi mdi-eye"></i>
                             </a>
                               <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class=" mdi mdi-file-document-box "></i>
                               </a>
-                              <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $p['id'] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
-                              <i class=" mdi mdi-export"></i>
+                              <a title="Test/release" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-plus-circle-multiple-outline"></i>
                               </a>
+                              <button title="Release Request"  class=" btn btn-sm bg-warning text-decoration-none text-white m-1" id="released">
+                              <i class=" mdi mdi-export"></i>
+                              </button>
                             </span>
                             </td>
                           </tr>
@@ -163,3 +174,13 @@ $patient = $allPatient["singledata"];
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
           <?php require_once('../include/footer.php') ?>
+
+
+          <script>
+
+            $('#released').click(()=>{
+              let pid = $("#pid").val();
+              location.replace("./invoice.php?patientid="+pid);
+              
+            })
+          </script>

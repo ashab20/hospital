@@ -63,10 +63,10 @@ if($usr['roles'] === 'SUPERADMIN'){?>
                       Employees
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/patient.php"> 
                       Patients
-                    </a></li>
+                    </a></li> -->
                 </ul>
               </div>
             </li>
