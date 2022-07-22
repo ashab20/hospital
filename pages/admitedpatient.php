@@ -144,9 +144,9 @@ $patient = $allPatient["singledata"];
                               <a title="Test/release" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class="mdi mdi-plus-circle-multiple-outline"></i>
                               </a>
-                              <button title="Release Request"  class=" btn btn-sm bg-warning text-decoration-none text-white m-1" id="released">
+                              <a title="Release Request" href="<?= $baseurl ?>/pages/invoice.php?admitid=<?= $p["admit_id"]?>"  class=" btn btn-sm bg-warning text-decoration-none text-white m-1" id="released">
                               <i class=" mdi mdi-export"></i>
-                              </button>
+                              </a>
                             </span>
                             </td>
                           </tr>

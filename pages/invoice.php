@@ -32,33 +32,26 @@ $mysqli = new Crud();
 $testData = $mysqli->selector("test")['selectdata'];
 
 ?>
-
-
-          
-            <!-- invoicce content -->
-            <section class="content">
+<!-- invoicce content -->
+  <section class="content">
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
           <div class="col-12">
-            
             <!-- general form elements -->
             <div class="card card-success">
               <div class="row px-4">
                     <h2 style="font-size:1.6rem;" class="card-title test-success text-lg p-2 mx-4 text-bold">Payment Invoice</h2>
-                    <div class="">
-                 
-                </div>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
+              <?php
+                if(isset($_GET['patientid']) && strlen($_GET['patientid']) > 0){
+                $patientId = $_GET['patientid'];
+                $patientData = $mysqli->select_single("SELECT * FROM patient WHERE id=$patientId")['singledata'];
+                ?>
                 <div class="row mx-5 d-flex">
                   <ul class="list-group mx-5 col-5 row mt-4">
-                      <?php
-                        if(isset($_GET['patientid']) && strlen($_GET['patientid']) > 0){
-                        $patientId = $_GET['patientid'];
-                        $patientData = $mysqli->select_single("SELECT * FROM patient WHERE id=$patientId")['singledata'];
-                        ?>
                       
                           <li  class="list-group-item  itemList">
                               <label for="">Patientid:</label>
@@ -76,8 +69,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                           <li  class="list-group-item  itemList">
                               <label for="">Gender:</label>
                               &nbsp;  <strong><?= $patientData['gender']?></strong>
-                          </li>
-                     
+                          </li>                   
                   </ul> 
                   <div class="col-5">
                     <img src="../assets/images/svg/invoice.svg" width="100%" height="200px" alt="">                     
@@ -89,7 +81,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                 }
                 ?>
                 <form action="<?= $baseurl?>/form/action.php" method="POST" class="mx-5" >
-                   <div class="card-body invoice" >
+                  <div class="card-body invoice" >
                   <div class="form-group">
                     <div class="row">
                       
@@ -98,10 +90,13 @@ $testData = $mysqli->selector("test")['selectdata'];
                         <input type="date" class="form-control text-secondary" id="purchese_date" placeholder="Enter Purchase Date" name="payment_date" value="<?=date('Y-m-d')?>" minlength="<?=date('Y-m-d')?>">
                       </div>
                       <div class="col-md-6">
-                       
+                      
                       </div>
                     </div>
                   </div>
+                  <?php if(isset($_GET['patientid']) && strlen($_GET['patientid']) > 0){?>
+                    <!-- <input type="text" class="test_id[]" name="test_id" hidden> -->
+                  <input type="text" name="patient_id"  value="<?=$patientId?>" hidden>
                   <div class="form-group">
                     <div class="row bg-light p-2 rounded-top">
                     <div class="col-2"></div>  
@@ -160,9 +155,54 @@ $testData = $mysqli->selector("test")['selectdata'];
                         
                     </div>
                     </div>
+                    <?php } ?>
+                    <?php 
+                      if(isset($_GET["admitid"]) && strlen($_GET["admitid"]) > 0){
+                        $admitid = $_GET["admitid"];
+                        $admitData =$mysqli->select_single("SELECT a.id,a.patient_id,r.room_type as item_name,a.entry_time, r.rate FROM admit a JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
+                        $admit = $admitData["singledata"]; 
+                    ?>
                   <div class="form-group">
-                  <!-- <input type="text" class="test_id[]" name="test_id" hidden> -->
-                  <input type="text" name="patient_id"  value="<?=$patientId?>" hidden>
+                        <div class="row">
+                          <div class="col-8">                            
+                          <table class="table">
+                            <thead>
+                              <th>Medical Services</th>
+                              <th>Descriptoin</th>
+                              <th>Rate</th>
+                              <th>Total</th>
+                            </thead>
+                            <tbody>
+                              <?php  if($admitData["numrows"] > 0){ ?>
+                              <!-- ROOM BILL -->
+                              <tr>
+                                <td>
+                                  <input type="text" class="form-control" value="<?= $admit["item_name"]?>" placeholder="Items">
+                                </td>
+                                <td>
+                                <input type="text" class="form-control" value="<?= floor((strtotime(date('y-m-d h:i:s')) - strtotime($admit["entry_time"])) / ( 60 * 60 ))?> Hours" placeholder="description">
+                                </td>
+                                <td>
+                                <input type="text" class="form-control" value="<?= $admit["rate"] ?>" placeholder="rate">
+                                </td>
+                                <td>
+                                <input type="text" class="form-control" value="<?= $admit["rate"] / 2 ?>" placeholder="rate">
+                                </td>
+                              </tr>
+                            <?php } ?>
+                                <!-- service name @ADMIT-->
+                                <!-- doctor visite @ADMIT-->
+                                <!-- Cantine bill @ADMIT-->
+                                <!-- MEDICINE BILL bill @ADMIT-->
+
+                            </tbody>
+                          </table>                          
+                          </div>
+                        </div>
+                  </div>
+                    <?php } ?>
+                  <div class="form-group">
+                 
                       <div class="row">
                         <div class="col-6">
                         <div>

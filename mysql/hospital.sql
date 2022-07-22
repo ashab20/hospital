@@ -81,6 +81,7 @@ create table `invoice_payment`(
   `patient_id` int(11) DEFAULT NULL,
   `test_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`test_id`)),
   `appointment_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`appointment_id`)),
+  `admit_id` int DEFAULT NULL,
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `subtotal` decimal(10,2) UNSIGNED DEFAULT NULL,
   `tax` decimal(10,0) DEFAULT NULL,
@@ -93,7 +94,7 @@ create table `invoice_payment`(
   `created_by` int(11) DEFAULT NULL,
   `modified_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+  `status` int(11) NOT NULL DEFAULT 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id),foreign key (admit_id) references admit(id));
 
 create table medicine( id int auto_increment primary key,patient_id int not null, type varchar(20) not null,medicine_name varchar(100) not null,mg decimal(5) UNSIGNED ,dose varchar(20) not null,day varchar(20),comment varchar(255),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) ,foreign key (patient_id) references patient(id));
 
