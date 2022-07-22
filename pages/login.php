@@ -10,7 +10,7 @@ if(isset($_SESSION['userdata'])){
 
 if(isset($_SESSION['userdata'])){
   if($_SESSION['userdata']['roles']== 'SUPERADMIN'){
-    echo "<script> location.replace('$baseurl/dashboard/admin.php')</script>";
+    echo "<script> location.replace('$baseurl/dashboard/')</script>";
   }elseif ($_SESSION['userdata']['roles']== 'ADMIN'){
     echo "<script> location.replace('$baseurl/dashboard/patient.php')</script>";
   }elseif ($_SESSION['userdata']['roles']== 'DOCTOR'){

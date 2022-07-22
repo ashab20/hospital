@@ -116,7 +116,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                     <div class="repeater">
                         <div data-repeater-list="outer-list">
                             <div  data-repeater-item class="row mt-2">
-                                <div class="col-3 p-0 mr-2">
+                                <div class="col-3 mr-2">
                                     <!-- <div class="p-0"> -->
                                         <select name="tid" class="form-select" onchange="product_add(this)">
                                             <option value="">Select Item</option>
@@ -144,14 +144,14 @@ $testData = $mysqli->selector("test")['selectdata'];
                                     <input readonly type="text" class="form-control sub bg-white" name="sub">
                                 </div>
                                 <div class="col-1 mx-2">
-                                    <button class="btn text-danger btn-sm" data-repeater-delete type="button">
+                                    <button class="btn bg-danger text-white btn-sm mt-1" data-repeater-delete type="button">
                                         <i class="mdi mdi-minus-circle"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-1 offset-10" style="padding-left: 1.65rem;margin-top:-1.5rem;">
-                          <button class="btn text-info btn-sm" data-repeater-create type="button">
+                        <div class="col-1" >
+                          <button class="btn bg-primary text-white btn-sm" data-repeater-create type="button">
                             <i class="mdi mdi-plus-circle"></i>
                           </button>
                         </div>

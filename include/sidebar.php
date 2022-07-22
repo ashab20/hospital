@@ -30,16 +30,16 @@ if($usr['roles'] === 'SUPERADMIN'){?>
 
 
 
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <a class="nav-link" href="<?= $baseurl?>/dashboard/">
                 <span class="menu-title">Dashboard</span>
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
-            </li> -->
+            </li>
   <!-- dashboard  -->
         <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
-                <span class="menu-title">Dashboard</span>
+                <span class="menu-title">User</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-medical-bag menu-icon"></i>
               </a>
@@ -73,9 +73,9 @@ if($usr['roles'] === 'SUPERADMIN'){?>
             <!-- user -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#user" aria-expanded="false" aria-controls="user">
-                <span class="menu-title">User</span>
+                <span class="menu-title">Profile</span>
                 <i class="menu-arrow"></i>
-                <i class="mdi mdi-medical-bag menu-icon"></i>
+                <i class=" mdi mdi-account-circle menu-icon"></i>
               </a>
               <div class="collapse" id="user">
                 <ul class="nav flex-column sub-menu">
@@ -90,20 +90,20 @@ if($usr['roles'] === 'SUPERADMIN'){?>
               <a class="nav-link" data-bs-toggle="collapse" href="#patient" aria-expanded="false" aria-controls="patient">
                 <span class="menu-title">Patient</span>
                 <i class="menu-arrow"></i>
-                <i class="mdi mdi-account-circle menu-icon"></i>
+                <i class="mdi mdi-medical-bag menu-icon"></i>
               </a>
               <div class="collapse" id="patient">
                 <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/allpatient.php">Patient List</a></li>
                   <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/patient.php">Add Patient</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/patient.php">All Patient</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="">Update Patient</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/admitedpatient.php">Admited Patient</a></li>
                 </ul>
               </div>
             </li>
             <!-- Categories -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">
-                <span class="menu-title">Categories</span>
+                <span class="menu-title">Setting</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
               </a>

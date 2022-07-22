@@ -54,9 +54,11 @@ require_once('./config.php');
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-      <a href="index.php" class="logo me-auto"><img src="assets/images/logo.png" alt=""></a>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <h1 class="logo me-auto"><a href="index.html">Medicio</a></h1> -->
+      <a href="index.php" class="logo me-auto d-flex">
+      <img src="assets/images/hospital-sign.png" alt="logo"  width="50px"  class="mt-2" style="width: 35px;height:30px"/>
+            <h1 class="pt-2" style="font-weight:bolder;font-size:1.6rem; color:#e01111;">HOSPITAL</h1>
+      </a>
+     
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
@@ -207,7 +209,7 @@ require_once('./config.php');
         <div class="text-center">
           <h3>In an emergency? Need help now?</h3>
           <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <a class="cta-btn scrollto" href="#appointment">Make an Make an Appointment</a>
+          <a class="cta-btn scrollto bg-gradient-primary" href="#appointment">Make an Make an Appointment</a>
         </div>
 
       </div>
@@ -235,7 +237,7 @@ $txt = $_SESSION['appt'];
   <h3><?= $txt ?> </h3>
   <?php
   if($txt == true){ ?>
-  <button class="btn appointment-btn mb-5" onclick="appt();">
+  <button class="btn appointment-btn mb-5 bg-gradient-primary" onclick="appt();">
       Make Another Appointment
   </button>
  <?php } ?>

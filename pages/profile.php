@@ -10,8 +10,9 @@ if(isset($_SESSION) && !($_SESSION['userdata']['roles']== 'SUPERADMIN') ){
     echo "<script> location.replace('$baseurl/dashboard/')</script>";
 }
 
-if(isset($_SESSION['avatar'])){
-  $msg = $_SESSION['avatar'];
+if(isset($_SESSION['msg'])){
+  $msg = $_SESSION['msg'];
+  unset($_SESSION['msg']);
 }
 
 
@@ -70,10 +71,9 @@ if(isset($_SESSION['avatar'])){
                             Upload
                         </button>
                     </form>
-                    <?php if(isset($msg)) echo $msg;
                     
-                    ?>
                     </div>
+                    <?php if(isset($msg)) echo $msg;  ?>
                   </div>
                   <script>
                     let $changeProfile = $("#changeProfile");
@@ -92,6 +92,7 @@ if(isset($_SESSION['avatar'])){
                     });
                   </script>
           </div>
+          
           <!-- form to div converted -->
           <div class="pt-3 justify-content-center items-center">
             <div class="form-row ">
@@ -310,7 +311,7 @@ if(isset($_SESSION['avatar'])){
           </div>
           <div class=" col-md-6 d-flex">
             <span class="input-group-text">Address:</span>
-            <input type="text" value="<?= $patient['address']?>" class="form-control">
+            <input type="text" value="<?= $patient['present_address']?>" class="form-control">
           </div>
         </div>          
         <div class="row d-flex input-group py-2">

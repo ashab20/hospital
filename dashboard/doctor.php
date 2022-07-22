@@ -118,7 +118,7 @@ if($data['error']){
                         </a>
                     </div>
                     <div class="table-responsive mt-3">
-                      <table class="table table-hover table-bordered table-striped">
+                      <table class="table table-success table-hover table-bordered table-striped">
                         <thead>
                           <tr>
                             <th> Id </th>

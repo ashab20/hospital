@@ -30,7 +30,7 @@ if(isset($_POST["login"])){
         $_SESSION['msg']="Login success";
   
         if($data['selectdata']['roles']== 'SUPERADMIN'){
-          echo "<script> location.replace('$baseurl/dashboard/admin.php')</script>";
+          echo "<script> location.replace('$baseurl/dashboard/')</script>";
         }elseif ($data['selectdata']['roles']== 'ADMIN'){
           echo "<script> location.replace('$baseurl/dashboard/admin.php')</script>";
         }elseif ($data['selectdata']['roles']== 'DOCTOR'){
@@ -96,15 +96,13 @@ if(isset($_POST["reg"])){
 
 //  *** REGISTRATION END***
 
-//*** Profile Upload **
-
 
 // *** profile uploas ***
 if(isset($_POST["images_upload"])){
   unset($_POST["images_upload"]);
   if($_FILES["avatar"]["name"]){
       $path_parts = pathinfo($_FILES["avatar"]["name"]);
-      $image_name=$_SESSION["userdata"]["id"].".".$path_parts["extension"];
+      $image_name=trim($_SESSION["userdata"]["name"]).$_SESSION["userdata"]["id"].uniqid().".".$path_parts["extension"];
       $up=move_uploaded_file($_FILES["avatar"]["tmp_name"],"../assets/images/avatar/".$image_name);
       if($up){
           $_POST["avatar"]=$image_name;
@@ -114,21 +112,33 @@ if(isset($_POST["images_upload"])){
   $_POST["modified_at"] = date("Y-m-d H:i:s");
   
   $id= $user["id"];
-  $result=$mysqli->updator("user",$_POST,$id);
+  $result=$mysqli->updator("user",$_POST,"id=$id");
   if($result["error"]){
-  $_SESSION["msg"]=$result["error"];
+  $_SESSION["msg"] = $result["error"];
   echo "<script> location.replace('$baseurl/pages/profile.php?id=$id') </script>";
   }
   else{
-    $_SESSION['userdata']=$result['updated'];
+    $userdata = $mysqli->select_single("SELECT * FROM user WHERE id=$id")["singledata"];
+   $_SESSION['userdata'] = $userdata;
+    $_SESSION["msg"] = "profile picture Change";
   echo "<script> location.replace('$baseurl/pages/profile.php?id=$id') </script>";
   }
 }
 
 
-// *** Profile
+// *** Change Password 
+if(isset($_GET["changePassword"])){
+unset($_GET["changePassword"]);
+
+}
 
 
+// *** forget Password
+if(isset($_GET["forgetPassword"])){
+  unset($_GET["forgetPassword"]);
+  
+  }
+  
 
 
 
@@ -220,12 +230,47 @@ if(isset($_POST["addTest"])){
 }
 
 
+// *** ADMIT PATIEN ***
 
+if(isset($_POST["admitPatient"])){
+unset($_POST["admitPatient"]);
+$_POST["refarecne_by"] = htmlentities(ucwords($_POST["refarecne_by"]));
+$_POST["guardian_name"] = htmlentities(ucwords($_POST["guardian_name"]));
+$_POST["relationship_with_patient"] = htmlentities(ucwords($_POST["relationship_with_patient"]));
+
+$_POST["roles"] = 'ADMITTED';
+
+if($user){
+    $_POST["created_by"] = $user["id"];
+  }
+  $admitPatient =  $mysqli->creator("admit",$_POST);
+  
+  if($admitPatient["error"]){
+    $_SESSION['msg']=$data['error'];
+  }else{
+    $roomData = $mysqli->select_single("SELECT * FROM room WHERE id=".$_POST["room_id"]);
+    $roomSelect = $roomData['singledata'];
+  $_SESSION['msg']=$admitPatient['msg'];
+  if(  $roomData['numrows'] = $roomSelect["capacity"]){
+    $data = $mysqli->updator("room",['availability'=>'NO'],"id=".$_POST["room_id"]);
+    
+    if($data["error"]){
+      echo $data["updated"];
+    }
+  }
+
+    
+    echo "<script> location.replace('$baseurl/pages/details.php?pid=$id')</script>";
+  }
+
+}
+// capacity
 
 
 
 
 // ! *** Updated user ***
+
 if(isset($_POST["updateData"])){
   unset($_POST["updateData"]);
     unset($_POST["cpassword"]);
@@ -266,13 +311,16 @@ if(isset($_POST["addPatient"])){
     $_POST["phone"] = htmlentities($_POST["phone"]);
     $_POST["gender"] = htmlentities($_POST["gender"]);
     $_POST["age"] = htmlentities($_POST["age"]);
-    $_POST["address"] = htmlentities($_POST["address"]);
+
+    htmlentities($_POST["permanent_address"]);
+    htmlentities($_POST["present_address"]);
+
     if($user){
       $_POST["created_by"] = $user["id"];
     }
     $phone = $_POST["phone"];
 
-
+print_r($_POST);
     $data = $mysqli->creator("patient",$_POST);
     if($data["error"]){
       $_SESSION['msg']=$data['msg'];
@@ -428,7 +476,15 @@ if(isset($_POST['add_room'])){
 
   $_POST['room_no'] = htmlentities(ucwords($_POST['room_no']));
   $_POST['floor'] = htmlentities(ucwords($_POST['floor']));
-  $_POST['details'] = htmlentities(ucwords($_POST['details']));
+  
+  if($_POST['facilities']){
+    $_POST['details'] = json_encode( $_POST['facilities']);
+  }else{
+    $_POST['details'] = null;
+  }
+
+  unset($_POST['facilities']);
+
     if($user){
       $_POST['created_by'] = $user['id'];
     }
@@ -688,6 +744,50 @@ if(isset($_POST["update_test"])){
   }
 }
 
+
+// prescription
+
+if(isset($_POST["prescription"])){
+unset($_POST["prescription"]);
+$insert_id = false;
+foreach($_POST["outer-list"] as $medicine){
+  $medicine["patient_id"] = $_POST["patient_id"];
+  $medicine["mg"] = floatval($medicine["mg"]);
+  if($medicine["type"] && $medicine["medicine_name"]){
+    $create=$mysqli->creator("medicine",$medicine);
+    if($create["error"]){
+      $_SESSION["msg"] = $create["error"];
+      echo $_SESSION["msg"];
+    }
+    $insert_id[] .= $create["insert_id"];
+
+  }
+}
+$_POST["medicine_id"] = json_encode($insert_id);
+$tests = $description = $advice = false;
+foreach($_POST["inner-list"] as $test){
+  $tests .= $test["test"].",";
+  $description .= $test["description"].",";
+  $advice .= $test["advice"].",";
+}
+unset($_POST["outer-list"]);
+unset($_POST["inner-list"]);
+$_POST["test"] = json_encode([rtrim($tests,",")]);
+$_POST["description"] = json_encode([$description]);
+$_POST["advice"] = json_encode([rtrim($advice)]);
+
+$prescription = $mysqli->creator("prescription",$_POST);
+if($prescription["error"]){
+  $_SESSION["msg"] = $prescription["error"];
+  echo "<script> location.replace('$baseurl/pages/prescription.php?id=".$_post['patient_id']."')</script>";
+}else{
+  $_SESSION["msg"] = "Prescription added to".$prescription["insert_id"];
+  echo "<script> location.replace('$baseurl/pages/viewprescriotion.php.php?presid='".$prescription["insert_id"].")</script>";
+
+}
+
+
+}
 
 
 // invoice Payment

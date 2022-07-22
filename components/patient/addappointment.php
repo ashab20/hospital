@@ -57,8 +57,22 @@
             <div class="form-row d-flex justify-content-center">
             <div class="form-group col-md-3 mx-2">
               <label for="time">Time:</label>
-              <input type="time" name='time' class="form-control time" required placeholder="eg: 07:00 PM">
-              <small>  <p id='time'></p></small>
+              <select name="time" id="" class="form-select" required>
+                <option value="">Select Time</option>
+                <option value="09:00AM">09:00AM</option>
+                <option value="10:00AM">10:00AM</option>
+                <option value="11:00AM">11:00AM</option>
+                <option value="12:00PM">12:00PM</option>
+                <option value="01:00PM">01:00PM</option>
+                <option value="02:00PM">02:00PM</option>
+                <option value="03:00PM">03:00PM</option>
+                <option value="04:00PM">04:00PM</option>
+                <option value="05:00PM">05:00PM</option>
+                <option value="06:00PM">06:00PM</option>
+                <option value="07:00PM">07:00PM</option>
+                <option value="08:00PM">08:00PM</option>
+                <option value="09:00PM">09:00PM</option>
+              </select>
             </div>
             <div class="form-group col-md-3 mx-2">
               <label for="fees">Consultancy Fees:</label>

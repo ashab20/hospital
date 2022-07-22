@@ -628,7 +628,7 @@ section {
   z-index: -1;
 }
 .featured-services .icon-box:hover::before {
-  background: #3fbbc0;
+  background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
   top: 0;
   border-radius: 0px;
 }
@@ -665,7 +665,7 @@ section {
 # Cta
 --------------------------------------------------------------*/
 .cta {
-  background: #3fbbc0;
+  background: linear-gradient(to right, #90caf9, #047edf 99%) !important;
   color: #fff;
   background-size: cover;
   padding: 60px 0;

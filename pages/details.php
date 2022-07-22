@@ -1,7 +1,9 @@
 <?php
-if(isset($_GET['appopintment']) && strlen($_GET['appoimtment']) > 0){
-
+if(isset($_GET['pid']) && strlen($_GET['pid']) > 0){
+  $patientId =$_GET['pid'];
 }
+
+
 ?>
 
 
@@ -18,6 +20,8 @@ if($usr['roles'] !== 'SUPERADMIN' ){
 }
 
 ?>
+
+
     <div class="container-scroller">
     
       <!-- partial:./navbar.php -->
@@ -36,11 +40,6 @@ if($usr['roles'] !== 'SUPERADMIN' ){
 <?php
 $mysqli = new Crud();
 $data = $mysqli->selector('user','*');
-$superadmin = $mysqli->counter("user","roles='SUPERADMIN'");
-$admin = $mysqli->counter("user","roles='ADMIN'");
-$doctor = $mysqli->counter("user","roles='DOCTOR'");
-$employee = $mysqli->counter("user","roles='EMPLOYEE'");
-// $admin = $mysqli->selector("user","COUNT(roles='ADMIN')");
 
 $user = $data['selectdata'];
 if($data['error']){
@@ -48,8 +47,9 @@ if($data['error']){
   echo "error";
 }
 
+$admitedData = $mysqli->select_single("SELECT p.*, a.* , a.id as admitid, d.id, d.user_id, u.name as doctor_name ,r.room_no, r.floor FROM patient p JOIN admit a on p.id=a.patient_id JOIN doctor d on d.id=a.patient_of JOIN user u on d.user_id=u.id JOIN room r on r.id=a.room_id WHERE p.id=$patientId");
 
-
+$patientInfo = $admitedData["singledata"];
 ?>
 
 
@@ -68,81 +68,213 @@ if($data['error']){
                 </ul>
               </nav>
             </div>
-            <div class="row">
-              <div class="col-12 grid-margin">
-                <div class="card" style="background-color:#fcffd6;">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <h4 class="card-title">Patient Portal</h4>                        
+            <?php 
+            if($admitedData["numrows"] > 0){ ?>
+            <div style="padding: 1rem;justify-content:center;background-color:#fcffd6;" id="printContent">
+            <style>
+              .itemList{
+                background-color: #fffcf8 !important;
+                border: 1px solid rgba(0, 0, 0, 0.125) !important;
+                position: relative;
+                display: block;
+                padding: 0.5rem 1rem;
+                color: #212529;
+                text-decoration: none;
+              }
+            </style>        
+          
+
+            <div 
+                style="width: 100%; margin: 0 auto;margin-top:1rem;justify-content: center;justify-items: center;display: grid;">
+                    <div style="display: flex;text-align:center;">
+                        <img src="../assets/images/hospital-sign.png" alt="logo"  width="50px"  style="width: 35px;margin:.5rem;height:30px"/>
+                        <h1 class="pt-2" style="font-weight:bolder;font-size:1.6rem; color:#e01111;">HOSPITAL</h1>
+                      </div>
+                      <p>2 No gate, Chittgong. Phone: 031456789</p>
                     </div>
-                    <div class="mt-3 d-">
-                        <ul class="list-group">
-                            <div class="row">
-                                <li style="background-color:#ffe7bc;border:0;" class="list-group-item col-md-3 itemList">
-                                    <label for="">Patientid:</label>
-                                    &nbsp;  <strong>PA34234524</strong>
-                                </li>
-                                <li style="background-color:#ffe7bc;border:0;" class="list-group-item col-md-3 itemList">
-                                    <label for="">Name:</label>
-                                    &nbsp; <strong>Ashab Uddin</strong>
-                                </li>
-                                
-                                <li style="background-color:#ffe7bc;border:0;" class="list-group-item col-md-3 itemList">
-                                    <label for="">Age:</label>
-                                    &nbsp; <strong>35</strong>
-                                </li>
-                                <li style="background-color:#ffe7bc;border:0;" class="list-group-item col-md-3 itemList">
-                                    <label for="">Gender:</label>
-                                    &nbsp;  <strong>Male</strong>
-                                </li>
-                            </div>
-                        </ul>                      
+                    <div style="width:100%;text-align:center">
+                      <h3 >Patient Portal</h3>                        
                     </div>
-                    <div>
-                        <span class="text-center items-center mx-4">
-                            <h3 class="text-muted">Appointment Details</h3>
+                    <div style="margin-left: 5%;margin-right:5%;">
+                        <span >
+                            <h5 style="color:#b1b2a9;padding-left:1rem;">Patient Informations</h5>
                         </span>
                         <div>
-                        <ul class="list-group">
-                            <div class="row">
-                                <li class="list-group-item col-md-6 itemList">
-                                    <label for="">Doctor's Name:</label>
-                                    &nbsp;  <strong>MR. Rabib Hasan</strong>
+                          <div style="display: flex; justify-content:space-between;margin-top:1rem;margin-bottom:1rem;">
+                          <li style="list-style-type:none;margin-left:1rem;">
+                                    <label for="">Registration id:</label>
+                                    &nbsp;  <strong><?= $patientInfo["admitid"] ?></strong>
                                 </li>
-                                <li  class="list-group-item col-md-6 itemList">
-                                    <label for="">Department:</label>
-                                    &nbsp; <strong>Peadretix</strong>
+                                <li  style="list-style-type:none">
+                                    <label for="">Date:</label>
+                                    &nbsp; <strong>
+                                      <span style="background-color: #fff;padding: .3rem;">11</span>
+                                      <span style="background-color: #fff;padding: .3rem;">12</span>
+                                      <span style="background-color: #fff;padding: .3rem;">2013</span>
+                                    </strong>
+                                </li>
+                          </div>
+                        <ul style="border-top-left-radius: inherit;border-top-right-radius: inherit;">
+                            <div style="display: grid;grid-template-columns:repeat(auto-fit,minmax(40%,1fr));justify-content:space-evenly">
+                                <li class="itemList name">
+                                    <label for="">Name:</label>
+                                    &nbsp;  <strong><?= $patientInfo["name"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Age:</label>
+                                    &nbsp; <strong><?= $patientInfo["age"] ?> Years Old</strong>
                                 </li>
                                 
-                                <li  class="list-group-item col-md-6 itemList">
-                                    <label for="">Date:</label>
-                                    &nbsp; <strong>16/06/2022</strong>
+                                
+                                
+                                <li  class="itemList">
+                                    <label for="">Gender:</label>
+                                    &nbsp; <strong><?= $patientInfo["gender"] ?></strong>
                                 </li>
-                                <li  class="list-group-item col-md-6 itemList">
-                                    <label for="">Time:</label>
-                                    &nbsp;  <strong>7:00PM</strong>
+                                
+                                <li  class="itemList">
+                                    <label for="">Nationality:</label>
+                                    &nbsp; <strong><?= $patientInfo["nationality"] ?></strong>
                                 </li>
-                                <li  class="list-group-item col-md-6 itemList">
-                                    <label for="">Appointmentid:</label>
-                                    &nbsp;  <strong>AP2332423</strong>
+
+                                <li  class="itemList">
+                                    <label for="">Marital Status:</label>
+                                    &nbsp; <strong><?= $patientInfo["marital_status"] ?></strong>
                                 </li>
-                                <li  class="list-group-item col-md-6 itemList">
-                                    <label for="">Last Appointment Date:</label>
-                                    &nbsp;  <strong>16/05/2022</strong>
+
+                                <li  class="itemList">
+                                    <label for="">Religious:</label>
+                                    &nbsp; <strong><?= $patientInfo["religious"] ?></strong>
+                                </li>
+                                <li class="itemList">
+                                    <label for="">Father's/Husband's Name:</label>
+                                    &nbsp;  <strong><?= $patientInfo["father_or_husband_name"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Mother's Name:</label>
+                                    &nbsp; <strong><?= $patientInfo["mother_name"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Gurdient Name:</label>
+                                    &nbsp; <strong><?= $patientInfo["guardian_name"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Gurdient's Relationship:</label>
+                                    &nbsp; <strong><?= $patientInfo["relationship_with_patient"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Contact:</label>
+                                    &nbsp; <strong><?= $patientInfo["phone"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Emargency Contact:</label>
+                                    &nbsp; <strong><?= $patientInfo["emargency_contact"] ?></strong>
+                                </li>
+                                <li class="itemList">
+                                    <label for="">Present Address:</label>
+                                    &nbsp;  <strong><?= $patientInfo["present_address"] ?></strong>
+                                </li>
+                                <li class="itemList">
+                                    <label for="">Permanent Address:</label>
+                                    &nbsp;  <strong><?= $patientInfo["permanent_address"] ?></strong>
                                 </li>
                             </div>
                         </ul>  
                         </div>
-                        <div class="float-end mt-5">
-                            <button class="btn btn-sm btn-danger text-end">Cancel</button>
-                            <button class="btn btn-sm btn-info text-end">Confirm?</button>
+                    </div>
+                    <div style="margin:1rem 5% 1rem 5%;">
+                        <span>
+                            <h5 style="color:#b1b2a9;padding-left:1rem;">Medical History:</h5>
+                        </span>
+                        <ul style="border-top-left-radius: inherit;border-top-right-radius: inherit;">
+                            <div style="display: grid;grid-template-columns:repeat(auto-fit,minmax(30%,1fr));justify-content:space-evenly">
+                                <li class="itemList">
+                                    <label for="">Doctor's Name:</label>
+                                    &nbsp;  <strong><?= $patientInfo["doctor_name"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Health Issues:</label>
+                                    &nbsp; <strong><?= $patientInfo["relationship_with_patient"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Other Issues:</label>
+                                    &nbsp; <strong><?= $patientInfo["relationship_with_patient"] ?></strong>
+                                </li>
+                                <li class="itemList">
+                                    <label for="">Patient Condition:</label>
+                                    &nbsp;  <strong><?= $patientInfo["patient_condition"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Blood Group:</label>
+                                    &nbsp; <strong><?= $patientInfo["relationship_with_patient"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Otistick:</label>
+                                    &nbsp; <strong>No</strong>
+                                </li>
+                            </div>
+                        </ul>  
+                    </div>
+                    <div style="margin:1rem 5% 1rem 5%;">
+                        <span >
+                            <h5 style="color:#b1b2a9;padding-left:1rem;">Hospiatl's Information:</h5>
+                        </span>
+                        <div>
+                        <ul style="border-top-left-radius: inherit;border-top-right-radius: inherit;">
+                            <div  style="display: grid;grid-template-columns:repeat(auto-fit,minmax(30%,1fr));justify-content:space-evenly">
+                                <li class="itemList">
+                                    <label for="">Paiten Id:</label>
+                                    &nbsp;  <strong><?= $patientInfo["id"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Room No:</label>
+                                    &nbsp; <strong><?= $patientInfo["room_no"] ?></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Floor:</label>
+                                    &nbsp; <strong><?= $patientInfo["floor"] ?></strong>
+                                </li>
+                                <li class="itemList">
+                                    <label for="">Entry Time:</label>
+                                    &nbsp;  <strong><?= $patientInfo["entry_time"] ?></strong>
+                                </li>
+                                <li  class="itemList">
+                                    <label for="">Released At:</label>
+                                    &nbsp; <strong></strong>
+                                </li>
+                                
+                                <li  class="itemList">
+                                    <label for="">Other:</label>
+                                    &nbsp; <strong></strong>
+                                </li>
+                            </div>
+                        </ul> 
+                        <div style="display:flex;justify-content:space-around;margin-top: 6rem;">                          
+                          <div >
+                            <span ><h6 style="border-top: 1px solid;">Gurdiant's Signiture</h6></span>
+                          </div>
+                          <div>
+                            <span><h6 style="border-top: 1px solid;">Doctor's Signiture</h6></span>
+                          </div>
+                          <div>
+                            <span><h6 style="border-top: 1px solid;">Manager's Signiture</h6></span>
+                          </div> 
+                        </div>
                         </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-           
+                  <div class="float-end mt-5">
+                            <button class="btn btn-sm btn-danger text-end" id="print">Print</button>
+                            <!-- <button class="btn btn-sm btn-info text-end">Confirm?</button> -->
+                        </div>
+                </div>  
+                
+                <?php  } ?>
         </div>
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
@@ -150,4 +282,21 @@ if($data['error']){
 
           <!-- Main content -->
   
- 
+<script>
+  $(document).ready( () =>{
+  $('#print').click(() => {
+            // $("#card").css({"display":"none"});
+            let printContent = $("#printContent").html();
+            let payBill = document.body.innerHTML;
+
+            document.body.innerHTML = printContent;
+
+            window.print();
+
+            document.body.innerHTML = payBill;
+            
+            // $("#card").css({"display":"block"});
+
+        });
+    });
+</script>

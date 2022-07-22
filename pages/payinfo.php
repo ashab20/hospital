@@ -33,7 +33,7 @@ $mysqli = new Crud();
 
 if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     $invoiceId = $_GET['invoice'];
-    $invoice_data = $mysqli->select_single("SELECT ip.* ,p.id as pid ,p.name,p.phone,p.address,p.age,p.gender FROM  invoice_payment ip JOIN patient p on p.id=ip.patient_id  WHERE ip.id=$invoiceId");
+    $invoice_data = $mysqli->select_single("SELECT ip.* ,p.id as pid ,p.* FROM  invoice_payment ip JOIN patient p on p.id=ip.patient_id  WHERE ip.id=$invoiceId");
     // $invoice = array_merge($invoice_data['singledata']);
     $invoice = $invoice_data['singledata'];
 
@@ -95,7 +95,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                 ipid: <?= $invoice['ipid']?>
                             </div>
                             <div ><label for="">Address:</label>
-                            <?= $invoice['address']?>
+                            <?= $invoice['present_address']?>
                             </div>
                             <div class="my-1">
                                 <label for="">Phone:</label>

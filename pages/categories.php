@@ -296,7 +296,8 @@
             
               <div class="card-body">
                 <h4 class="card-title">Add Room</h4>
-                <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
+                <form class="pt-3 justify-content-center items-center row" method="POST" action="<?=$baseurl?>/form/action.php">
+                <div class="col-8">
                   <div class="form-row d-flex">
                     <div class="form-group col-md-6 mx-2">
                       <label for="floor">Floor: </label>
@@ -308,21 +309,69 @@
                     </div>
                   </div>
                   <div class="form-row d-flex">
-                    <div class="form-group col-md-4 mx-2">
-                      <label for="details">Detail: </label>
-                      <input type="text" name="details" class="form-control" id="details" placeholder="Details">
-                    </div>
-                    <div class="form-group col-md-4 mx-2">
-                      <label for="gender">Room Type:</label>
-                      <select id="gender"  name="room_type" class="form-control">
-                        <option selected>Room Type...</option>
-                        <option value="CHAMBER">CHAMBER</option>
-                        <option value="GENERAL-CABIN">GENERAL-CABIN</option>
-                        <option value="VIP-CABIN">VIP-CABIN</option>
-                        <option value="OT">OT</option>
-                      </select>
+                    <div class="form-group col-md-6 mx-2">
+                        <label for="gender">Room Type:</label>
+                        <select id="gender"  name="room_type" class="form-select">
+                          <option selected>Room Type...</option>
+                          <option value="CHAMBER">CHAMBER</option>
+                          <option value="GENERAL-CABIN">GENERAL-CABIN</option>
+                          <option value="NON-AC-CABIN">NON-AC-CABIN</option>
+                          <option value="AC-CABIN">AC-CABIN</option>
+                          <option value="VIP-CABIN">VIP-CABIN</option>
+                          <option value="WAITING-ROOM">WAITING-ROOM</option>
+                          <option value="ICU">ICU</option>
+                          <option value="CCU">CCU</option>
+                          <option value="OT">OT</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6 mx-2">
+                        <label for="details">Capacity: </label>
+                        <input type="number" name="capacity" class="form-control" id="capacity" placeholder="capacity">
+                      </div>
                     </div>
                   </div>
+                  <div class="col-3 form-group offset-1">
+                      <label for="details">Facilities: </label>
+                    <div class="">
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="Tv" id="tv">
+                        <label class="form-check-label" for="tv">
+                        TV
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="AC" id="ac">
+                        <label class="form-check-label" for="ac">
+                        AC
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="Refrigerator" id="Refrigerator">
+                        <label class="form-check-label" for="Refrigerator">
+                        Refrigerator
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="OVEN" id="OVEN">
+                        <label class="form-check-label" for="OVEN">
+                        Oven
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="Locker" id="Locker">
+                        <label class="form-check-label" for="Locker">
+                        locker
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" name="facilities[]" type="checkbox" value="Wifi" id="Wifi">
+                        <label class="form-check-label" for="Wifi">
+                        Wifi
+                        </label>
+                      </div>
+                      </div>
+                    </div>
+                    
                   <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary" name="add_room">Add Room</button>
                   </div>
@@ -336,6 +385,7 @@
                       <th> Room Number</th>
                       <th> Details </th>
                       <th> Room Type </th>
+                      <th> Capacity </th>
                       <th> Created At </th>
                       <th colspan="2"> Action </th>
                     </tr>
@@ -357,6 +407,7 @@
                       <td><?= $room['room_no']?></td>
                       <td><?= $room['details']?></td>
                       <td><?= $room['room_type']?></td>
+                      <td><?= $room['capacity']?></td>
                       <td><?= $room['created_at']?></td>
                       <td>
                         <a href="<?= $baseurl ?>/form/editcategories.php?roomId=<?= $room['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">

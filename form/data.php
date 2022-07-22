@@ -116,5 +116,29 @@ echo json_encode(array('msg'=>$value));
 }
 
 
+if(isset($_GET["roomType"])){
+  $roomType = $_GET["roomType"];
+  $roomData = $mysqli->custome_query("SELECT * FROM room WHERE room_type='$roomType'");
+  if($roomData['numrows'] > 0){
+    $value="<option value=''>Select Room</option>";
+
+  foreach($roomData['selectdata'] as $room){
+    $disabled= false;
+    if($room['availability'] == 'NO'){
+      $disabled = 'disabled';
+    }
+    $value.="<option value='".$room['id']."' $disabled>".$room['room_no']."</option>";
+    
+  }
+
+  }else{
+    $value="<option value=''>No Data Found</option>";
+  }
+  echo json_encode(array($value));
+}
+
+
+
+
 
 ?>

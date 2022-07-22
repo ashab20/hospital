@@ -77,14 +77,13 @@ if($data['error']){
                     <div class="table-responsive mt-3">
                       <!-- ! *** TABLE FROM DATABASE *** -->
                       <table class="table table-hover table-bordered table-striped">
-                        <thead>
+                        <thead class="table-dark">
                           <tr>
                             <th> Id </th>
                             <th> Name</th>
                             <th> Email </th>
                             <th> Phone </th>
-                            <th> Created By </th>
-                            <th> Modified By </th>
+                            <th> Creation || Modification</th>
                             <th> Roles </th>
                             <th> Status </th>
                             <th colspan="2"> Action </th>
@@ -114,8 +113,7 @@ if($data['error']){
                               ?>
                               <br>
                               <?=$u['created_at']?>
-                            </td>
-                            <td>
+                            <br>
                               <?php 
                               
                               $modifier = $mysqli->selector('user','name',$u['modified_by']);
@@ -151,6 +149,7 @@ if($data['error']){
                             </a>
                               <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $u['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
                               <i class="mdi mdi-delete"></i>
+                              <i class=" mdi mdi-chevron-down pointer" style="cursor:pointer" onclick="$('#extra').toggleClass('d-none');"></i>
                               </a>
                             </td>
                           </tr>

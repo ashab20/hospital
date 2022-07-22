@@ -56,7 +56,7 @@ if($data['error']){
               <div class="col-md-4 stretch-card grid-margin">
                 <div class="card bg-gradient-danger card-img-holder text-white">
                   <a href="<?=$baseurl ?>/dashboard/user.php"  class="card-body text-white text-decoration-none">
-                    <img src="../assets/images/svg/all.svg" class="card-img-absolute" alt="circle-image"/>
+                    <!-- <img src="../assets/images/svg/all.svg" class="card-img-absolute" alt="circle-image"/> -->
                     <h4 class="font-weight-normal mb-3">All User <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                     </h4>
                     <h2 class="mb-5"><?= $data['numrows'] ?></h2>
@@ -125,32 +125,32 @@ if($data['error']){
                         <i class="mdi mdi-chevron-down" onclick="$('#patientctl').toggleClass('d-none')"></i></span>
                     </div>
                     <hr/>
-                    <div class="row offset-2" id="patientctl">
-                      <div class="col-2" class="d-flex justify-content-center">
+                    <div class="row" id="patientctl">
+                      <div class="col-3" class="d-flex justify-content-center">
                         <a href="<?=$baseurl?>/pages/patient.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
-                          <img src="../assets/images/icons/patient.png" height="80px" width="100%" alt="">
+                          <img src="../assets/images/icons/patient.png" height="80px" width="80px" alt="">
                           <h5 class="py-4">Add Patient</h5>
                         </a>
                       </div>
-                      <div class="col-2" class="d-flex justify-content-center">
+                      <div class="col-3" class="d-flex justify-content-center">
                         <a href="" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
-                          <img src="../assets/images/icons/deadline.png" height="80px" width="100%" alt="">
+                          <img src="../assets/images/icons/deadline.png" height="80px" width="80px" alt="">
                           <h5 class="py-4">Make Appointment</h5>
                         </a>
                       </div>
-                      <div class="col-2" class="d-flex justify-content-center">
+                      <div class="col-3" class="d-flex justify-content-center">
                         <a href="<?= $baseurl?>/pages/invoice.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
-                          <img src="../assets/images/icons/medicaltest.png" height="80px" width="100%" alt="">
+                          <img src="../assets/images/icons/medicaltest.png" height="80px" width="80px" alt="">
                           <h5 class="py-4">Apply Test</h5>
                         </a>
                       </div>
-                      <div class="col-2" class="d-flex justify-content-center">
+                      <div class="col-3" class="d-flex justify-content-center">
                         <a href="" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
-                          <img src="../assets/images/icons/bed.png" height="80px" width="100%" alt="">
+                          <img src="../assets/images/icons/bed.png" height="80px" width="80px" alt="">
                           <h5 class="py-4">Admit Patient</h5>
                         </a>
                       </div>

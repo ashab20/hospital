@@ -44,7 +44,6 @@ $mysqli = new Crud();
 
 
 <!-- ***************************************************************** -->
-
             <!-- page header start -->
             <div class="page-header">
               <h3 class="page-title">
@@ -68,6 +67,7 @@ $mysqli = new Crud();
 if(isset($_GET['phn']) && strlen($_GET['phn']) > 0){
 $phone = $_GET['phn'];
 $patientSingleData = $mysqli->select_single("SELECT id,name,phone,age,gender from patient where phone='$phone'");
+$ChechAmiitedStatus = $mysqli->select_single("SELECT id,roles from admit where patient_id=".$patientSingleData["singledata"]["id"]);
 
 if($patientSingleData['numrows']== 0){
  $msg="<p style='color:red'>NO Patient registered with this phone number.</p>";
@@ -138,18 +138,26 @@ if($patientSingleData['numrows']== 0){
                         <img src="../assets/images/icons/patient.png" width="200px" alt="">
                       </div>
                                 <table class="table table-bordered">
-                                  <thead>
+                                  <thead class="table-light">
                                     <th><label for="">Name</label></th>
                                     <th><label for="">Phone</label></th>
                                     <th><label for="">Gender</label></th>
                                     <th><label for="">Age</label></th>
+                                    <?php  
+                                    if($ChechAmiitedStatus["numrows"] > 0){?> 
+                                    <th><label for="">Status</label></th>
+                                    <?php }?>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <th><?=$patientSingleData['singledata']['name'] ?></th>
-                                      <th><?=$patientSingleData['singledata']['phone'] ?></th>
-                                      <th><?=$patientSingleData['singledata']['gender'] ?></th>
-                                      <th><?=$patientSingleData['singledata']['age'] ?></th>
+                                      <td><?=$patientSingleData['singledata']['name'] ?></td>
+                                      <td><?=$patientSingleData['singledata']['phone'] ?></td>
+                                      <td><?=$patientSingleData['singledata']['gender'] ?></td>
+                                      <td><?=$patientSingleData['singledata']['age'] ?></td>
+                                      <?php  
+                                    if($ChechAmiitedStatus["numrows"] > 0){?> 
+                                    <td><label for=""><?= $ChechAmiitedStatus["singledata"]["roles"]?></label></td>
+                                    <?php }?>
                                     </tr>
                                   </tbody>
 
@@ -176,10 +184,15 @@ if($patientSingleData['numrows']== 0){
                           </div>
                           <div class="col-md-4">
                             <div class="card">
-                            
+                              
+                           <?php 
+                           if(isset($ChechAmiitedStatus["singledata"]["roles"]["ADMITTED"])){?> 
+                                    <a href="<?= $baseurl ?>/pages/invoice.php?patientid=<?= $patientSingleData['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3"><i class="mdi mdi-ambulance  float-right"></i> Release 
+                                </a>
+                                    <?php } else{ ?>
                                 <button class=" btn btn-sm btn-outline-dark font-weight-normal mb-3" id="admitBtn"><i class="mdi mdi-ambulance  float-right"></i> Admit 
                                 </button>
-                            
+                            <?php } ?>
                             </div>
                           </div>
                       </div>
@@ -207,78 +220,26 @@ if($patientSingleData['numrows']== 0){
 <!-- Conditional -->
 <?php 
 // ! CONDITION START @:SINGLE DATA
-if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data found'){ ?>
+if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data found'){ ?> 
   
-  
-<!-- *** APPOINTMENT start -->
+<!-- ********************************
+            @:APPOINTMENT 
+*********************************-->
 <?php require_once('../components/patient/addappointment.php'); ?>
-<!-- APPOINTMENT END -->
-
 <!-- ********************************
             @:TEST 
 *********************************-->
 <?php require_once("../components/patient/addtest.php"); ?>
-
-<!-- *** TEST END*** -->
-
 <!-- ********************************
            @:ADMIT 
 *********************************-->
+<?php require_once("../components/patient/admitPtient.php"); ?>
 
-<div class="row mt-1 d-none" id="admit">
-    <div class="col-12 ">
-        <div class="card w-100 mx-auto">
-                    <p class="closebtn" id=""> <i class="mdi mdi-close-circle-outline cursor-pointer text-danger" 
-                    onclick="$('#admit').toggleClass('d-none');
-  admitBtn.toggleClass('btn-dark');"> </i></p>
-                    <div class="row card-body justify-content-center">
-        <form class=" justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
-            <div class="form-row d-flex">
-              <div class="form-group col-md-6 mx-2">
-                <label for="name">Name:</label>
-                <input type="text" name="name" required class="form-control" id="name" placeholder="Name">
-              </div>
-              <div class="form-group col-md-6 mx-2">
-                <label for="phone">Phone:</label>
-                <input type="text" minlength="11" maxlength="11" name="phone" required class="form-control" id="phone" placeholder="phone">
-              </div>
-            </div>
-
-            <div class="form-row d-flex">
-            <div class="form-group col-md-4 mx-2">
-                <label for="gender">Gender:</label>
-                <select id="gender"  name="gender" class="form-control">
-                  <option selected>Gender...</option>
-                  <option value="male">Male</option>
-                  <option value="female">female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group col-md-3 mx-2">
-                <label for="age">Age:</label>
-                <input type="text" name="age"  class="form-control" id="age" placeholder="eg 35">
-              </div>
-              <div class="form-group col-md-4 mx-2">
-                <label for="address">Address:</label>
-                <input type="text" name="address" class="form-control" id="address" placeholder="address">
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-center">
-              <button type="submit" class="btn btn-primary"  name="addPatient">Admit Patient</button>
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
-</div>
 <?php } ?>
 
 <!-- *** ADMIT END*** -->
 
-<?php
-if(isset($patientSingleData['singledata'])){ ?>
-
+<?php if(isset($patientSingleData['singledata'])){ ?>
 <?php } ?>
 
 
@@ -322,7 +283,13 @@ if(isset($patientSingleData['singledata'])){ ?>
 	$admitBtn.click(function(){
 	  $('#admit').toggleClass('d-none');
 	  $admitBtn.toggleClass('btn-dark');
-	})
+    $('#searchPatient').addClass('d-none');
+	  $('#or').addClass('d-none');
+	  $('#addBtn').addClass('d-none');
+	  $('#created_at').addClass('d-none');
+	});
+
+
 	
 
 </script>
@@ -339,10 +306,9 @@ $createdBy = $thisAdminData['singledata'];
 
 
 if($thisAdminData['numrows'] > 0 && $createdBy){
-  
-  ?>
+?>
 
-     <div class="row mt-5" id="created_at">
+    <div class="row mt-5" id="created_at">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -364,7 +330,7 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
                             <th> Id </th>
                             <th> Name</th>
                             <th> Phone </th>
-                            <th> Address </th>
+                            <th> Age </th>
                             <th> Created At </th>
                             <th colspan="2"> Action </th>
                           </tr>
@@ -380,7 +346,7 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
                                 </a> 
                             </td>
                             <td><?= $admin['phone']?></td>
-                            <td><?= $admin['address']?></td>
+                            <td><?= $admin['age']?></td>
                             <td>
                               <?= $admin['created_at']?>
                             </td>
@@ -403,7 +369,7 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
             </div>
   <?php 
 }}
- ?>  
+?>  
 
 
 <!-- *** END THIS ADMIN*** -->
@@ -413,4 +379,3 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
           <?php require_once('../include/footer.php') ?>
- 
