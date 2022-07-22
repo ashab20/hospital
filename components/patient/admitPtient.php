@@ -59,7 +59,7 @@
             <div class="form-row d-flex justify-content-center">
               <div class="form-group col-md-4 mx-2">
               <div ><label for="phone">Date:</label><span class="float-end text-danger">*</span></div>
-                <input type="date" name="entry_time"  class="form-control" id="date" placeholder="eg 35">
+                <input type="date" name="entry_time" value="<?=date('Y-m-d')?>" minlength="<?=date('Y-m-d')?>" class="form-control" id="date" placeholder="eg 35">
               </div>
               <div class="form-group col-md-3 mx-2">
                 <label for="condition">Condition:</label>

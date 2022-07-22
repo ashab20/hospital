@@ -85,86 +85,77 @@ if($patientSingleData['numrows']== 0){
     <?php unset($_SESSION["msg"]); } ?>
 
 
-<?php if((isset($_GET['ptn'] ) && strlen($_GET['ptn'])) < 1){ ?>
+<?php if((isset($_GET['phn'] ) && strlen($_GET['phn'])) < 1){ ?>
          <!-- ********************************
             SEARCH PATIENT
     *********************************-->
     <div class="row mb-0" id="addPatient">
               <div class="col-12 ">
                 <div class="card w-100 mx-auto">
-                
+                  <div id="addOrSearch">
                     <div class="row card-body justify-content-center" id="addBtn">
-                      
-                      
                         <div class="card bg-gradient-primary" style="width: 15rem;">
                             <button class=" btn btn-sm font-weight-normal text-white" id="addPatientBtn" ><i class="mdi mdi-alarm-plus   float-right"></i> Add New Patient 
                             </button>
                         </div>
-                    </div> 
-            
-                  <div class="col-12" id="or">
-                    <div class="row justify-content-center text-muted">
-                        OR                   
-                  </div>
-                </div>
-                <div class="row card-body justify-content-center d-block" id="searchPatient">
-                  <form class="form-inline d-flex w-80 col-8 offset-2" method="GET" name="search_patient">
-                    <input class="form-control mr-sm-2 fload-right" id="inputSearch" type="search" name="phn" placeholder="Search by phone" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" id="inputSubmit"  disabled type="submit">Search</button>
-                  </form>
-
-                  <script>
-                  $('#inputSubmit').attr('disabled','disabled');
-                    $('#inputSearch').change(function(){
-                        if($(this).val != ''){
-                            $('#inputSubmit').removeAttr('disabled');
-                        }
-                    });
-                  </script>
-                </div>
-
-                    <div class="col-8 offset-2 my-2">
-                      
-
-                                <?php
-                                if(isset($patientSingleData['singledata']) && $patientSingleData['msg'] === 'No data found'){ ?>
-                                  <p class="mt-5 text-center h2 text-danger justify-content-center mx-auto">Data not found</p>
-                                  <?php } ?>
-                          
-                                <?php
-                              if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data found'){ ?>
-                              <div class="p-2 my-2 text-center justitfy-content-center justify-item-center">
-                        <img src="../assets/images/icons/patient.png" width="200px" alt="">
+                    </div>
+                    <div class="col-12" id="or">
+                      <div class="row justify-content-center text-muted">
+                          OR                   
                       </div>
-                                <table class="table table-bordered">
-                                  <thead class="table-light">
-                                    <th><label for="">Name</label></th>
-                                    <th><label for="">Phone</label></th>
-                                    <th><label for="">Gender</label></th>
-                                    <th><label for="">Age</label></th>
-                                    <?php  
-                                    if($ChechAmiitedStatus["numrows"] > 0){?> 
-                                    <th><label for="">Status</label></th>
-                                    <?php }?>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><?=$patientSingleData['singledata']['name'] ?></td>
-                                      <td><?=$patientSingleData['singledata']['phone'] ?></td>
-                                      <td><?=$patientSingleData['singledata']['gender'] ?></td>
-                                      <td><?=$patientSingleData['singledata']['age'] ?></td>
-                                      <?php  
-                                    if($ChechAmiitedStatus["numrows"] > 0){?> 
-                                    <td><label for=""><?= $ChechAmiitedStatus["singledata"]["roles"]?></label></td>
-                                    <?php }?>
-                                    </tr>
-                                  </tbody>
+                    </div>
+                    <div class="row card-body justify-content-center d-block" id="searchPatient">
+                      <form class="form-inline d-flex w-80 col-8 offset-2" method="GET" name="search_patient">
+                        <input class="form-control mr-sm-2 fload-right" id="inputSearch" type="search" name="phn" placeholder="Search by phone" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" id="inputSubmit"  disabled type="submit">Search</button>
+                      </form>
+                      <script>
+                        $('#inputSubmit').attr('disabled','disabled');
+                          $('#inputSearch').change(function(){
+                              if($(this).val != ''){
+                                  $('#inputSubmit').removeAttr('disabled');
+                              }
+                          });
+                      </script>
+                    </div>
+                    </div>
+                    <div class="col-8 offset-2 my-2">
+                      <?php
+                        if(isset($patientSingleData['singledata']) && $patientSingleData['msg'] === 'No data found'){ ?>
+                          <p class="mt-5 text-center h2 text-danger justify-content-center mx-auto">Data not found</p>
+                        <?php } ?>
+                        <?php
+                          if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data found'){ ?>
+                          <div class="p-2 my-2 text-center justitfy-content-center justify-item-center">
+                            <img src="../assets/images/icons/patient.png" width="200px" alt="">
+                          </div>
+                          <table class="table table-bordered">
+                            <thead class="table-light">
+                              <th><label for="">Name</label></th>
+                              <th><label for="">Phone</label></th>
+                              <th><label for="">Gender</label></th>
+                              <th><label for="">Age</label></th>
+                              <?php  
+                              if($ChechAmiitedStatus["numrows"] > 0){?> 
+                              <th><label for="">Status</label></th>
+                              <?php }?>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><?=$patientSingleData['singledata']['name'] ?></td>
+                                <td><?=$patientSingleData['singledata']['phone'] ?></td>
+                                <td><?=$patientSingleData['singledata']['gender'] ?></td>
+                                <td><?=$patientSingleData['singledata']['age'] ?></td>
+                                <?php  
+                              if($ChechAmiitedStatus["numrows"] > 0){?> 
+                              <td><label for=""><?= $ChechAmiitedStatus["singledata"]["roles"]?></label></td>
+                              <?php }?>
+                              </tr>
+                            </tbody>
+                          </table>
+                      <!-- *** NEXT SECTION *** -->
 
-                                </table>
-
-                                <!-- *** NEXT SECTION *** -->
-
-                                <div class="row mt-5">
+                        <div class="row mt-5">
                           <div class="col-md-4">
                             <div class="card">
                             
@@ -195,10 +186,8 @@ if($patientSingleData['numrows']== 0){
                             </div>
                           </div>
                       </div>
-
-
                                 <!-- NEXT SECTION END -->
-                              <?php }?>
+                    <?php }?>
                     </div>
                   
 
@@ -288,7 +277,12 @@ if(isset($patientSingleData['singledata']) && $patientSingleData['msg']==='data 
 	  $('#created_at').addClass('d-none');
 	});
 
+//   $.ajax({
+//   url:'./patient.php?phn=',
+//   method:'get'
+// })
 
+// $('#addOrSearch');
 	
 
 </script>

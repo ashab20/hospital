@@ -66,7 +66,8 @@ $mysqli = new Crud();
 
 
 
-$allPatient = $mysqli->find("SELECT p.*, a.id as admit_id,a.*,r.room_no,r.rate,r.floor  FROM  patient p JOIN admit a on p.id=a.patient_id join room r ON r.id=a.room_id WHERE a.roles ='ADMITTED' ORDER by a.created_at DESC");
+$allPatient = $mysqli->find("SELECT a.*,p.id as patient_id,p.name,p.gender,p.age,u.name as doctor_name FROM appointment a JOIN doctor d ON a.doctor_id=d.id JOIN patient p ON a.patient_id=p.id JOIN user u ON u.id=d.user_id ORDER BY a.date DESC
+");
 
 $patient = $allPatient["singledata"];
 ?>
@@ -111,7 +112,8 @@ $patient = $allPatient["singledata"];
                             <th> Name</th>
                             <th> Phone </th>
                             <th> Gender </th>
-                            <th> Cavin No </th>
+                            <th> Doctor Name </th>
+                            <th> Time </th>
                             <th colspan="2"> Action </th>
                           </tr>
                         </thead>
@@ -131,22 +133,33 @@ $patient = $allPatient["singledata"];
                             <td><?= $p['phone']?></td>
                             <td><?= $p['gender']?></td>
                             <td>
-                              <?= $p["floor"]." - ".$p['room_no'] ?>
+                              <?= $p["doctor_name"]?>
+                            </td>
+                            <td>
+                              <?= $p["time"]?> <br><br>
+                              <?php $d = explode("-",$p["date"]); echo $d[2]."/".$d[1]."/".$d[0]; ?>
                             </td>
                             <td >
                                 <span class="d-flex justify-content-center">                                
-                              <a title="Details" href="<?= $baseurl ?>/pages/details.php?admitid=<?= $p['admit_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
-                              <i class=" mdi mdi-eye"></i>
+                              <a title="Appointment Card" target="_blank" href="<?= $baseurl ?>/view/appointmentcard.php?aid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class="mdi mdi-account-card-details"></i>
                             </a>
-                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
-                              <i class=" mdi mdi-file-document-box "></i>
+                            <!-- Check prescription -->
+                            <?php 
+                              $checkApp = $mysqli->select_single("SELECT * from prescription WHERE appointment_id=".$p["id"]);
+                              if($checkApp["numrows"] > 0){
+                                 ?>
+                              <a title="View Prescriotion" href="<?= $baseurl ?>/view/viewprescriotion.php?presid=<?=$checkApp["singledata"]["id"]?>" class="btn-sm bg-success text-decoration-none text-white m-1">
+                              <i class="mdi mdi-file-document-box"></i>
                               </a>
+                            <?php }else{ ?>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?appointmentid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-note-plus"></i>
+                              </a>
+                           <?php }  ?>
                               <a title="Test/release" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class="mdi mdi-plus-circle-multiple-outline"></i>
                               </a>
-                              <button title="Release Request"  class=" btn btn-sm bg-warning text-decoration-none text-white m-1" id="released">
-                              <i class=" mdi mdi-export"></i>
-                              </button>
                             </span>
                             </td>
                           </tr>

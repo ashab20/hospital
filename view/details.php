@@ -1,6 +1,6 @@
 <?php
-if(isset($_GET['pid']) && strlen($_GET['pid']) > 0){
-  $patientId =$_GET['pid'];
+if(isset($_GET['admitid']) && strlen($_GET['admitid']) > 0){
+  $admitid = $_GET['admitid'];
 }
 
 
@@ -47,7 +47,7 @@ if($data['error']){
   echo "error";
 }
 
-$admitedData = $mysqli->select_single("SELECT p.*, a.* , a.id as admitid, d.id, d.user_id, u.name as doctor_name ,r.room_no, r.floor FROM patient p JOIN admit a on p.id=a.patient_id JOIN doctor d on d.id=a.patient_of JOIN user u on d.user_id=u.id JOIN room r on r.id=a.room_id WHERE p.id=$patientId");
+$admitedData = $mysqli->select_single("SELECT p.*, a.* , a.id as admitid, d.id, d.user_id, u.name as doctor_name ,r.room_no, r.floor FROM patient p JOIN admit a on p.id=a.patient_id JOIN doctor d on d.id=a.patient_of JOIN user u on d.user_id=u.id JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
 
 $patientInfo = $admitedData["singledata"];
 ?>

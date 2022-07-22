@@ -401,13 +401,13 @@ if(isset($_SESSION['msg'])){
           <td><?= $app["department_name"]?></td>
           <td><?= $app["message"]?></td>
           <td>
-            <?= $app["time"]?><br>
-            <?= $app["date"]?>
-          </td>
+                              <?= $app["time"]?> <br><br>
+                              <?php $d = explode("-",$app["date"]); echo $d[2]."/".$d[1]."/".$d[0]; ?>
+                            </td>
           <td>
           <span class="d-flex justify-content-center">                                
                               <a title="Appointment Card" target="_blank" href="<?= $baseurl ?>/view/appointmentcard.php?aid=<?= $app['appointment_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
-                              <i class=" mdi mdi-eye"></i>
+                              <i class="mdi mdi-account-card-details"></i>
                             </a>
                              <!-- check appointment in prescription -->
                              <?php 

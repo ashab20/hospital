@@ -135,7 +135,7 @@ if($data['error']){
                         <i class="mdi mdi-chevron-down" onclick="$('#patientctl').toggleClass('d-none')"></i></span>
                     </div>
                     <hr/>
-                    <div class="row" id="patientctl">
+                    <div class="row d-flex justify-content-center" id="patientctl">
                       <div class="col-3" class="d-flex justify-content-center">
                         <a href="<?=$baseurl?>/pages/patient.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
@@ -144,24 +144,24 @@ if($data['error']){
                         </a>
                       </div>
                       <div class="col-3" class="d-flex justify-content-center">
-                        <a href="" 
+                        <a href="<?= $baseurl?>/pages/appointmented.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
                           <img src="../assets/images/icons/deadline.png" height="80px" width="80px" alt="">
-                          <h5 class="py-4">Make Appointment</h5>
+                          <h5 class="py-4">Appointment List</h5>
                         </a>
                       </div>
                       <div class="col-3" class="d-flex justify-content-center">
-                        <a href="<?= $baseurl?>/pages/invoice.php" 
+                        <a href="<?= $baseurl?>/pages/allpatient.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
                           <img src="../assets/images/icons/medicaltest.png" height="80px" width="80px" alt="">
-                          <h5 class="py-4">Apply Test</h5>
+                          <h5 class="py-4">Patient List</h5>
                         </a>
                       </div>
                       <div class="col-3" class="d-flex justify-content-center">
-                        <a href="" 
+                        <a href="<?= $baseurl?>/pages/admitedpatient.php" 
                         class="p-4 text-decoration-none text-center text-muted d-flex flex-column align-items-center justify-content-center">
                           <img src="../assets/images/icons/bed.png" height="80px" width="80px" alt="">
-                          <h5 class="py-4">Admit Patient</h5>
+                          <h5 class="py-4">Admited List</h5>
                         </a>
                       </div>
                     </div>

@@ -120,6 +120,7 @@ $patient = $allPatient["singledata"];
                               <?= $p['blood_group']?>
                             </td>
                             <td>
+                              
                             <span class="d-flex justify-content-center">                                
                               <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
                               <i class=" mdi mdi-eye"></i>

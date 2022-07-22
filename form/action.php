@@ -191,7 +191,7 @@ if(isset($_POST["appt"])){
     if($appt['msg']='saved'){
       // if($user['roles']=='SUPERAMDMIN' or $user['roles']=='AMDMIN'){
          $_SESSION['appt']="<p style='color:green'>Appointment Submited </p>";
-      echo "<script> location.replace('$baseurl/pages/payinfo.php?invoice=$invoieInsert_id')</script>";
+      echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$invoieInsert_id')</script>";
       // }else{
       //   $_SESSION['appt']="<p style='color:green'>Appointment Submited </p>";
       // echo "<script> location.replace('$baseurl/pages/success.php?phn=$phone')</script>";
@@ -237,7 +237,7 @@ unset($_POST["admitPatient"]);
 $_POST["refarecne_by"] = htmlentities(ucwords($_POST["refarecne_by"]));
 $_POST["guardian_name"] = htmlentities(ucwords($_POST["guardian_name"]));
 $_POST["relationship_with_patient"] = htmlentities(ucwords($_POST["relationship_with_patient"]));
-
+$_POST["entry_time"] .= " ".date('h:i:s') ;
 $_POST["roles"] = 'ADMITTED';
 
 if($user){
@@ -268,7 +268,7 @@ if($user){
   }
 
     
-    echo "<script> location.replace('$baseurl/pages/details.php?pid=$id')</script>";
+    echo "<script> location.replace('$baseurl/view/details.php?admitid=$id')</script>";
   }
 }
 
@@ -849,7 +849,7 @@ if(isset($_POST["invoice_payment"])){
       $insert_id = $create['insert_id'];
       $invoiceId=$mysqli->select_single("SELECT * FROM invoice_payment WHERE id=$insert_id")['singledata']['id'];      
       $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>rate Added Successfully</p>";
-      echo "<script> location.replace('$baseurl/pages/payinfo.php?invoice=$insert_id')</script>";
+      echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$insert_id')</script>";
     }
   }
 }

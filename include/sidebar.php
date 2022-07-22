@@ -58,11 +58,11 @@ if($usr['roles'] === 'SUPERADMIN'){?>
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/doctor.php">
                        Doctors
                     </a></li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/emp.php"> 
                       Employees
                     </a>
-                  </li>
+                  </li> -->
                   <!-- <li class="nav-item">
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/patient.php"> 
                       Patients
@@ -94,9 +94,10 @@ if($usr['roles'] === 'SUPERADMIN'){?>
               </a>
               <div class="collapse" id="patient">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/allpatient.php">Patient List</a></li>
                   <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/patient.php">Add Patient</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/allpatient.php">Patient List</a></li>
                   <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/admitedpatient.php">Admited Patient</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/appointmented.php">Appointment List</a></li>
                 </ul>
               </div>
             </li>
