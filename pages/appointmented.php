@@ -141,9 +141,7 @@ $patient = $allPatient["singledata"];
                             </td>
                             <td >
                                 <span class="d-flex justify-content-center">                                
-                              <a title="Appointment Card" target="_blank" href="<?= $baseurl ?>/view/appointmentcard.php?aid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
-                              <i class="mdi mdi-account-card-details"></i>
-                            </a>
+                            
                             <!-- Check prescription -->
                             <?php 
                               $checkApp = $mysqli->select_single("SELECT * from prescription WHERE appointment_id=".$p["id"]);
@@ -152,7 +150,10 @@ $patient = $allPatient["singledata"];
                               <a title="View Prescriotion" href="<?= $baseurl ?>/view/viewprescriotion.php?presid=<?=$checkApp["singledata"]["id"]?>" class="btn-sm bg-success text-decoration-none text-white m-1">
                               <i class="mdi mdi-file-document-box"></i>
                               </a>
-                            <?php }else{ ?>
+                            <?php }else{ ?>  
+                              <a title="Appointment Card" target="_blank" href="<?= $baseurl ?>/view/appointmentcard.php?aid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class="mdi mdi-account-card-details"></i>
+                            </a>
                               <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?appointmentid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class="mdi mdi-note-plus"></i>
                               </a>

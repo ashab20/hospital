@@ -169,7 +169,7 @@ $patientInfo = $prescriptionData["singledata"];
                               <thead>
                                 <th>Type</th>
                                 <th>Medicine</th>
-                                <th>MG/MI</th>
+                                <th>MG/ML</th>
                                 <th>Dose</th>
                                 <th>Day</th>
                                 <th>Comment</th>

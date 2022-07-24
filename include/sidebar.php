@@ -45,10 +45,10 @@ if($usr['roles'] === 'SUPERADMIN'){?>
               </a>
               <div class="collapse" id="general-pages">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> 
+                  <!-- <li class="nav-item"> 
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/"> Overview                      
                     </a>
-                  </li>
+                  </li> -->
                   <li class="nav-item"> 
                     <a class="nav-link" href="<?= $baseurl?>/dashboard/user.php">
                     Users                      
@@ -80,8 +80,8 @@ if($usr['roles'] === 'SUPERADMIN'){?>
               <div class="collapse" id="user">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/pages/profile.php?id=<?=$usr['id'] ?>"> Profile </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Update Profile </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Change Password </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/form/updateuser.php?id"> Update Profile </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/pages/changepassword.php"> Change Password </a></li>
                 </ul>
               </div>
             </li>
@@ -101,17 +101,35 @@ if($usr['roles'] === 'SUPERADMIN'){?>
                 </ul>
               </div>
             </li>
+            <!-- Nurse -->
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#nurse" aria-expanded="false" aria-controls="nurse">
+                <span class="menu-title">Nurse</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-medical-bag menu-icon"></i>
+              </a>
+              <div class="collapse" id="nurse">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/patientcare.php">Patient Care</a></li>
+                </ul>
+              </div>
+            </li>
             <!-- Categories -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">
-                <span class="menu-title">Setting</span>
+                <span class="menu-title">Controller</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
               </a>
               <div class="collapse" id="ui-basic2">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/categories.php">Department</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Designation</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/department.php">Department</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/designation.php">Designation</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/room.php">Cavin/Chamber</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/rate.php">Rate</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/service.php">Service</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/test.php">Test</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?= $baseurl ?>/controller/medicinestore.php">Medicine Store</a></li>
                 </ul>
               </div>
             </li>

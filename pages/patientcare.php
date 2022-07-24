@@ -40,7 +40,7 @@ if(isset($_GET["appointmentid"])){
     $pid = $admit["patient_id"];
 
 }else{
-    echo "<script>location.replace('$baseurl/pages/patient.php')</script>";
+    // echo "<script>location.replace('$baseurl/pages/patient.php')</script>";
 
 }
 ?>
@@ -57,7 +57,7 @@ if(isset($_GET["appointmentid"])){
             <!-- general form elements -->
             <div class="card p-4">
               <div class="">
-                    <h2 style="font-size:1.6rem;" class="card-title text-dark  mx-4 text-bold">Prescribe <hr style="width: 7rem;"></h2>
+                    <h2 style="font-size:1.6rem;" class="card-title text-dark  mx-4 text-bold">Patient Care <hr style="width: 7rem;"></h2>
             </div>
             
             <form  action="<?= $baseurl?>/form/action.php"method="POST" >
@@ -78,13 +78,81 @@ if(isset($_GET["appointmentid"])){
                     <!-- outer repeater -->
                     <div class="repeater">
                         <div class="d-flex justify-content-between">
-                            <h4 class="text-muted">Medicine</h4>
+                            <h4 class="text-muted">General Checkup</h4>
                             <button class="btn text-info bg-outline-dark  btn-sm" data-repeater-create type="button">
                                 <i class="mdi mdi-plus-circle"></i> Add
                             </button>
                         </div>
                         <div data-repeater-list="outer-list">
                             <div  data-repeater-item class="row mt-2 ">
+                                <div class="col-2  mr-1">
+                                    <input type="text" placeholder="Presure" name="presure" class="form-control">
+                                </div>                               
+                                <div class="col-3 p-0 mx-1">
+                                <input type="text" class="form-control" name="temperature"  placeholder="temperature">
+                                </div>
+                                <div class="col-2 p-0 mx-1">
+                                    <input type="text" class="form-control" name="bp" placeholder="BP" id="bp">
+                                    <small><p class="text-red"></p></small>
+                                </div>                             
+                                <div class="col-3 p-0 mx-1">
+                                    <input type="text" class="form-control" name="saturation" placeholder="Oxygen Saturation Level">
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-sm bg-danger text-white mt-1" data-repeater-delete type="button">
+                                        <i class=" mdi mdi-delete "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Prescribe test -->
+                <div class="row form-group border m-1 p-2 ">
+                    <!-- outer repeater -->
+                    <div class="repeater_test col-12 my-2">
+                        <div class="d-flex justify-content-between ">
+                            <h4 class="text-muted">Service</h4>
+                            <button class="btn text-info bg-outline-dark  btn-sm" data-repeater-create type="button">
+                                <i class="mdi mdi-plus-circle"></i> Add
+                            </button>
+                        </div>
+                        <div data-repeater-list="inner-list">
+                            <div  data-repeater-item class="row mt-2 inner-repeater">
+                                <div class="col-4  mr-1">
+                                        <input type="text" placeholder="Service Name" name="service_name" class="form-control">
+                                </div>                               
+                                <div class="col-3 p-0 mx-1">
+                                    <input type="text" class="form-control" name="description" placeholder="Description">
+                                </div>
+                                <div class="col-3 p-0 mx-1 d-flex">
+                                        <input type="text"  class="form-control" name="duration" placeholder="Duration" required>
+                                        <select name="" id="" class="form-select">
+                                            <option value="hours">Hours</option>
+                                            <option value="minute">Minute</option>
+                                        </select>
+                                </div>
+
+                                <div class="col-1">
+                                    <button class="btn btn-sm bg-danger text-white mt-1" data-repeater-delete type="button">
+                                        <i class=" mdi mdi-delete "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="row form-group border m-1 p-2 ">
+                    <!-- outer repeater -->
+                    <div class="repeater_medicine col-12 my-2">
+                        <div class="d-flex justify-content-between ">
+                            <h4 class="text-muted">Medicine Service</h4>
+                            <button class="btn text-info bg-outline-dark  btn-sm" data-repeater-create type="button">
+                                <i class="mdi mdi-plus-circle"></i> Add
+                            </button>
+                        </div>
+                        <div data-repeater-list="inner-list">
+                            <div  data-repeater-item class="row mt-2 inner-repeater">
                                 <div class="col-2  mr-1">
                                     <select name="type" id="" class="form-select" required>
                                         <option value="">Type..</option>
@@ -94,75 +162,17 @@ if(isset($_GET["appointmentid"])){
                                     <!-- <input type="text" placeholder="Type" name="type" class="form-control"> -->
                                 </div>                               
                                 <div class="col-3 p-0 mx-1">
-                                <input type="text" class="form-control" name="medicine_name"  placeholder="Medicine Name">
+                                <input type="text" class="form-control" name="name"  placeholder="Medicine Name">
                                 </div>
                                 <div class="col-1 p-0 mx-1">
-                                    <input type="text" class="form-control" name="mg" placeholder="MG/ML" id="mg">
+                                    <input type="text" class="form-control" name="mg" placeholder="Mg/MI" id="mg">
                                     <small><p class="text-red"></p></small>
                                 </div>
-                                
-
                                 <div class="col-1 p-0 mx-1">
-                                    <input type="text" class="form-control" name="dose" placeholder="Dose">
+                                    <input type="text" class="form-control" name="total_dose" placeholder="Total Tab">
                                 </div>
                                 <div class="col-1 p-0 mx-1">
-                                    <input type="text" class="form-control" name="day" placeholder="day">
-                                </div>
-                                <div class="col-2 p-0 mx-1">
-                                    <input type="text" class="form-control" name="comment" placeholder="Comment">
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-sm bg-danger text-white mt-1" data-repeater-delete type="button">
-                                        <i class=" mdi mdi-delete "></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2 mx-1">
-                            <textarea name="overal_comment" id="" cols="20" rows="5" placeholder="Overall Comment" class="form-control"></textarea>
-                        </div>
-                        
-                    </div>
-                </div>
-                <hr>
-                    <!-- Prescribe test -->
-                    <div class="row form-group border m-1 p-2 ">
-                
-                    <!-- outer repeater -->
-                    <div class="repeater_test col-6 my-2">
-                        <div class="d-flex justify-content-between ">
-                            <h4 class="text-muted">Test</h4>
-                            <button class="btn text-info bg-outline-dark  btn-sm" data-repeater-create type="button">
-                                <i class="mdi mdi-plus-circle"></i> Add
-                            </button>
-                        </div>
-                        <div data-repeater-list="inner-list">
-                            <div  data-repeater-item class="row mt-2 inner-repeater">
-                                <div class="col-4  mr-1">
-                                        <input type="text" placeholder="Test Name" name="test" class="form-control">
-                                </div>                               
-                                <div class="col-6 p-0 mx-1">
-                                <input type="text" class="form-control" name="description" placeholder="Description">
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-sm bg-danger text-white mt-1" data-repeater-delete type="button">
-                                        <i class=" mdi mdi-delete "></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
-                    <div class="repeater_advice col-6 my-2">
-                        <div class="d-flex justify-content-between">
-                            <h4>Advice</h4>
-                            <button class="btn text-info bg-outline-dark  btn-sm" data-repeater-create type="button">
-                                <i class="mdi mdi-plus-circle"></i> Add
-                            </button>
-                        </div>
-                        <div data-repeater-list="inner-list">
-                            <div  data-repeater-item class="row mt-2 inner-repeater">                              
-                                <div class="col-8 p-0 mx-1">
-                                <input type="text" class="form-control" name="advice" placeholder="Advice">
+                                    <input type="text" class="form-control" name="rate" placeholder="Rate">
                                 </div>
                                 <div class="col-1">
                                     <button class="btn btn-sm bg-danger text-white mt-1" data-repeater-delete type="button">
@@ -173,18 +183,17 @@ if(isset($_GET["appointmentid"])){
                         </div>                        
                     </div>
                 </div>
-
-                  <div class="form-group">
+                <div class="form-group">
                     <div class="row justify-content-end">
-                      <div class="col-md-2  mt-4 ">
-                        <input type="submit" class="btn btn-success" value="Prescribe" name="prescription" id="prescription">
-                      </div>
+                    <div class="col-md-2  mt-4 ">
+                        <input type="submit" class="btn btn-success" value="Update" name="patientcare" id="prescription">
                     </div>
-                  </div>
+                    </div>
+                </div>
                 </div>
                 <!-- /.card-body -->
-              </form>
-              
+            </form>
+            
             </div>
             <!-- /.card -->
 
@@ -205,8 +214,6 @@ if(isset($_GET["appointmentid"])){
 
 <script>
     $(document).ready(function () {
-      
-        
 
         $('.repeater').repeater({
             // (Required if there is a nested repeater)
@@ -232,7 +239,7 @@ if(isset($_GET["appointmentid"])){
                 selector: '.inner-repeater'
             }]
         });
-        $('.repeater_advice').repeater({
+        $('.repeater_medicine').repeater({
             // (Required if there is a nested repeater)
             // Specify the configuration of the nested repeaters.
             // Nested configuration follows the same format as the base configuration,

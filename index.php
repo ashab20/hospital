@@ -94,16 +94,16 @@ require_once('./config.php');
           // link
           $link =$user = '';
           if($_SESSION['userdata']){ 
-            $link= 'user.php';
+            $link= 'dashboard/user.php';
           } 
 
           $user = $_SESSION['userdata']['name'];
           }else{
             $user = 'LOGIN';
-            $link = 'login.php';
+            $link = 'pages/login.php';
           }
           ?>
-        <a href="<?= $baseurl ?>/pages/<?= $link ?>" class="appointment-btn scrollto btn-gradient-primary ">
+        <a href="<?= $baseurl ?>/<?= $link ?>" class="appointment-btn scrollto btn-gradient-primary ">
           <?= $user ?>
         </a>
       </div>

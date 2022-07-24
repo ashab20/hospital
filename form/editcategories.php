@@ -236,7 +236,7 @@
                     </div>
                     <div class="form-group col-md-6 mx-2">
                       <label for="description">Description </label>
-                      <textarea type="text" minlength="3" maxlength="11" name="description" required class="form-control" id="description" placeholder="Description"><?= $rate_data['description'] ?></textarea>
+                      <textarea type="text" minlength="3" maxlength="11" name="description"  class="form-control" id="description" placeholder="Description"><?= $rate_data['description'] ?></textarea>
                     </div>
                   </div>
                   <div class="d-flex justify-content-center">
@@ -286,7 +286,7 @@
 
           <!-- Rate end -->
 
-          <!-- Rate Form -->
+          <!-- Test Form -->
               
           <?php 
             if(isset($_GET['testId']) && strlen($_GET['testId']) > 0){ ?>
@@ -323,7 +323,53 @@
             } 
             ?>
 
-          <!-- Rate end -->
+          <!-- Test end -->
+
+          <!-- Medicinestore Form -->
+              
+          <?php 
+            if(isset($_GET['mId']) && strlen($_GET['mId']) > 0){ ?>
+            <div class="card">
+              <div class="bg-info card-body">
+                <?php
+                  $medicinestore_id=$_GET['mId'];
+                  $medicinestore_data=$mysqli->select_single("select * from medicinestore where id=$medicinestore_id")['singledata'];
+                ?>
+                <h4 class="card-title">Update Rate</h4>
+                <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
+                  <input type="text" name="id" value="<?=$_GET['mId'] ?>" hidden>
+                  <div class="form-row d-flex">
+                    <div class="form-group mx-2">
+                      <select name="type" id="" class="form-select" required>
+                        <option value="<?= $medicinestore_data['type'] ?>"><?= $medicinestore_data['type'] ?></option>
+                        <option value="TAB">TAB</option>
+                        <option value="INJ">INJ</option>
+                    </select>
+                    </div>
+                    <div class="form-group mx-2">
+                      <input type="text" value="<?= $medicinestore_data['name'] ?>" name="name" required class="form-control" id="name" placeholder="Name">
+                    </div>
+                    <div class="form-group mx-2">
+                      <input type="text" value="<?= $medicinestore_data['mg'] ?>" name="mg" required class="form-control" id="mg" placeholder="MG">
+                    </div>
+                    <div class="form-group mx-2">
+                      <input type="text" value="<?= $medicinestore_data['total_dose'] ?>" name="total_dose" required class="form-control" id="total_dose" placeholder="total_dose">
+                    </div>
+                    <div class="form-group mx-2">
+                      <input type="text" value="<?= $medicinestore_data['rate'] ?>" minlength="3" maxlength="11" name="rate" required class="form-control" id="rate" placeholder="Rate">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" name="update_medicinstore">Update</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <?php
+            } 
+            ?>
+
+          <!-- Medicinestore end -->
 
           </div>
         </div>

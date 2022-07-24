@@ -149,7 +149,7 @@ if($data['error']){
                             </a>
                               <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $u['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
                               <i class="mdi mdi-delete"></i>
-                              <i class=" mdi mdi-chevron-down pointer" style="cursor:pointer" onclick="$('#extra').toggleClass('d-none');"></i>
+                              <!-- <i class=" mdi mdi-chevron-down pointer" style="cursor:pointer" onclick="$('#extra').toggleClass('d-none');"></i> -->
                               </a>
                             </td>
                           </tr>

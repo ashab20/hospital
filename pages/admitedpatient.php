@@ -135,7 +135,7 @@ $patient = $allPatient["singledata"];
                             </td>
                             <td >
                                 <span class="d-flex justify-content-center">                                
-                              <a title="Details" href="<?= $baseurl ?>/pages/details.php?admitid=<?= $p['admit_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <a title="Details" href="<?= $baseurl ?>/view/details.php?admitid=<?= $p['admit_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
                               <i class=" mdi mdi-eye"></i>
                             </a>
                               <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
@@ -150,9 +150,12 @@ $patient = $allPatient["singledata"];
                             </span>
                             </td>
                           </tr>
+                          <tr class="d-none">
+                            <td colspan="7"></td>
+                          </tr>
                           <?php }}else{?>
                             <tr>
-                              <td colspan="5">No Data Found</td>
+                              <td colspan="7">No Data Found</td>
                             </tr>
                          <?php } ?>
                         </tbody>

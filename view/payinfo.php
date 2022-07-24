@@ -37,6 +37,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     // $invoice = array_merge($invoice_data['singledata']);
     $invoice = $invoice_data['singledata'];
 
+
     if($invoice_data['numrows'] > 0){
 ?>
 
@@ -44,16 +45,36 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     <!-- Invoice Page -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-<div class="page-content container bg-white p-5" >
+      
+    <div class="row bg-info m-4 justify-content-center d-none" style="position:absolute;z-index:1000;opacity:1;width:50%;margin:0 auto;top:5rem;" id="payment">
+    <form class="pt-3 justify-content-center items-center" id="addserv" method="POST" action="<?=$baseurl?>/form/action.php">
+                  <div class="form-row">
+                    <div class="form-group col-md-12 mx-2">
+                      <label for="name">Total:</label>
+                      <input type="text" name="service_name" required class="form-control" id="name" placeholder="Total">
+                    </div>
+                    <div class="form-group col-md-12 mx-2">
+                      <label for="rate">Paid:</label>
+                      <input type="number" name="rate" required class="form-control" id="rate" placeholder="Rate">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mx-2"  name="add_service">Payment</button>
+                    <button type="submit" class="btn btn-danger mx-2" onclick="$('#payment').addClass('d-none')" name="add_service">Close</button>
+                  </div>
+                  </form>
+    </div> 
+
+<div  class="page-content container bg-white p-5" >
         <!-- Appointment card -->
-        
+   
 
     <div class="page-header text-blue-d2">
         <h1 class="page-title text-secondary-d1">
             Invoice
             <small class="page-info">
                 <i class="fa fa-angle-double-right text-80"></i>
-                ID: <?=$invoiceId?>
+                ID: <?=sprintf('%05u', $invoiceId)?>
             </small>
         </h1>
 
@@ -70,6 +91,9 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
             </div>
         </div>
     </div>
+
+    
+
 
     <div class="container px-0" id="printPage">
         <!-- start for print -->
@@ -111,7 +135,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                 Invoice
                             </div>
 
-                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">ID:</span> <?= $invoice['id']?></div>
+                            <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">ID:</span> <?= sprintf('%05u', $invoice['id'])?></div>
 
                             <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Issue Date:</span> <?= $invoice['payment_date']?></div>
 
@@ -156,7 +180,9 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                             <td class="text-95"><?= $test['rate']?><b style="font-size:1rem;">৳</b></td>
                             <!-- <td class="text-secondary-d2">$20</td> -->
                         </tr> 
-                        <?php  } ?>
+                        <?php  }
+
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -164,8 +190,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
             
             <!-- *** APPOINTMENT *** -->
             <?php if($invoice['appointment_id'] != null){ 
-                $appointmentId = $invoice['appointment_id'];
-                
+                $appointmentId = $invoice['appointment_id'];                
                 $data = $mysqli->find("SELECT u.name ,a.id,d.qualification,u.phone,a.date,a.time FROM user u JOIN doctor d on u.id=d.user_id JOIN appointment a on a.doctor_id=d.id WHERE a.id=$appointmentId");
                 if($data["numrows"] > 0){
                 ?>
@@ -194,6 +219,38 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                         </div>
                         <?php }  } ?>
             <!-- **************** -->
+
+            <!-- Amidte Invoice start -->
+            <?php if($invoice['admit_id'] != null){ 
+                $admitId = $invoice['admit_id'];                
+                $amitdata = $mysqli->find("SELECT a.room_id,r.room_type,r.rate,iv.subtotal,a.duration FROM invoice_payment iv JOIN  admit a on a.id=iv.admit_id JOIN room r ON a.room_id=r.id WHERE a.id=$admitId");
+                if($amitdata["numrows"] > 0){
+                ?>
+                        <div class="row">
+                        <div class="table-responsive col-md-9">
+                            <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                                <thead class="bg-none bgc-default-tp1">
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <th>Medical Services</th>
+                                        <th>Duration</th>
+                                        <th>Rate</th>
+                                        <th width="140">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><?=["room_type"] ?></td>
+                                        <td><?= $amitdata["singledata"][0]["duration"]?></td>
+                                        <td><?= $amitdata["singledata"][0]['rate'] ?></td>
+                                        <td><?= $invoice['subtotal'] ?></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <?php }  } ?>
+            <!-- Amidte Invoice End -->
                     <div class="row mt-3">
                         <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
                             <?= $invoice['note']?>
@@ -278,7 +335,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                         <?php
                             if(isset($invoice['remark']) && $invoice['remark'] == 'DUE'){
                         ?>
-                        <a href="#" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0">Pay Now</a>
+                        <button href="#" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" onclick="$('#payment').removeClass('d-none')">Pay Now</button>
                         <?php } ?>
                         <?php 
                         if($invoice['appointment_id'] != null && $invoice['remark'] == 'PAID'){
@@ -355,8 +412,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     echo "<script>location.replace('$baseurl/pages/error-404.html');</script>";
 }
 ?>
-
-        
+   
         
     </div>
     <!-- content-wrapper ends -->

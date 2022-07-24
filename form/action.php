@@ -248,11 +248,8 @@ if($user){
     $_SESSION["msg"] = "Patient Already Admited in ban no ".$checkData["singledata"]["room_no"];
     echo "<script> location.replace('$baseurl/pages/admitedpatient.php')</script>";
   }else{
-
-  
-
-  $admitPatient =  $mysqli->creator("admit",$_POST);
-  
+    $admitPatient =  $mysqli->creator("admit",$_POST);
+    $id = $admitPatient["insert_id"];
   if($admitPatient["error"]){
     $_SESSION['msg']=$data['error'];
   }else{
@@ -265,9 +262,7 @@ if($user){
     if($data["error"]){
       echo $data["updated"];
     }
-  }
-
-    
+  }    
     echo "<script> location.replace('$baseurl/view/details.php?admitid=$id')</script>";
   }
 }
@@ -437,11 +432,11 @@ if(isset($_POST['dept_form'])){
     $data = $mysqli->creator('department',$_POST);
     if($data['error']){
       $_SESSION['msg']=$data['msg'];
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/department.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/department.php')</script>";      
         $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Department Added Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
       }
@@ -463,11 +458,11 @@ if(isset($_POST['add_degi'])){
   $data = $mysqli->creator('designation',$_POST);
   if($data['error']){
       $_SESSION['degi']=$data['msg'];
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/designation.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/designation.php')</script>";      
         $_SESSION['degi']="<p class='h3 text-success text-center justify-content-center mx-auto'>Designation Added Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
       }
@@ -498,11 +493,11 @@ if(isset($_POST['add_room'])){
     $data = $mysqli->creator('room',$_POST);
     if($data['error']){
       $_SESSION['room']=$data['msg'];
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/room.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/room.php')</script>";      
         $_SESSION['room']="<p class='h3 text-success text-center justify-content-center mx-auto'>Room Added Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
       }
@@ -526,11 +521,11 @@ if(isset($_POST['add_service'])){
     $data = $mysqli->creator('service',$_POST);
     if($data['error']){
       $_SESSION['service']=$data['msg'];
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/service.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/service.php')</script>";      
         $_SESSION['service']="<p class='h3 text-success text-center justify-content-center mx-auto'>service Added Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
       }
@@ -551,11 +546,11 @@ if(isset($_POST['add_service_rate'])){
     $data = $mysqli->creator('rate',$_POST);
     if($data['error']){
       $_SESSION['rate']=$data['msg'];
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/rate.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/rate.php')</script>";      
         $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>Rate Added Successfully</p>";
         echo "<script> location.replace('$baseurl/pages/doctor.php')</script>";
       }
@@ -575,16 +570,37 @@ if(isset($_POST['add_test_rate'])){
     $data = $mysqli->creator('test',$_POST);
     if($data['error']){
       $_SESSION['test']=$data['msg'];
-      // echo "<script> location.replace('$baseurl/pages/categories.php')</script>";
+      echo "<script> location.replace('$baseurl/controller/test.php')</script>";
       
     }else{
       if($data['msg']=='saved'){
         echo "ok";
-          echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+          echo "<script> location.replace('$baseurl/controller/test.php')</script>";      
         $_SESSION['test']="<p class='h3 text-success text-center justify-content-center mx-auto'>Test Added Successfully</p>";
       }
     }
 }
+
+
+// * medicinestore
+
+if(isset($_POST['medicinestore'])){
+  unset($_POST["medicinestore"]);
+  $_POST["name"] = htmlentities(ucwords($_POST["name"]));
+  $data = $mysqli->creator('medicinestore',$_POST);
+  if($data['error']){
+    $_SESSION['msg']=$data['msg'];
+    echo "<script> location.replace('$baseurl/controller/medicinestore.php')</script>";
+    
+  }else{
+    if($data['msg']=='saved'){
+        echo "<script> location.replace('$baseurl/controller/medicinestore.php')</script>";      
+      $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Test Added Successfully</p>";
+    }
+  }
+
+}
+
 
 
 // ? UPDATE CATEGORIES
@@ -609,7 +625,7 @@ if(isset($_POST["update_dept"])){
     
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/department.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Department Updated Successfully</p>";
     }
   }
@@ -638,7 +654,7 @@ if(isset($_POST["update_degi"])){
     
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/designation.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Designation Updated Successfully</p>";
     }
   }
@@ -666,7 +682,7 @@ if(isset($_POST["update_room"])){
     
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/room.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Room Updated Successfully</p>";
     }
   }
@@ -694,7 +710,7 @@ if(isset($_POST["update_service"])){
     echo "<script> location.replace('$baseurl/pages/editcategories.php?serviceId=$service_id')</script>";      
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/service.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Service Updated Successfully</p>";
     }
   }
@@ -719,7 +735,7 @@ if(isset($_POST["update_rate"])){
     echo "<script> location.replace('$baseurl/pages/editcategories.php?roomId=$rate_id')</script>";      
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/rate.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Room Updated Successfully</p>";
     }
   }
@@ -745,7 +761,32 @@ if(isset($_POST["update_test"])){
     echo "<script> location.replace('$baseurl/pages/editcategories.php?testId=$test_id')</script>";      
   }else{
     if($update['updated']){
-      echo "<script> location.replace('$baseurl/pages/categories.php')</script>";      
+      echo "<script> location.replace('$baseurl/controller/test.php')</script>";      
+      $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Test Updated Successfully</p>";
+    }
+  }
+}
+
+// Update Medicinestore
+
+if(isset($_POST["update_medicinstore"])){
+  unset($_POST["update_medicinstore"]);
+  $medicinestore_id=$_POST["id"];
+  unset($_POST["id"]);
+  
+  $_POST["name"] = htmlentities(ucwords($_POST["name"]));
+  // $_POST["mg"] = htmlentities(ucwords($_POST["mg"]));
+  // $_POST["description"] = htmlentities(ucwords($_POST["description"]));
+  $_POST["modified_by"] = $user["id"];
+  $_POST["modified_at"] = date("Y-m-d H:i:s");
+
+  $update = $mysqli->updator("medicinestore",$_POST,"id=$medicinestore_id");
+  if($update["error"]){
+    $_SESSION['msg']=$update['msg'];
+    echo "<script> location.replace('$baseurl/pages/editcategories.php?mId=$medicinestore_id')</script>";      
+  }else{
+    if($update['updated']){
+      echo "<script> location.replace('$baseurl/controller/medicinestore.php')</script>";      
       $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Test Updated Successfully</p>";
     }
   }
@@ -781,9 +822,9 @@ foreach($_POST["outer-list"] as $medicine){
 $_POST["medicine_id"] = json_encode($insert_id);
 $tests = $description = $advice = false;
 foreach($_POST["inner-list"] as $test){
-  $tests .= $test["test"].",";
-  $description .= $test["description"].",";
-  $advice .= $test["advice"].",";
+  $tests[] .= $test["test"].",";
+  $description[] .= $test["description"].",";
+  $advice[] .= $test["advice"].",";
 }
 unset($_POST["outer-list"]);
 unset($_POST["inner-list"]);
@@ -806,6 +847,17 @@ if($prescription["error"]){
 }
 
 
+
+
+
+
+
+
+if(isset($_POST["patientcare"])){
+
+}
+
+
 // invoice Payment
 if(isset($_POST["invoice_payment"])){
   unset($_POST["invoice_payment"]);
@@ -822,11 +874,20 @@ if(isset($_POST["invoice_payment"])){
   if(isset($_POST["appointment_id"])){
   $pay["appointment_id"]=$_POST["appointment_id"];
   }
+  if(isset($_POST["admit_id"])){
+    $pay["admit_id"]=$_POST["admit_id"];
+  }
   if($_POST["remark"] == ""){
     $_POST["remark"]="DUE";
   }
   if($user){
     $_POST['created_by'] = $user['id'];
+  }
+  if(isset($_POST["duration"])){
+    $duration = $_POST["duration"];
+  }
+  if(isset($_POST["out_time"])){
+    $out_time = date("y-m-d h:i:s");
   }
   
   $pay['ipid'] = uniqid('IP'.date('ymdhis'));
@@ -847,9 +908,21 @@ if(isset($_POST["invoice_payment"])){
   }else{
     if($create['msg']=='saved'){
       $insert_id = $create['insert_id'];
-      $invoiceId=$mysqli->select_single("SELECT * FROM invoice_payment WHERE id=$insert_id")['singledata']['id'];      
-      $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>rate Added Successfully</p>";
+      $invoiceData=$mysqli->select_single("SELECT remark,id,admit_id FROM invoice_payment WHERE id=$insert_id")['singledata'];
+      $admitId = $invoiceData["admit_id"];
+      if($admitId != null && $invoiceData["remark"] =="PAID"){
+        $admitUpdate = $mysqli->updator("admit",["roles"=>"RELEASED","duration"=>"$duration","out_time"=>"$out_time"],"id=$admitId");
+        if($admitUpdate["error"]){
+          $_SESSION["msg"] = $admitUpdate["error"];
+        }else{
+          $_SESSION["updated"] = $admitUpdate["error"];
+
+          echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$insert_id')</script>";
+        }
+      }
       echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$insert_id')</script>";
+      $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>rate Added Successfully</p>";
+            
     }
   }
 }

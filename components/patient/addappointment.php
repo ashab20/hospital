@@ -36,9 +36,10 @@
               <label for="gender">Department:</label>
                 <select id="department"  name="department_id" class="form-select" onchange="get_doctor(this.value)">
                   <option value="">Department...</option>
-              <?php foreach ($department as $dept){?>
+              <?php foreach ($department as $dept){
+                if($dept["status"]==1){ ?>
                   <option  value="<?=$dept['id'] ?>"><?= $dept['name']?></option>
-                  <?php } ?>
+                  <?php } }?>
                 </select>
               </div>
               <div class="form-group col-md-3 mx-2">

@@ -143,7 +143,7 @@ if(isset($_SESSION['msg'])){
             
             </div>
             <div class="d-flex justify-content-center ">
-              <button type="submit" class="btn btn-outline-dark my-4"  name="deactive">Deactive Account</button>
+              <!-- <button type="submit" class="btn btn-outline-dark my-4"  name="deactive">Deactive Account</button> -->
           </div>
         </div>
         <?php

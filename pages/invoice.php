@@ -30,7 +30,20 @@ if($usr['roles'] !== 'SUPERADMIN' && $usr['roles'] !== 'ADMIN'){
 $mysqli = new Crud();
 
 $testData = $mysqli->selector("test")['selectdata'];
+if(isset($_GET["admitid"]) && strlen($_GET["admitid"]) > 0){
+  $admitid = $_GET["admitid"];
+  $admitData =$mysqli->select_single("SELECT a.id as admited_id,a.patient_id,r.room_type as item_name,a.entry_time,a.roles, r.rate FROM admit a JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
+  $admit = $admitData["singledata"];
+  $patientId = $admit["patient_id"];
+}elseif(isset($_GET['patientid'])&& strlen($_GET['patientid']) > 0 ){
+    $patientId = $_GET['patientid'];
+}
+$checkInvoice = $mysqli->select_single("SELECT id,patient_id,admit_id FROM invoice_payment WHERE patient_id=$patientId");
+if($checkInvoice["numrows"] > 0){
+  $invoice_id = $checkInvoice["singledata"]["id"];
+  echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$invoice_id')</script>";
 
+}
 ?>
 <!-- invoicce content -->
   <section class="content">
@@ -46,8 +59,6 @@ $testData = $mysqli->selector("test")['selectdata'];
               <!-- /.card-header -->
               <!-- form start -->
               <?php
-                if(isset($_GET['patientid']) && strlen($_GET['patientid']) > 0){
-                $patientId = $_GET['patientid'];
                 $patientData = $mysqli->select_single("SELECT * FROM patient WHERE id=$patientId")['singledata'];
                 ?>
                 <div class="row mx-5 d-flex">
@@ -75,11 +86,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                     <img src="../assets/images/svg/invoice.svg" width="100%" height="200px" alt="">                     
                   </div>
                 </div> 
-                <?php
-                }else{
-                  require_once('../components/patient/addpatient.php');
-                }
-                ?>
+                
                 <form action="<?= $baseurl?>/form/action.php" method="POST" class="mx-5" >
                   <div class="card-body invoice" >
                   <div class="form-group">
@@ -140,7 +147,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                                     <input type="text" onkeyup="get_pricecount(this)" class="form-control price" name="price">
                                   </div>
                                   <!-- <input type="text" hidden  class="test_id" name="test_id"> -->
-                               
+                              
                                 <div class="col-2 p-0 mx-2">
                                     <input readonly type="text" class="form-control sub bg-white" name="sub">
                                 </div>
@@ -159,8 +166,9 @@ $testData = $mysqli->selector("test")['selectdata'];
                     <?php 
                       if(isset($_GET["admitid"]) && strlen($_GET["admitid"]) > 0){
                         $admitid = $_GET["admitid"];
-                        $admitData =$mysqli->select_single("SELECT a.id,a.patient_id,r.room_type as item_name,a.entry_time, r.rate FROM admit a JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
+                        $admitData =$mysqli->select_single("SELECT a.id as admited_id,a.patient_id,r.room_type as item_name,a.entry_time,a.roles, r.rate FROM admit a JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
                         $admit = $admitData["singledata"]; 
+                        
                     ?>
                   <div class="form-group">
                         <div class="row">
@@ -169,27 +177,43 @@ $testData = $mysqli->selector("test")['selectdata'];
                             <thead>
                               <th>Medical Services</th>
                               <th>Descriptoin</th>
-                              <th>Rate</th>
-                              <th>Total</th>
+                              <th>Rate(tk)</th>
+                              <th>Total(tk)</th>
                             </thead>
                             <tbody>
-                              <?php  if($admitData["numrows"] > 0){ ?>
+                              <?php  if($admitData["numrows"] > 0 && $admit["roles"] == "ADMITTED"){ 
+                                $hours = floor((strtotime(date('y-m-d h:i:s')) - strtotime($admit["entry_time"])) / ( 60 * 60 ));
+                                if($hours < 12){
+                                      $hours = 12;
+                                    }
+                                // if($admit["item_name"] != "ICU"){
+                                    
+                                // }
+                                $perHours = $admit["rate"] / 24;
+                                $total = floor($perHours * $hours);
+
+
+                                ?>
                               <!-- ROOM BILL -->
                               <tr>
                                 <td>
+                                  <input type="text" class="form-control" hidden name="patient_id" value="<?= $admit["patient_id"]?>" placeholder="Items">
+                                  <input type="text" class="form-control" hidden name="admit_id" value="<?= $admit["admited_id"]?>" placeholder="Items">
                                   <input type="text" class="form-control" value="<?= $admit["item_name"]?>" placeholder="Items">
                                 </td>
                                 <td>
-                                <input type="text" class="form-control" value="<?= floor((strtotime(date('y-m-d h:i:s')) - strtotime($admit["entry_time"])) / ( 60 * 60 ))?> Hours" placeholder="description">
+                                <input type="text" class="form-control" name="duration" value="<?= floor((strtotime(date('y-m-d h:i:s')) - strtotime($admit["entry_time"])) / ( 60 * 60 ))?>" placeholder="description">
                                 </td>
                                 <td>
                                 <input type="text" class="form-control" value="<?= $admit["rate"] ?>" placeholder="rate">
                                 </td>
                                 <td>
-                                <input type="text" class="form-control" value="<?= $admit["rate"] / 2 ?>" placeholder="rate">
+                                <input type="text" class="form-control" value="<?= $total  ?>" placeholder="rate"   id="total_rate">
                                 </td>
                               </tr>
-                            <?php } ?>
+                            <?php }
+                            $serviceData =$mysqli->select_single("SELECT a.id,a.patient_id,r.room_type as item_name,a.entry_time, r.rate FROM admit a JOIN room r on r.id=a.room_id WHERE a.id=$admitid");
+                            ?>
                                 <!-- service name @ADMIT-->
                                 <!-- doctor visite @ADMIT-->
                                 <!-- Cantine bill @ADMIT-->
@@ -202,7 +226,7 @@ $testData = $mysqli->selector("test")['selectdata'];
                   </div>
                     <?php } ?>
                   <div class="form-group">
-                 
+                
                       <div class="row">
                         <div class="col-6">
                         <div>
@@ -264,7 +288,7 @@ $testData = $mysqli->selector("test")['selectdata'];
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
-           
+          
         </div>
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
@@ -290,6 +314,11 @@ $testData = $mysqli->selector("test")['selectdata'];
   }
 </script>
 <script>
+
+let total_rate = $("#total_rate").val();
+$('#sub_amount').val(total_rate);
+$('#total_amount').val(total_rate);
+
   let getId = [];
   function product_add(e){
     var price=$(e).children('option:selected').data('price');
@@ -325,6 +354,7 @@ var price=parseFloat($(e).closest('.row').find('.price').val());
   function get_pricecount(e){
     var price=parseFloat($(e).val());
     // var qty=parseFloat($(e).closest('.row').find('.qty').val());
+
     var sub=price; // qty*price
     $(e).closest('.row').find('.sub').val(sub);
     sub_amount();
@@ -340,18 +370,18 @@ var price=parseFloat($(e).closest('.row').find('.price').val());
     $('#total_amount').val(sub_amount);
     total_amount_calc();
   }
- 
+
   }
 
-  $('#payment').change(()=> {
+  $('#payment').keyup(()=> {
     let payment = $('#payment').val();
     let total = $('#total_amount').val();
 // alert(`${payment < total}`);
 if(total <= payment){
   $('#remark').val('PAID');
-}else{
-  $('#remark').val('DUE');
+}else if(total > payment){
   $('#dueAmount').val(total - payment)
+  $('#remark').val('DUE');
 }
 });
 
