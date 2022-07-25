@@ -14,66 +14,66 @@ SET time_zone = "+00:00";
 
 
 
-create table `user`(id int auto_increment primary key,avatar varchar(255), name varchar(255)not null,email varchar(40)  unique, password char(40) not null, phone varchar(13) unique not null  , roles ENUM('SUPERADMIN','ADMIN','DOCTOR','NURSE','RECEPTIONIST','LAB-TECH') default 'RECEPTIONIST',address text , created_at timestamp  , created_by int, modified_at datetime , modified_by int, status int not null default 1 ,foreign key (created_by) references user(id), foreign key (modified_by) references user(id));
+create table `user`(id int auto_increment primary key,avatar varchar(255), name varchar(255)not null,email varchar(40)  unique, password char(40) not null, phone varchar(13) unique not null  , roles ENUM('SUPERADMIN','ADMIN','DOCTOR','NURSE','RECEPTIONIST','LAB-TECH') default 'RECEPTIONIST',address text , created_at  timestamp default now() , created_by int, modified_at datetime , modified_by int, status int not null default 1 ,foreign key (created_by) references user(id), foreign key (modified_by) references user(id));
 
 
 
 -- tested
 create table `designation` (id int auto_increment primary key, designation_name varchar(255) not null, base_salary decimal(10,2) not null, bounus_by_percent decimal(5,2), total_bounus int ,created_at  timestamp default now(), created_by int , modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
-create table `department` (id int auto_increment primary key,name varchar(255) not null unique, created_by int,created_at  timestamp not null, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `department` (id int auto_increment primary key,name varchar(255) not null unique, created_by int,created_at  timestamp default now(), modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 
 
 
 --  room_no='A5' ,details='ac' , floor='2nd' , created_by=3;
-create table `room` (id int auto_increment primary key, room_type ENUM('GENERAL-CABIN','NON-AC-CABIN','AC-CABIN','VIP-CABIN','CHAMBER','OT','WAITING-ROOM','ICU','CCU') default 'GENERAL-CABIN', room_no varchar(30) unique, rate decimal(10, 2) not null, capacity decimal(2) not null default 1, details varchar(255) default null , floor varchar(20),availability ENUM('YES','NO') default 'YES',created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `room` (id int auto_increment primary key, room_type ENUM('GENERAL-CABIN','NON-AC-CABIN','AC-CABIN','VIP-CABIN','CHAMBER','OT','WAITING-ROOM','ICU','CCU') default 'GENERAL-CABIN', room_no varchar(30) unique, rate decimal(10, 2) not null, capacity decimal(2) not null default 1, details varchar(255) default null , floor varchar(20),availability ENUM('YES','NO') default 'YES',created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 
 -- tested
 -- doctor schema
-create table `doctor` (id int auto_increment primary key,user_id int,father_name varchar(40) not null, mother_name varchar(40) not null,qualification varchar(100), gratuated_from varchar(100),gender varchar(10) null,date_of_birth  date not null, shift ENUM('MORNING','EVENING','NIGHT'), chamber_id int, designation_id int, visit_fee decimal(7,2),department_id int, created_at  timestamp , created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (user_id) references user(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (designation_id) references designation(id),foreign key (chamber_id) references room(id),foreign key (department_id) references department(id));
+create table `doctor` (id int auto_increment primary key,user_id int,father_name varchar(40) not null, mother_name varchar(40) not null,qualification varchar(100), gratuated_from varchar(100),gender varchar(10) null,date_of_birth  date not null, shift ENUM('MORNING','EVENING','NIGHT'), chamber_id int, designation_id int, visit_fee decimal(7,2),department_id int, created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (user_id) references user(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (designation_id) references designation(id),foreign key (chamber_id) references room(id),foreign key (department_id) references department(id));
 
 
 
-create table `patient` (id int auto_increment primary key,name varchar(40) not null,father_or_husband_name varchar(40) not null,mother_name varchar(40) default null, religious varchar(10),nid varchar(40),blood_group varchar(10),nationality varchar(20),marital_status enum('MARRIED', 'UNMARRIED', 'OTHERS') default 'UNMARRIED',phone varchar(13) not null unique, gender varchar(10) not null , age varchar(3) not null,relagius varchar(10), weight int, present_address varchar(255),permanent_address varchar(255), created_at  timestamp , created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `patient` (id int auto_increment primary key,name varchar(40) not null,father_or_husband_name varchar(40) not null,mother_name varchar(40) default null, religious varchar(10),nid varchar(40),blood_group varchar(10),nationality varchar(20),marital_status enum('MARRIED', 'UNMARRIED', 'OTHERS') default 'UNMARRIED',phone varchar(13) not null unique, gender varchar(10) not null , age varchar(3) not null,relagius varchar(10), weight int, present_address varchar(255),permanent_address varchar(255), created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 -- appointment
-create table `appointment` (id int auto_increment primary key,name varchar(40) not null,phone varchar(15) ,patient_id int, message text,doctor_id int, department_id int, date date, time varchar(20), created_at  timestamp  , created_by int, modified_at datetime , modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (doctor_id) references doctor(id),foreign key (patient_id) references patient(id),foreign key (department_id) references department(id));
+create table `appointment` (id int auto_increment primary key,name varchar(40) not null,phone varchar(15) ,patient_id int, message text,doctor_id int, department_id int, date date, time varchar(20), created_at  timestamp default now(), created_by int, modified_at datetime , modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (doctor_id) references doctor(id),foreign key (patient_id) references patient(id),foreign key (department_id) references department(id));
 
 -- patient schema
 
 
-create table test (id int auto_increment primary key, test_name varchar(20) unique not null,description mediumtext,  rate decimal(10,2), created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table test (id int auto_increment primary key, test_name varchar(20) unique not null,description mediumtext,  rate decimal(10,2), created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- !does not work on windows
 -- delivary date not null default date_add(now(),interval 1 day)
 
 
 -- employee schema
-create table `employee` (id int auto_increment primary key,user_id int,father_name varchar(40) not null, mother_name varchar(40) not null,gender varchar(10) null,date_of_birth  date not null, shift ENUM('MORNING','EVENING','NIGHT'),  designation_id int, base_salary int, created_at  timestamp , created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (user_id) references user(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (designation_id) references designation(id));
+create table `employee` (id int auto_increment primary key,user_id int,father_name varchar(40) not null, mother_name varchar(40) not null,gender varchar(10) null,date_of_birth  date not null, shift ENUM('MORNING','EVENING','NIGHT'),  designation_id int, base_salary int, created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (user_id) references user(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (designation_id) references designation(id));
 
 
-create table `employeehistory` (id int auto_increment primary key, emplopyee_id int, joined_date date not null, leave_date date not null, atentance int, absense int , created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (emplopyee_id) references employee(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `employeehistory` (id int auto_increment primary key, emplopyee_id int, joined_date date not null, leave_date date not null, atentance int, absense int , created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1,foreign key (emplopyee_id) references employee(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
 -- salary
-create table `salary` (id int auto_increment primary key, _id varchar(20) unique not null, created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `salary` (id int auto_increment primary key, _id varchar(20) unique not null, created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- rate
-create table `rate` (id int auto_increment primary key, service_name varchar(255), rate decimal(10,2) not null , created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `rate` (id int auto_increment primary key, service_name varchar(255), rate decimal(10,2) not null , created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 
-create table `service` (id int auto_increment primary key, service_name varchar(20), rate int not null , condition_on varchar(100), description varchar (255), duration varchar(20),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table `service` (id int auto_increment primary key, service_name varchar(20), rate int not null , condition_on varchar(100), description varchar (255), duration varchar(20),created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
 -- addmit
-create table `admit` (id int auto_increment primary key,patient_id int, `guardian_name` varchar(255) not null,emargency_contact varchar(13),`relationship_with_patient` varchar(100),`refarecne_by` varchar(100),`patient_of` int not null, room_id int not null, `entry_time` datetime not null, `out_time` datetime,duration int,`patient_condition` varchar(255),roles ENUM('ADMITTED','RELEASED') not null,created_at  timestamp not null, created_by int not null, modified_at timestamp, modified_by int, status int not null default 1,foreign key (`patient_of`) references doctor(id),foreign key (room_id) references room(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table `admit` (id int auto_increment primary key,patient_id int, `guardian_name` varchar(255) not null,emargency_contact varchar(13),`relationship_with_patient` varchar(100),`refarecne_by` varchar(100),`patient_of` int not null, room_id int not null, `entry_time` datetime not null, `out_time` datetime,duration int,`patient_condition` varchar(255),roles ENUM('ADMITTED','RELEASED') not null,created_at  timestamp default now(),  created_by int not null, modified_at timestamp, modified_by int, status int not null default 1,foreign key (`patient_of`) references doctor(id),foreign key (room_id) references room(id), foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
 
 
-create table medical_history(id int auto_increment primary key,patient_id int, created_at  timestamp not null, created_by int not null, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table medical_history(id int auto_increment primary key,patient_id int, created_at  timestamp default now(),  created_by int not null, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
 
 
 -- payment schama
@@ -98,16 +98,19 @@ create table `invoice_payment`(
   `modified_by` int(11) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id),foreign key (admit_id) references admit(id));
 
-create table medicine( id int auto_increment primary key,patient_id int not null, type ENUM("TAB","INJ") not null,medicine_name varchar(100) not null,mg decimal(5) UNSIGNED ,dose varchar(20) not null,day varchar(20),comment varchar(255),created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) ,foreign key (patient_id) references patient(id));
+create table medicine( id int auto_increment primary key,patient_id int not null, type ENUM("TAB","INJ") not null,medicine_name varchar(100) not null,mg decimal(5) UNSIGNED ,dose varchar(20) not null,day varchar(20),comment varchar(255),created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) ,foreign key (patient_id) references patient(id));
 
-create table prescription(id int auto_increment primary key,patient_id int,doctor_id int, appointment_id int unique, admit_id int, medicine_id longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`medicine_id`)), `test` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`test`)),description longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`description`)),advice longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`advice`)),overal_comment text,created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) ,foreign key (patient_id) references patient(id), foreign key (doctor_id) references doctor(id), foreign key (appointment_id) references appointment(id),foreign key (admit_id) references admit(id));
+create table prescription(id int auto_increment primary key,patient_id int,doctor_id int, appointment_id int unique, admit_id int, medicine_id longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`medicine_id`)), `test` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`test`)),description longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`description`)),advice longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`advice`)),overal_comment text,created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) ,foreign key (patient_id) references patient(id), foreign key (doctor_id) references doctor(id), foreign key (appointment_id) references appointment(id),foreign key (admit_id) references admit(id));
 
 
-create table medicinestore( id int auto_increment primary key, type ENUM("TAB","INJ") not null,name varchar(100) not null,mg decimal(5) UNSIGNED ,total_dose decimal(5) not null,rate decimal(10,2) not null,created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
+create table medicinestore( id int auto_increment primary key, type ENUM("TAB","INJ") not null,name varchar(100) not null,mg decimal(5) UNSIGNED ,total_dose decimal(5) not null,rate decimal(10,2) not null,created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id));
 
-create table generalcheckup( id int auto_increment primary key,patient_id int not null, presure varchar(20) not null,temperature varchar(20) not null,bp varchar(30) , saturation varchar(20), status int not null default 1,created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
+create table generalcheckup( id int auto_increment primary key,patient_id int not null, presure varchar(20) not null,temperature varchar(20) not null,bp varchar(30) , saturation varchar(20), status int not null default 1,created_at  timestamp default now(),  created_by int, modified_at timestamp, modified_by int, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (patient_id) references patient(id));
 
-create table `report` (id int auto_increment primary key, patient_id int(20),test_id int, payment_id int, printed_at timestamp, condition_on varchar(255) ,  issues_by int,created_at  timestamp not null, created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id) , foreign key (issues_by) references doctor(id));
+
+
+
+create table `report` (id int auto_increment primary key, patient_id int(20),test_id int, invoice_id int, method varchar(255),material varchar(255),note text, `test_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`test_data`)), created_at  timestamp default now(), created_by int, modified_at timestamp, modified_by int, status int not null default 1, foreign key (modified_by) references user(id),foreign key (created_by) references user(id),foreign key (invoice_id) references invoice_payment(id));
 
 
 

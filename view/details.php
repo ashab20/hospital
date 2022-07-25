@@ -106,11 +106,9 @@ $patientInfo = $admitedData["singledata"];
                                     &nbsp;  <strong><?= $patientInfo["admitid"] ?></strong>
                                 </li>
                                 <li  style="list-style-type:none">
-                                    <label for="">Date:</label>
-                                    &nbsp; <strong>
-                                      <span style="background-color: #fff;padding: .3rem;">11</span>
-                                      <span style="background-color: #fff;padding: .3rem;">12</span>
-                                      <span style="background-color: #fff;padding: .3rem;">2013</span>
+                                    <label for="">Entry Time:</label>
+                                    &nbsp; <strong><?= $patientInfo["entry_time"] ?>
+                                      
                                     </strong>
                                 </li>
                           </div>

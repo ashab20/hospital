@@ -114,6 +114,21 @@ if($usr['roles'] === 'SUPERADMIN'){?>
                 </ul>
               </div>
             </li>
+            <!-- Report -->
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#report" aria-expanded="false" aria-controls="nurse">
+                <span class="menu-title">Report</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-medical-bag menu-icon"></i>
+              </a>
+              <div class="collapse" id="report">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/form/addreport.php">Add Report</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/testrequestlist.php">Test List</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl ?>/pages/reportlist.php">Report List</a></li>
+                </ul>
+              </div>
+            </li>
             <!-- Categories -->
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">

@@ -38,11 +38,10 @@ if(isset($_GET["admitid"]) && strlen($_GET["admitid"]) > 0){
 }elseif(isset($_GET['patientid'])&& strlen($_GET['patientid']) > 0 ){
     $patientId = $_GET['patientid'];
 }
-$checkInvoice = $mysqli->select_single("SELECT id,patient_id,admit_id FROM invoice_payment WHERE patient_id=$patientId");
-if($checkInvoice["numrows"] > 0){
+$checkInvoice = $mysqli->select_single("SELECT id,patient_id,admit_id,remark FROM invoice_payment WHERE patient_id=$patientId");
+if($checkInvoice["numrows"] > 0 && $checkInvoice["singledata"]["remark"]== 'DUE'){
   $invoice_id = $checkInvoice["singledata"]["id"];
   echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$invoice_id')</script>";
-
 }
 ?>
 <!-- invoicce content -->
@@ -375,14 +374,13 @@ var price=parseFloat($(e).closest('.row').find('.price').val());
 
   $('#payment').keyup(()=> {
     let payment = $('#payment').val();
-    let total = $('#total_amount').val();
-// alert(`${payment < total}`);
-if(total <= payment){
+    let total_amount = $('#total_amount').val();
+if(total_amount <= payment){
   $('#remark').val('PAID');
-}else if(total > payment){
-  $('#dueAmount').val(total - payment)
+}else if(total_amount > payment){
   $('#remark').val('DUE');
 }
+$('#dueAmount').val(parseFloat( total_amount - payment))
 });
 
 // $('.test_id').val({...getId});

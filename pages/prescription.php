@@ -33,6 +33,12 @@ if(isset($_GET["appointmentid"])){
     $appointmentid = $_GET["appointmentid"];
     $appointment = $mysqli->select_single("SELECT patient_id from appointment where id=$appointmentid")["singledata"];
     $pid = $appointment["patient_id"];
+    $checkAppointment = $mysqli->select_single("SELECT id,appointment_id from prescription where appointment_id=$appointmentid");
+    if($checkAppointment["numrows"] > 0){
+        $presId = $checkAppointment["singledata"]['id'];
+  echo "<script> location.replace('$baseurl/view/viewprescriotion.php?presid=$presId')</script>";
+        
+    }
     
 }elseif(isset($_GET["admitted_id"])){
     $addmittedid = $_GET["admitted_id"];

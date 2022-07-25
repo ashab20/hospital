@@ -35,8 +35,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     $invoiceId = $_GET['invoice'];
     $invoice_data = $mysqli->select_single("SELECT ip.* ,p.id as pid ,p.* FROM  invoice_payment ip JOIN patient p on p.id=ip.patient_id  WHERE ip.id=$invoiceId");
     // $invoice = array_merge($invoice_data['singledata']);
-    $invoice = $invoice_data['singledata'];
-
+    $invoice= $invoice_data['singledata'];
 
     if($invoice_data['numrows'] > 0){
 ?>
@@ -46,21 +45,27 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
       
-    <div class="row bg-info m-4 justify-content-center d-none" style="position:absolute;z-index:1000;opacity:1;width:50%;margin:0 auto;top:5rem;" id="payment">
-    <form class="pt-3 justify-content-center items-center" id="addserv" method="POST" action="<?=$baseurl?>/form/action.php">
+    <div class="row bg-info mx-4 py-4 d-grid justify-content-center d-none" style="position:absolute;z-index:1000;opacity:1;width:50%;margin:0 auto;top:10rem;" id="payment">
+    <form class="pt-3 justify-content-center items-center"  method="POST" action="<?=$baseurl?>/form/action.php">
                   <div class="form-row">
                     <div class="form-group col-md-12 mx-2">
+                        <input type="text"  readonly  name="id" hidden  value="<?= $invoiceId ?>" class="form-control bg-white" id="set_total" placeholder="Total">
                       <label for="name">Total:</label>
-                      <input type="text" name="service_name" required class="form-control" id="name" placeholder="Total">
+                      <input type="text"  readonly name="total" value="<?= $invoice["total"] ?>" class="form-control bg-white" id="set_total" placeholder="Total">
                     </div>
                     <div class="form-group col-md-12 mx-2">
-                      <label for="rate">Paid:</label>
-                      <input type="number" name="rate" required class="form-control" id="rate" placeholder="Rate">
+                      <label for="name">Due:</label>
+                      <input type="text"  readonly value="<?=$invoice["total"] - $invoice["payment"] ?>" class="form-control bg-white" id="set_due" placeholder="Total">
+                    </div>
+                    <div class="form-group col-md-12 mx-2">
+                      <label for="rate">Payment:</label>
+                      <input type="number" name="paid" required class="form-control" id="set_payment" placeholder="Payment">
+                      <input type="number" name="payment" hidden value="<?=$invoice["payment"] ?>" class="form-control" id="set_payment" placeholder="Payment">
                     </div>
                   </div>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary mx-2"  name="add_service">Payment</button>
-                    <button type="submit" class="btn btn-danger mx-2" onclick="$('#payment').addClass('d-none')" name="add_service">Close</button>
+                    <button type="submit" class="btn btn-primary mx-2"  name="update_invoice_payment">Payment</button>
+                    <button type="submit" class="btn btn-danger mx-2" onclick="$('#payment').addClass('d-none');$('.page-content').removeClass('d-none')">Close</button>
                   </div>
                   </form>
     </div> 
@@ -289,7 +294,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Total
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2"><?= $invoice['total']?><b style="font-size:1rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2" id="get_total" data-tatal="<?= $invoice['total']?>"><?= $invoice['total']?><b style="font-size:1rem;">৳</b></span>
                                 </div> 
                             </div>
                             <?php
@@ -310,7 +315,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Paid:
                                 </div>
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2" style="background-color: #615f5f;color:#fff;padding:.3rem"><?= $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2" style="background-color: #615f5f;color:#fff;padding:.3rem" data-payment="<?= $invoice['payment']?>" id="get_payment"><?= $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
                             <?php
@@ -321,7 +326,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                                     Due
                                 </div>                                
                                 <div class="col-5">
-                                    <span class="text-150 text-success-d3 opacity-2" ><?= $invoice['total'] - $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
+                                    <span class="text-150 text-success-d3 opacity-2" id="get_due" ><?= $invoice['total'] - $invoice['payment']?><b style="font-size:1rem;">৳</b></span>
                                 </div>
                             </div>
                             <?php } ?>
@@ -335,7 +340,7 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
                         <?php
                             if(isset($invoice['remark']) && $invoice['remark'] == 'DUE'){
                         ?>
-                        <button href="#" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" onclick="$('#payment').removeClass('d-none')">Pay Now</button>
+                        <button href="#" class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" onclick="$('#payment').removeClass('d-none');$('.page-content').addClass('d-none')">Pay Now</button>
                         <?php } ?>
                         <?php 
                         if($invoice['appointment_id'] != null && $invoice['remark'] == 'PAID'){
@@ -423,6 +428,15 @@ if(isset($_GET['invoice']) && strlen($_GET['invoice']) > 0){
 
     <script>
     $(document).ready( () => {
+
+        // let total = $('#get_total').text();
+        // let payment = $('#get_payment').text();
+        // let due = $('#get_due').text();
+        // let setTotal = $('#set_total').val(total);
+        // let setDue = $('#set_due').val(due);
+        // let setPayment = $('#set_payment').val();
+
+
         $("#card").click(() => {
             $("#card-content").css({"display":"block"})
                     let printContents = $("#appointmentCard").html();

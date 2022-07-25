@@ -134,12 +134,20 @@ $patient = $allPatient["singledata"];
                               <?= $p["floor"]." - ".$p['room_no'] ?>
                             </td>
                             <td >
+                             
                                 <span class="d-flex justify-content-center">                                
                               <a title="Details" href="<?= $baseurl ?>/view/details.php?admitid=<?= $p['admit_id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
                               <i class=" mdi mdi-eye"></i>
                             </a>
-                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                            <?php $checkAdmit = $mysqli->select_single("SELECT * from prescription WHERE admit_id=".$p["admit_id"]);
+                              if($checkAdmit["numrows"] > 0){
+                                ?>
+                                <a title="Prescription" href="<?= $baseurl ?>/view/viewprescriotion.php?presid=<?= $checkAdmit['singledata']['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class=" mdi mdi-file-document-box "></i>
+                              </a>
+                                 <?php } ?>
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?admitted_id=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-note-plus"></i>
                               </a>
                               <a title="Test/release" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
                               <i class="mdi mdi-plus-circle-multiple-outline"></i>

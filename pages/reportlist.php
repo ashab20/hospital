@@ -20,9 +20,13 @@ switch ($usr['roles']) {
 }else{
   header("location:$baseurl/pages/login.php");
 }
-$mysqli = new Crud();
-?>
 
+
+
+
+$mysqli = new Crud();
+
+?>
     <div class="container-scroller">
     
       <!-- partial:./navbar.php -->
@@ -62,16 +66,23 @@ $mysqli = new Crud();
 
 
 
-$allPatient = $mysqli->find("SELECT * FROM patient order by created_at DESC");
-$patient = $allPatient["singledata"];
+$testListData = $mysqli->find("SELECT ip.id,ip.test_id,ip.patient_id as patient_id,ip.payment_date,p.name,p.phone FROM `invoice_payment` ip JOIN patient p ON ip.patient_id=p.id");
+
+$testList = $testListData["singledata"];
 ?>
-
-
+                  <?php  if(isset($_SESSION["msg"])){?>
+                <div class="bg-light p-4">
+                  <h4 class="text-info text-center">
+                      <?= $_SESSION["msg"]; ?>
+                    </h4>
+                  </div>
+                  <?php unset($_SESSION["msg"]); } ?>
 <?php
 // ! CONDITION END @:ADD PATIENT
 
   $id = $usr['id'];
 // ! *** PATIENT ADDED BY THIS ADMIN ***
+
 
 
 ?>
@@ -80,14 +91,15 @@ $patient = $allPatient["singledata"];
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
+                    
                     <div class="d-flex justify-content-between">
-                      <h4 class="card-title">Patient List</h4>
+                      <h4 class="card-title">Report List</h4>
                       <div class="search d-flex">
                           <i class="mdi mdi-person-star"></i>
                           <input type="text" class="form-control" placeholder="Search by name">
                         </div>
-                        <a href="<?=$baseurl ?>/pages/patient.php" class="btn btn-secondary text-white font-weight-bold text-decoration-none">
-                          Add new patient
+                        <a href="<?=$baseurl ?>/dashboard/patient.php" class="btn btn-secondary text-white font-weight-bold text-decoration-none">
+                          Patient List
                         </a>
                     </div>
                     <div class="table-responsive mt-3">
@@ -98,48 +110,50 @@ $patient = $allPatient["singledata"];
                             <th> Id </th>
                             <th> Name</th>
                             <th> Phone </th>
-                            <th> Age </th>
-                            <th> Blood Group </th>
+                            <th> Test Name </th>
+                            <th> Date </th>
                             <th colspan="2"> Action </th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php 
-                          if($allPatient['numrows'] > 0 ){
-                          foreach ($patient as $p){?>
+                          if($testListData['numrows'] > 0 ){
+                          foreach ($testList as $t){
+                            if($t["test_id"] != null){?>
                           <tr>
-                            <td><?= $p['id'] ?></td>
+                            <td><?= sprintf('%05u', $t['id']) ?>
+                            <input type="text" hidden value="<?= $t['id'] ?>" id="pid">
+                          </td>
                             <td>
-                                <a class="btn" href="<?=$baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>">
-                                  <?= $p['name']?>
+                                <a class="btn" title="View Profile" href="<?=$baseurl ?>/pages/profile.php?patientid=<?= $t['id'] ?>">
+                                  <?= $t['name']?>
                                 </a> 
                             </td>
-                            <td><?= $p['phone']?></td>
-                            <td><?= $p['age']?></td>
+                            <td><?= $t['phone']?></td>
+                            <td><?php 
+                               $test = json_decode($t['test_id']);
+                               foreach($test as $tid){
+                                $getTest = $mysqli->select_single("SELECT test_name FROM test WHERE id=$tid")['singledata']['test_name'];
+                                echo $getTest."<br>";
+                               }
+                            ?></td>
                             <td>
-                              <?= $p['blood_group']?>
+                              <?= $t["payment_date"]?> <br><br>
                             </td>
-                            <td>
-                              
-                            <span class="d-flex justify-content-center">                                
-                              <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $p['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
-                              <i class=" mdi mdi-eye"></i>
-                            </a>
-                              <a title="Prescription" href="<?= $baseurl ?>/pages/prescription.php?presid=<?= $p['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
-                              <i class=" mdi mdi-file-document-box "></i>
+                            <td >
+                                <span class="d-flex justify-content-center">                                
+                            
+                            <!-- Check prescription -->
+                            
+                              <a title="Prescription" href="<?= $baseurl ?>/pages/addreport.php?id=<?= $t['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-note-plus"></i>
                               </a>
-                              <a title="Prescription" href="<?= $baseurl ?>/pages/patient.php?phn=<?= $p['phone'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
-                              <i class="mdi mdi-plus-circle-multiple-outline"></i>
-                              </a>
-                              <!-- <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $p['id'] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
-                              <i class=" mdi mdi-export"></i>
-                              </a> -->
                             </span>
                             </td>
                           </tr>
-                          <?php }}else{?>
+                          <?php }}}else{?>
                             <tr>
-                              <td colspan="5">No Data Found</td>
+                              <td colspan="6">No Data Found</td>
                             </tr>
                          <?php } ?>
                         </tbody>
@@ -154,10 +168,20 @@ $patient = $allPatient["singledata"];
 ?>  
 
 
-<!-- *** END THIS p*** -->
+<!-- *** END THIS ADMIN*** -->
 
           </div>
 
           <!-- content-wrapper ends -->
           <!-- partial:include/footer.php -->
           <?php require_once('../include/footer.php') ?>
+
+
+          <script>
+
+            $('#released').click(()=>{
+              let pid = $("#pid").val();
+              location.replace("./invoice.php?patientid="+pid);
+              
+            })
+          </script>

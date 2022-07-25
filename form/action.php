@@ -798,10 +798,10 @@ if(isset($_POST["update_medicinstore"])){
 if(isset($_POST["prescription"])){
 unset($_POST["prescription"]);
 
-if($_POST["appointment_id"]){
+if(isset($_POST["appointment_id"])){
   $_POST["appointment_id"] = ( int) $_POST["appointment_id"];
   
-}elseif($_POST["admit_id"]){
+}elseif(isset($_POST["admit_id"])){
   $_POST["admit_id"] = ( int) $_POST["admit_id"];
 
 }
@@ -813,24 +813,25 @@ foreach($_POST["outer-list"] as $medicine){
     $create=$mysqli->creator("medicine",$medicine);
     if($create["error"]){
       $_SESSION["msg"] = $create["error"];
-      echo $_SESSION["msg"];
     }
     $insert_id[] .= $create["insert_id"];
 
   }
 }
 $_POST["medicine_id"] = json_encode($insert_id);
-$tests = $description = $advice = false;
+$tests = $description = $advice = [];
 foreach($_POST["inner-list"] as $test){
-  $tests[] .= $test["test"].",";
-  $description[] .= $test["description"].",";
-  $advice[] .= $test["advice"].",";
+  $tests[] .= $test["test"];
+  $description[] .= $test["description"];
+  $advice[] .= $test["advice"];
 }
+echo "<br>";
 unset($_POST["outer-list"]);
 unset($_POST["inner-list"]);
-$_POST["test"] = json_encode([rtrim($tests,",")]);
-$_POST["description"] = json_encode([$description]);
-$_POST["advice"] = json_encode([rtrim($advice)]);
+
+$_POST["test"] = json_encode($tests);
+$_POST["description"] = json_encode($description);
+$_POST["advice"] = json_encode($advice);
 
 $prescription = $mysqli->creator("prescription",$_POST);
 if($prescription["error"]){
@@ -858,7 +859,31 @@ if(isset($_POST["patientcare"])){
 }
 
 
-// invoice Payment
+
+// *** Add Test Report ***
+
+if(isset($_POST["addreport"])){
+  unset($_POST["addreport"]);
+  
+  $_POST["test_data"] = json_encode($_POST["outer-list"]);
+  unset($_POST["outer-list"]);
+  if($user){
+    $_POST['created_by'] = $user['id'];
+  }
+  $addReport = $mysqli->creator('report',$_POST);
+  if($addReport["error"]){
+    $_SESSION["msg"] = $addReport["msg"];
+  }else{
+    $_SESSION["msg"] = $addReport["msg"]."to".$addReport["insert_id"];
+    $insert_id = $addReport["insert_id"];
+    echo "<script> location.replace('$baseurl/view/testreport.php?report=$insert_id')</script>";
+  }
+
+}
+
+
+// *** invoice Payment ***
+
 if(isset($_POST["invoice_payment"])){
   unset($_POST["invoice_payment"]);
   $_POST['test_id'] = array();
@@ -921,8 +946,48 @@ if(isset($_POST["invoice_payment"])){
         }
       }
       echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$insert_id')</script>";
-      $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>rate Added Successfully</p>";
+      $_SESSION['rate']="<p class='h3 text-success text-center justify-content-center mx-auto'>Invoice Added Successfully</p>";
             
     }
   }
+}
+
+// *****************************
+
+
+if(isset($_POST["update_invoice_payment"])){
+  unset($_POST["update_invoice_payment"]);
+  $invoiceId = $_POST["id"];
+    $remark = "DUE";  
+  if($_POST["total"] >= $_POST["payment"]){
+    $remark ='PAID';
+  }
+  
+  $payment = $_POST["payment"] + $_POST["paid"];
+  $modified_by = $user["id"];
+  $modified_at = date("Y-m-d H:i:s");
+  // ['remark'=>$remark,'payment'=>$payment,'modified_at'=>$modified_at,'modified_by'=>$modified_by]
+
+  $invoice_update =$mysqli->updator("invoice_payment",['remark'=>$remark,'payment'=>$payment,'modified_at'=>$modified_at,'modified_by'=>$modified_by],"id=$invoiceId");
+
+  if($invoice_update["error"]){
+    $_SESSION["msg"]=$invoice_update["updated"];
+    echo $invoice_update["updated"];
+  }else{
+    $invoiceData=$mysqli->select_single("SELECT remark,id,admit_id FROM invoice_payment WHERE id=".$_POST["id"])['singledata'];
+      $admitId = $invoiceData["admit_id"];
+      if($admitId != null && $invoiceData["remark"] =="PAID"){
+        $admitUpdate = $mysqli->updator("admit",["roles"=>"RELEASED","out_time"=>"$modified_at"],"id=$admitId");
+        if($admitUpdate["error"]){
+          $_SESSION["msg"] = $admitUpdate["error"];
+        }else{
+          $_SESSION["updated"] = $admitUpdate["updated"];
+          echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$invoiceId')</script>";
+        }
+      }
+      echo "<script> location.replace('$baseurl/view/payinfo.php?invoice=$invoiceId')</script>";
+      $_SESSION['msg']="<p class='h3 text-success text-center justify-content-center mx-auto'>Invoice Updated Successfully</p>";
+  }
+
+
 }

@@ -422,9 +422,9 @@ if(isset($_SESSION['msg'])){
                               <i class="mdi mdi-note-plus"></i>
                               </a>
                            <?php }  ?>
-                              <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $app["appointment_id"] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
+                              <!-- <a title="Release Request" href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $app["appointment_id"] ?>" class="btn-sm bg-warning text-decoration-none text-white m-1" onclick="confirm('Are you sure?')">
                               <i class=" mdi mdi-export"></i>
-                              </a>
+                              </a> -->
                             </span>
           </td>
         </tr>

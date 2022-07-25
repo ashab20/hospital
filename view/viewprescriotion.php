@@ -49,6 +49,12 @@ if($data['error']){
 
 $prescriptionData = $mysqli->select_single("SELECT p.*, a.* , d.*,pres.*, u.name as doctor_name, u.phone as doctor_phone,dep.name as dep_name FROM prescription pres JOIN  appointment a ON pres.appointment_id=a.id JOIN patient p on p.id=pres.patient_id JOIN doctor d on d.id=a.doctor_id JOIN user u on d.user_id=u.id JOIN department dep ON d.department_id=dep.id WHERE pres.id=$presidId");
 
+if($prescriptionData["numrows"] == 0){
+  $prescriptionData = $mysqli->select_single("SELECT p.*, a.* , d.*,pres.*, u.name as doctor_name, u.phone as doctor_phone,dep.name as dep_name FROM prescription pres JOIN  admit a ON pres.admit_id=a.id JOIN patient p on p.id=pres.patient_id JOIN doctor d on d.id=a.patient_of JOIN user u on d.user_id=u.id JOIN department dep ON d.department_id=dep.id WHERE pres.id=
+  $presidId");
+}
+
+
 $patientInfo = $prescriptionData["singledata"];
 ?>
 

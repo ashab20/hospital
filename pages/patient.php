@@ -183,17 +183,16 @@ if($patientSingleData['numrows']== 0){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <div class="card">
+                            <div class="card">                            
+                            <?php if($ChechAmiitedStatus["singledata"]["roles"] == 'ADMITTED'){ ?>
+                              <a href="<?= $baseurl ?>/pages/invoice.php?admitid=<?= $ChechAmiitedStatus['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3"><i class="mdi mdi-ambulance  float-right"></i> Release 
+                              </a>
                               
-                           <?php 
-                           if(isset($ChechAmiitedStatus["singledata"]["roles"]["ADMITTED"])){?> 
-                                    <a href="<?= $baseurl ?>/pages/invoice.php?patientid=<?= $patientSingleData['singledata']['id']?>" class=" btn btn-sm btn-outline-dark font-weight-normal mb-3"><i class="mdi mdi-ambulance  float-right"></i> Release 
-                                </a>
-                                    <?php } else{ ?>
-                                <button class=" btn btn-sm btn-outline-dark font-weight-normal mb-3" id="admitBtn"><i class="mdi mdi-ambulance  float-right"></i> Admit 
+                            <?php }else{?> 
+                              <button class=" btn btn-sm btn-outline-dark font-weight-normal mb-3" id="admitBtn"><i class="mdi mdi-ambulance  float-right"></i> Admit 
                                 </button>
-                            <?php } ?>
-                            </div>
+                            <?php }; ?>
+                          </div>
                           </div>
                       </div>
 
@@ -351,12 +350,9 @@ if($thisAdminData['numrows'] > 0 && $createdBy){
                               <?= $admin['created_at']?>
                             </td>
                             <td>
-                              <a href="<?= $baseurl ?>/form/form/editpatient.php?id=<?= $admin['id'] ?>" class="btn-sm btn-primary text-decoration-none m-1">
-                              <i class="mdi mdi-border-color"></i>
+                            <a title="Details" href="<?= $baseurl ?>/pages/profile.php?patientid=<?= $admin['id'] ?>" class="btn-sm bg-primary text-white text-decoration-none m-1">
+                              <i class=" mdi mdi-eye"></i>
                             </a>
-                              <a href="<?= $baseurl ?>/form/deleteuser.php?id=<?= $admin['id'] ?>" class="btn-sm btn-danger text-decoration-none" onclick="confirm('Are you sure?')">
-                              <i class="mdi mdi-delete"></i>
-                              </a>
                             </td>
                           </tr>
                           <?php } ?>
