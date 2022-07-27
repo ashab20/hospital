@@ -8,7 +8,7 @@ $mysqli = new Crud();
 if(isset($_SESSION['userdata'])){
   $user = $_SESSION['userdata'];
 }else{
-header("location:http://localhost/hospital/pages/login.php");
+header("location:$baseurl/pages/login.php");
 
 }
 
@@ -17,6 +17,10 @@ header("location:http://localhost/hospital/pages/login.php");
 if(isset($_POST["login"])){
 
     unset($_POST["login"]);
+    if(($_POST["password"] && $_POST["email"]) == ''){
+      $_SESSION["msg"]="<p style='color:red'>Please Input valid email and password.<br> Please try again!</p>";
+      echo "<script> location.replace('$baseurl/pages/login.php')</script>";
+    }
     $_POST["password"]= md5(sha1($_POST["password"]));
   
     $data = $mysqli->selector("user","*",$_POST);
@@ -127,15 +131,47 @@ if(isset($_POST["images_upload"])){
 
 
 // *** Change Password 
-if(isset($_GET["changePassword"])){
-unset($_GET["changePassword"]);
+if(isset($_POST["changePassword"])){
+unset($_POST["changePassword"]);
+$confirmPass = $_POST["cpassword"];
+unset($_POST["cpassword"]);
+$id= $_POST["id"];
+if($_POST["oldpassword"]!= ''){
+  $oldpassword = md5(sha1($_POST["oldpassword"]));
+  $dataUser = $mysqli->selector("user","password","id=$id and password='$oldpassword'");
+  print_r($dataUser);
+  if($dataUser["numrows"] > 0){
+    if($confirmPass === $_POST["password"]){
+      $_POST["password"] = md5(sha1($_POST["password"]));
+
+      
+        $data = $mysqli->updator("user",['password'=>$_POST["password"]],"id=$id");
+        if($data["error"]){
+          $_SESSION['msg']=$data['msg'];
+          echo "<script> location.replace('$baseurl/pages/updateuser.php?id=$id')</script>";
+        }else{
+          if($data['msg']='saved'){
+            $_SESSION['msg']="<p style='color:green'>Password has been changed</p>";
+            echo "<script> location.replace('$baseurl/form/updateuser.php?id=$id')</script>";
+          }
+        }
+}else{
+  $_SESSION['msg']="<p style='color:red'>Confirm password does not mathced</p>";
+            echo "<script> location.replace('$baseurl/form/updateuser.php?id=$id')</script>";
+}
+  }else{
+    $_SESSION['msg']="<p style='color:red'>Wrong password.Please input correct password</p>";
+            echo "<script> location.replace('$baseurl/form/updateuser.php?id=$id')</script>";
+  }
+}
+
 
 }
 
 
 // *** forget Password
-if(isset($_GET["forgetPassword"])){
-  unset($_GET["forgetPassword"]);
+if(isset($_POST["forgetPassword"])){
+  unset($_POST["forgetPassword"]);
   
   }
   
@@ -282,7 +318,6 @@ if(isset($_POST["updateData"])){
     $_POST["modified_by"] = $user["id"];
     $_POST["modified_at"] = date("Y-m-d H:i:s");
     
-    $_POST["password"] = md5(sha1($_POST["password"]));
     $_POST["email"] = htmlentities(trim($_POST["email"]));
     $_POST["name"] = htmlentities(ucwords($_POST["name"]));
     $_POST["phone"] = htmlentities($_POST["phone"]);
@@ -299,7 +334,7 @@ if(isset($_POST["updateData"])){
     }else{
       if($data['msg']='saved'){
         $_SESSION['msg']="<p style='color:green'>Update Successfully</p>";
-        echo "<script> location.replace('$baseurl/form/updateuser.php?id=$id')</script>";
+        echo "<script> location.replace('$baseurl/form/profile.php?id=$id')</script>";
       }
   
     }
@@ -911,9 +946,9 @@ if(isset($_POST["invoice_payment"])){
   if(isset($_POST["duration"])){
     $duration = $_POST["duration"];
   }
-  if(isset($_POST["out_time"])){
+
     $out_time = date("y-m-d h:i:s");
-  }
+  
   
   $pay['ipid'] = uniqid('IP'.date('ymdhis'));
   $pay["patient_id"]=$_POST["patient_id"];

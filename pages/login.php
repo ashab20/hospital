@@ -54,10 +54,11 @@ if(isset($_SESSION['userdata'])){
           <div class="row flex-grow">
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left p-5">
-                <div class="brand-logo">
-                <a href="<?= $baseurl ?>/">
-                    <img src="../assets/images/logo.svg">
-                  </a>
+                <div class="brand-logo justify-content-center d-flex text-center">
+                <a class=" d-flex text-center text-decoration-none" href="<?=$baseurl?>">
+            <img src="../assets/images/hospital-sign.png" alt="logo"  width="50px"  class="mt-2" style="width: 35px;height:30px"/>
+            <h1 class="pt-2" style="font-weight:bolder;font-size:1.6rem; color:#e01111;">HOSPITAL</h1>
+          </a>
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="font-weight-light">Sign in to continue.</h6>
@@ -78,20 +79,60 @@ if(isset($_SESSION['userdata'])){
                     <button name="login" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" href="index.html">SIGN IN</button>
                   </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
+                    <!-- <div class="form-check">
                       <label class="form-check-label text-muted">
                         <input type="checkbox" class="form-check-input"> Keep me signed in </label>
-                    </div>
-                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                    </div> -->
+                    <!-- <a href="#" class="auth-link text-black">Forgot password?</a> -->
                   </div>
                   <!-- <div class="mb-2">
                     <button type="button" class="btn btn-block btn-facebook auth-form-btn">
                       <i class="mdi mdi-facebook me-2"></i>Connect using facebook </button>
                   </div> -->
-                  <div class="text-center mt-4 font-weight-light"> Don't have an account? <a href="register.php" class="text-primary">Create</a>
+                  <!-- <div class="text-center mt-4 font-weight-light"> Don't have an account? <a href="register.php" class="text-primary">Create</a> -->
                   </div>
                 </form>
+                <div class="bg-white text-center">
+                <table class="table">
+                  <thead>
+                    <th>Roles</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>SUPERADMIN</td>
+                      <td>superadmin@gmail.com</td>
+                      <td>123456</td>
+                    </tr>
+                    <?php  
+                    // <tr>
+                    //   <td>ADMIN</td>
+                    //   <td>admin@gmail.com</td>
+                    //   <td>123456</td>
+                    // </tr>
+                    // <tr>
+                    //   <td>DOCTOR</td>
+                    //   <td>doctor@gmail.com</td>
+                    //   <td>123456</td>
+                    // </tr>
+                    // <tr>
+                    //   <td>nurse</td>
+                    //   <td>nurse@gmail.com</td>
+                    //   <td>123456</td>
+                    // </tr>
+                    // <tr>
+                    //   <td>LAB TECHNICINE</td>
+                    //   <td>lab@gmail.com</td>
+                    //   <td>123456</td>
+                    // </tr>
+                    ?>
+                  </tbody>
+                </table>
+                </div>
+                
               </div>
+              
             </div>
           </div>
         </div>

@@ -107,6 +107,7 @@ if(isset($_GET["appointmentid"])){
                         </div>
                     </div>
                 </div>
+                <h5 class="mt-2">Not Available</h5>
                     <!-- Prescribe test -->
                 <div class="row form-group border m-1 p-2 ">
                     <!-- outer repeater -->
@@ -142,6 +143,7 @@ if(isset($_GET["appointmentid"])){
                         </div>                        
                     </div>
                 </div>
+                <h5 class="mt-2">Not Available</h5>
                 <div class="row form-group border m-1 p-2 ">
                     <!-- outer repeater -->
                     <div class="repeater_medicine col-12 my-2">
@@ -186,7 +188,7 @@ if(isset($_GET["appointmentid"])){
                 <div class="form-group">
                     <div class="row justify-content-end">
                     <div class="col-md-2  mt-4 ">
-                        <input type="submit" class="btn btn-success" value="Update" name="patientcare" id="prescription">
+                        <input type="submit" class="btn btn-success" value="Update" disabled name="patientcare" id="prescription">
                     </div>
                     </div>
                 </div>

@@ -30,8 +30,8 @@ if($usr['roles'] !== 'SUPERADMIN' && $usr['roles'] !== 'DOCTOR'){
 $mysqli = new Crud();
 if(isset($_GET["id"])){
     $invoiceid = $_GET["id"];
-    $reportData = $mysqli->select_single("SELECT ip.patient_id as pid,p.name,p.age,p.gender,ip.* FROM invoice_payment ip  JOIN patient p ON p.id=ip.patient_id WHERE ip.id=$invoiceid")["singledata"];
-    $pid = $reportData["patient_id"];
+    $report = $mysqli->select_single("SELECT ip.patient_id as pid,p.name,p.age,p.gender,ip.* FROM invoice_payment ip  JOIN patient p ON p.id=ip.patient_id WHERE ip.id=$invoiceid");
+    $reportData = $report["singledata"];
     
 }
 ?>
@@ -51,7 +51,8 @@ if(isset($_GET["id"])){
                     <h2 style="font-size:1.6rem;" class="card-title text-dark  mx-4 text-bold">Add Report <hr style="width: 7rem;"></h2>
             </div>
             <div class="row mx-5 d-flex">
-                    <?php if(isset($_GET["id"]) && strlen($_GET["id"]) > 0){ ?> 
+                    <?php if(isset($_GET["id"]) && strlen($_GET["id"] && $report["numrows"] > 0) > 0){ 
+    $pid = $reportData["patient_id"];?> 
                   <ul class="list-group mx-5 col-5 row mt-4">
                   
                           <li  class="list-group-item  itemList">
@@ -72,6 +73,17 @@ if(isset($_GET["id"])){
                               &nbsp;  <strong><?= $reportData['gender']?></strong>
                           </li>                   
                   </ul> 
+                  <?php }else{?>
+                    <div class="col-5 justify-content-center">
+                        <?php 
+                        if(isset($_GET["id"])){?>
+                            <h6 class="text-muted">Please input payment id</h6>
+                        <?php } ?>
+                        <form action="<?= $baseurl?>/form/addreport.php?id=$_GET['id']">
+                            <input type="text" class="form-control" name='id'>
+                            <input type="submit" class="btn btn-success my-2 offset-3" value="Check Test">
+                        </form>
+                    </div>
                   <?php } ?>
                   <div class="col-5">
                     <img src="../assets/images/svg/test.svg" width="100%" height="200px" alt="">                     

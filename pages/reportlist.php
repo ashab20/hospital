@@ -66,7 +66,7 @@ $mysqli = new Crud();
 
 
 
-$testListData = $mysqli->find("SELECT ip.id,ip.test_id,ip.patient_id as patient_id,ip.payment_date,p.name,p.phone FROM `invoice_payment` ip JOIN patient p ON ip.patient_id=p.id");
+$testListData = $mysqli->find("SELECT r.*,p.name,t.test_name,p.phone,r.created_at FROM report r JOIN patient p on p.id=r.patient_id JOIN test t on t.id=r.test_id");
 
 $testList = $testListData["singledata"];
 ?>
@@ -130,23 +130,17 @@ $testList = $testListData["singledata"];
                                 </a> 
                             </td>
                             <td><?= $t['phone']?></td>
-                            <td><?php 
-                               $test = json_decode($t['test_id']);
-                               foreach($test as $tid){
-                                $getTest = $mysqli->select_single("SELECT test_name FROM test WHERE id=$tid")['singledata']['test_name'];
-                                echo $getTest."<br>";
-                               }
-                            ?></td>
+                            <td> <?= $t['test_name']?></td>
                             <td>
-                              <?= $t["payment_date"]?> <br><br>
+                              <?= $t["created_at"]?> <br><br>
                             </td>
                             <td >
                                 <span class="d-flex justify-content-center">                                
                             
                             <!-- Check prescription -->
                             
-                              <a title="Prescription" href="<?= $baseurl ?>/pages/addreport.php?id=<?= $t['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
-                              <i class="mdi mdi-note-plus"></i>
+                              <a title="Prescription" href="<?= $baseurl ?>/view/testreport.php?report=<?= $t['id'] ?>" class="btn-sm bg-info text-decoration-none text-white m-1" >
+                              <i class="mdi mdi-file-document-box"></i>
                               </a>
                             </span>
                             </td>

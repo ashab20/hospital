@@ -80,8 +80,8 @@ if($usr['roles'] === 'SUPERADMIN'){?>
               <div class="collapse" id="user">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/pages/profile.php?id=<?=$usr['id'] ?>"> Profile </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/form/updateuser.php?id"> Update Profile </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/pages/changepassword.php"> Change Password </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/form/updateuser.php?id=<?=$usr['id'] ?>"> Update Profile </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="<?=$baseurl?>/pages/changepassword.php?id=<?=$usr['id'] ?>"> Change Password </a></li>
                 </ul>
               </div>
             </li>

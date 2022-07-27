@@ -54,8 +54,11 @@ require_once('../include/header.php');
 
 <!-- edit -->
 <div class="d-flex align-items-start py-3 border-bottom justify-content-start">
-<img src="../assets/images/faces/face1.jpg"
-    class="img rounded-circle mx-5" alt="" width="100px">
+<?php if($usr['avatar']!== null){ ?>
+              <img src="../assets/images/avatar/<?= $usr['avatar'] ?>" class="img rounded-circle mx-5" alt="" width="100px"/>
+              <?php }else{  ?>
+                <img src="../assets/images/faces-clipart/pic-4.png" class="img rounded-circle mx-5" alt="" width="100px"/>
+                  <?php } ?>
 
     <div>
         <h4><?=$selectUser['singledata']['name'] ?></h4>
@@ -162,18 +165,6 @@ $fileUp.toggleClass('d-none');
     </div>
   </div>
   <?php } ?>
-  <div class="form-row d-flex">
-    <div class="form-group col-md-6 mx-2">
-      <label for="password">Password</label>
-      <input type="password" name="password" class="form-control" id="password" placeholder="password">
-    </div>
-    <div class="form-group col-md-6 mx-2">
-      <label for="cpassword">Confirm Password</label>
-      <input type="password" onchange="mathedPassword()" name="cpassword" class="form-control" id="cpassword" placeholder=" Confirm password">
-      <small id="passErr" class="form-text text-danger"></small>
-    </div>
-   
-  </div>
   <div class="form-row d-flex">
     <div class="form-group col-md-6 mx-2">
       <label for="inputCity">City</label>

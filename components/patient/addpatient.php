@@ -9,11 +9,11 @@
       <form class="pt-3 justify-content-center items-center" method="POST" action="<?=$baseurl?>/form/action.php">
         <div class="form-row d-flex">
           <div class="form-group col-md-4 mx-2">
-          <label for="phone">Phone:</label>
+          <div ><label for="guardian_name">Phone:</label><span class="float-end text-danger">*</span></div>
             <input type="text" minlength="11" maxlength="11" name="phone" required class="form-control" id="phone" placeholder="phone">
           </div>
           <div class="form-group col-md-4 mx-2">
-            <label for="name">Name:</label>
+          <div ><label for="guardian_name">Name:</label><span class="float-end text-danger">*</span></div>
             <input type="text" name="name" required class="form-control" id="name" placeholder="Name">
           </div>
           <div class="form-group col-md-4 mx-2">
@@ -24,7 +24,7 @@
         </div>
         <div class="form-row d-flex">
           <div class="form-group col-md-4 mx-2">
-            <label for="father_or_husband_name">Father/Husband's Name:</label>
+            <div ><label for="guardian_name">Father's Name:</label><span class="float-end text-danger">*</span></div>
             <input type="text" name="father_or_husband_name" required class="form-control" id="father_or_husband_name" placeholder="Father/Husband's Name">
           </div>
           <div class="form-group col-md-4 mx-2">
@@ -45,7 +45,7 @@
 
         <div class="form-row d-flex">
         <div class="form-group col-md-4 mx-2">
-            <label for="gender">Gender:</label>
+        <div ><label for="guardian_name">Gender:</label><span class="float-end text-danger">*</span></div>
             <select id="gender"  name="gender" class="form-select">
               <option selected>Gender...</option>
               <option value="male">Male</option>
@@ -54,8 +54,8 @@
             </select>
           </div>
           <div class="form-group col-md-3 mx-2">
-            <label for="age">Age:</label>
-            <input type="text" name="age"  class="form-control" id="age" placeholder="eg 35">            
+            <div ><label for="guardian_name">Age:</label><span class="float-end text-danger">*</span></div>
+            <input type="text" name="age" required class="form-control" id="age" placeholder="eg 35">            
           </div>
           <div class="form-group col-md-3 mx-2">
             <label for="address">Blood Group:</label>
@@ -74,7 +74,7 @@
         </div>
         <div class="form-row d-flex">
         <div class="form-group col-md-5 mx-2">
-            <label for="present_address">Present Address:</label>
+          <div ><label for="guardian_name">Present Address:</label><span class="float-end text-danger">*</span></div>
             <textarea  name="present_address" class="form-control" id="present_address" ></textarea>
           </div>
           <div class="form-group col-md-5 mx-2">

@@ -47,7 +47,7 @@ if($data['error']){
   echo "error";
 }
 
-$reportData = $mysqli->select_single("SELECT r.*,p.*,ip.remark,ip,id as invoice_id,t.test_name FROM report r  JOIN invoice_payment ip ON ip.id=r.invoice_id JOIN patient p ON p.id=r.patient_id JOIN test t ON t.id=r.test_id WHERE r.id=$reportid");
+$reportData = $mysqli->select_single("SELECT r.*,p.*,ip.remark,ip.id as invoice_id,t.test_name FROM report r  JOIN invoice_payment ip ON ip.id=r.invoice_id JOIN patient p ON p.id=r.patient_id JOIN test t ON t.id=r.test_id WHERE r.id=$reportid");
 
 $report = $reportData["singledata"];
 

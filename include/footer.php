@@ -1,7 +1,7 @@
 <footer class="footer">
             <div class="container-fluid d-flex justify-content-between">
-              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
-              <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © 2022</span>
+              <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> <a href="https://github.com/ashab20" target="_blank">A GROUP PROJECT OF</a> @ASHAB UDDIN, RABIB HASAN & TAWHIDUL ISLAM</span>
             </div>
           </footer>
           <!-- partial -->

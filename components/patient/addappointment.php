@@ -33,8 +33,8 @@
           <input type="text" hidden name="created_by" value="<?= $usr['id'] ?>">
             <div class="form-row d-flex justify-content-center">
               <div class="form-group col-md-3 mx-2">
-              <label for="gender">Department:</label>
-                <select id="department"  name="department_id" class="form-select" onchange="get_doctor(this.value)">
+              <div ><label for="guardian_name">Department:</label><span class="float-end text-danger">*</span></div>
+                <select id="department"  name="department_id" required class="form-select" onchange="get_doctor(this.value)">
                   <option value="">Department...</option>
               <?php foreach ($department as $dept){
                 if($dept["status"]==1){ ?>
@@ -43,13 +43,13 @@
                 </select>
               </div>
               <div class="form-group col-md-3 mx-2">
-              <label for="depdoctor">Doctor:</label>
+              <div ><label for="guardian_name">Doctor:</label><span class="float-end text-danger">*</span></div>
                 <select id="depdoctor" onchange="get_time(this.value)" name="doctor_id" class="form-select" required>
                   <option value="">Doctor...</option>
                 </select>
               </div>
               <div class="form-group col-md-3 mx-2">
-                <label for="date">Date:</label>
+              <div ><label for="guardian_name">Date:</label><span class="float-end text-danger">*</span></div>
                 <input type="date"  name="date" min="<?=date('Y-m-d') ?>" required class="form-select p-1" required>
               </div>
              
@@ -57,7 +57,7 @@
             </div>
             <div class="form-row d-flex justify-content-center">
             <div class="form-group col-md-3 mx-2">
-              <label for="time">Time:</label>
+            <div ><label for="guardian_name">Time:</label><span class="float-end text-danger">*</span></div>
               <select name="time" id="" class="form-select" required>
                 <option value="">Select Time</option>
                 <option value="09:00AM">09:00AM</option>
